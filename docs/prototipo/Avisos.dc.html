@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Avisos de realismo</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Condensed:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1C1916}
+a{color:#F2B544}a:hover{color:#F7CF7A}
+</style>
+</helmet>
+<div style="width: 480px; min-height: 560px; box-sizing: border-box; padding: 24px; background: #1C1916; color: #EDE6D6; font-family: 'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif; display: flex; flex-direction: column; gap: 22px">
+
+  <svg width="0" height="0" aria-hidden="true" style="position: absolute">
+    <defs>
+      <radialGradient id="laton" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#F6E3A6"></stop><stop offset="0.55" stop-color="#C9A24A"></stop><stop offset="1" stop-color="#7E5E22"></stop></radialGradient>
+      <radialGradient id="ventana" cx="50%" cy="50%" r="65%"><stop offset="0" stop-color="#FFE7B0"></stop><stop offset="1" stop-color="#E0A63E"></stop></radialGradient>
+    </defs>
+  </svg>
+  <div style="display: flex; flex-direction: column; gap: 4px">
+    <h1 style="margin: 0; font-size: 22px; font-weight: 600">Avisos de realismo</h1>
+    <p style="margin: 0; font-size: 14px; color: #A89F91">Ejemplo: tumor de renina y feocromocitoma activos a la vez</p>
+  </div>
+
+  <section role="status" aria-labelledby="t-hipo" style="display: flex; gap: 12px; padding: 14px 16px; background: #2E2617; border: 1px solid {{accent}}; border-radius: 12px">
+    <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none; margin-top: 2px"><circle cx="11" cy="11" r="9.5" fill="none" stroke="{{accent}}" stroke-width="1.6"></circle><path d="M11 6.5v6" stroke="{{accent}}" stroke-width="1.8" stroke-linecap="round"></path><circle cx="11" cy="15.6" r="1.1" fill="{{accent}}"></circle></svg>
+    <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+      <h2 id="t-hipo" style="margin: 0; font-size: 16px; font-weight: 600; color: {{accent}}">Combinación hipotética</h2>
+      <p style="margin: 0; font-size: 14px; line-height: 1.4">Muy improbable en un paciente real. El simulador muestra la lógica de los mecanismos, no un caso clínico.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px">
+        <span style="padding: 3px 8px; border-radius: 6px; background: #1C1916; font-size: 13px">Tumor de renina · rara</span>
+        <span style="padding: 3px 8px; border-radius: 6px; background: #1C1916; font-size: 13px">Feocromocitoma · rara</span>
+      </div>
+      <p style="margin: 0; font-size: 13px; color: #CFC6B6">El modo reto no usa combinaciones así.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-frec" style="display: flex; flex-direction: column; gap: 12px">
+    <h2 id="t-frec" style="margin: 0; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #CFC6B6">Frecuencia en cada mando</h2>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 14px 8px; border-radius: 14px; background: repeating-linear-gradient(92deg, #5A3420 0px, #6B3F26 7px, #4E2C1A 13px, #633923 21px); border: 4px solid #3A2114">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center">
+        <svg width="84" height="84" viewBox="0 0 120 120" aria-hidden="true" style="display: block"><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="2.5" transform="rotate(-135.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(-108.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(-81.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(-54.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(-27.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="2.5" transform="rotate(0.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(27.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(54.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(81.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(108.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="2.5" transform="rotate(135.0 60 60)"></line><circle cx="60" cy="60" r="46" fill="none" stroke="#2A1810" stroke-width="5" stroke-dasharray="216.8 1000" transform="rotate(135 60 60)"></circle><circle cx="60" cy="60" r="46" fill="none" stroke="#F2B544" stroke-width="5" stroke-dasharray="0 1000" transform="rotate(135 60 60)"></circle><circle cx="60" cy="60" r="39.5" fill="#1F120A"></circle><circle cx="60" cy="60" r="38" fill="#7A5A22"></circle><circle cx="60" cy="60" r="36.5" fill="none" stroke="#E6C878" stroke-width="4" stroke-dasharray="2.2 1.8"></circle><circle cx="60" cy="60" r="33" fill="url(#laton)"></circle><circle cx="60" cy="60" r="9" fill="none" stroke="#5C4418" stroke-opacity="0.25" stroke-width="1"></circle><circle cx="60" cy="60" r="16" fill="none" stroke="#5C4418" stroke-opacity="0.25" stroke-width="1"></circle><circle cx="60" cy="60" r="23" fill="none" stroke="#5C4418" stroke-opacity="0.25" stroke-width="1"></circle><circle cx="60" cy="60" r="29" fill="none" stroke="#5C4418" stroke-opacity="0.25" stroke-width="1"></circle><line x1="60" y1="30" x2="60" y2="44" stroke="#2B1E0A" stroke-width="3" stroke-linecap="round" transform="rotate(-135 60 60)"></line><text x="10" y="116" fill="#EDE6D6" font-size="11" font-family="IBM Plex Mono, monospace">0</text><text x="110" y="116" text-anchor="end" fill="#EDE6D6" font-size="11" font-family="IBM Plex Mono, monospace">1</text></svg>
+        <span style="padding: 3px 8px; border-radius: 4px; background: linear-gradient(180deg, #F3E7C6, #DCC99A); box-shadow: inset 0 0 0 1px #A88A48; color: #2B1E0A; font-size: 13px; font-weight: 500">Edad</span>
+        <span style="font-size: 12px; color: #EDE6D6">común · sin etiqueta</span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center">
+        <svg width="84" height="84" viewBox="0 0 120 120" aria-hidden="true" style="display: block"><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="2.5" transform="rotate(-135.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(-108.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(-81.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(-54.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(-27.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="2.5" transform="rotate(0.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(27.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(54.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(81.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(108.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="2.5" transform="rotate(135.0 60 60)"></line><circle cx="60" cy="60" r="46" fill="none" stroke="#2A1810" stroke-width="5" stroke-dasharray="216.8 1000" transform="rotate(135 60 60)"></circle><circle cx="60" cy="60" r="46" fill="none" stroke="#F2B544" stroke-width="5" stroke-dasharray="0 1000" transform="rotate(135 60 60)"></circle><circle cx="60" cy="60" r="39.5" fill="#1F120A"></circle><circle cx="60" cy="60" r="38" fill="#7A5A22"></circle><circle cx="60" cy="60" r="36.5" fill="none" stroke="#E6C878" stroke-width="4" stroke-dasharray="2.2 1.8"></circle><circle cx="60" cy="60" r="33" fill="url(#laton)"></circle><circle cx="60" cy="60" r="9" fill="none" stroke="#5C4418" stroke-opacity="0.25" stroke-width="1"></circle><circle cx="60" cy="60" r="16" fill="none" stroke="#5C4418" stroke-opacity="0.25" stroke-width="1"></circle><circle cx="60" cy="60" r="23" fill="none" stroke="#5C4418" stroke-opacity="0.25" stroke-width="1"></circle><circle cx="60" cy="60" r="29" fill="none" stroke="#5C4418" stroke-opacity="0.25" stroke-width="1"></circle><line x1="60" y1="30" x2="60" y2="44" stroke="#2B1E0A" stroke-width="3" stroke-linecap="round" transform="rotate(-135 60 60)"></line><text x="10" y="116" fill="#EDE6D6" font-size="11" font-family="IBM Plex Mono, monospace">0</text><text x="110" y="116" text-anchor="end" fill="#EDE6D6" font-size="11" font-family="IBM Plex Mono, monospace">1</text></svg>
+        <span style="padding: 3px 8px; border-radius: 4px; background: linear-gradient(180deg, #F3E7C6, #DCC99A); box-shadow: inset 0 0 0 1px #A88A48; color: #2B1E0A; font-size: 13px; font-weight: 500">Regaliz</span>
+        <span style="padding: 1px 7px; border: 1px solid #DCC99A; border-radius: 999px; font-size: 11px; color: #F3E7C6">poco frecuente</span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center">
+        <svg width="84" height="84" viewBox="0 0 120 120" aria-hidden="true" style="display: block"><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="2.5" transform="rotate(-135.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(-108.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(-81.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(-54.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(-27.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="2.5" transform="rotate(0.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(27.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(54.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(81.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(108.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="2.5" transform="rotate(135.0 60 60)"></line><circle cx="60" cy="60" r="46" fill="none" stroke="#2A1810" stroke-width="5" stroke-dasharray="216.8 1000" transform="rotate(135 60 60)"></circle><circle cx="60" cy="60" r="46" fill="none" stroke="#F2B544" stroke-width="5" stroke-dasharray="216.8 1000" transform="rotate(135 60 60)"></circle><circle cx="60" cy="60" r="39.5" fill="#1F120A"></circle><circle cx="60" cy="60" r="38" fill="#7A5A22"></circle><circle cx="60" cy="60" r="36.5" fill="none" stroke="#E6C878" stroke-width="4" stroke-dasharray="2.2 1.8"></circle><circle cx="60" cy="60" r="33" fill="url(#laton)"></circle><circle cx="60" cy="60" r="9" fill="none" stroke="#5C4418" stroke-opacity="0.25" stroke-width="1"></circle><circle cx="60" cy="60" r="16" fill="none" stroke="#5C4418" stroke-opacity="0.25" stroke-width="1"></circle><circle cx="60" cy="60" r="23" fill="none" stroke="#5C4418" stroke-opacity="0.25" stroke-width="1"></circle><circle cx="60" cy="60" r="29" fill="none" stroke="#5C4418" stroke-opacity="0.25" stroke-width="1"></circle><line x1="60" y1="30" x2="60" y2="44" stroke="#2B1E0A" stroke-width="3" stroke-linecap="round" transform="rotate(135 60 60)"></line><text x="10" y="116" fill="#EDE6D6" font-size="11" font-family="IBM Plex Mono, monospace">0</text><text x="110" y="116" text-anchor="end" fill="#EDE6D6" font-size="11" font-family="IBM Plex Mono, monospace">1</text></svg>
+        <span style="padding: 3px 8px; border-radius: 4px; background: linear-gradient(180deg, #F3E7C6, #DCC99A); box-shadow: inset 0 0 0 1px #A88A48; color: #2B1E0A; font-size: 13px; font-weight: 600">Feocromocitoma</span>
+        <span style="padding: 1px 7px; border: 1px solid {{accent}}; border-radius: 999px; font-size: 11px; color: {{accent}}; background: #2B1E0A">rara</span>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-sat" style="display: flex; flex-direction: column; gap: 12px">
+    <h2 id="t-sat" style="margin: 0; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #CFC6B6">Fuera de rango</h2>
+    <div style="display: flex; align-items: center; gap: 16px">
+      <svg width="96" height="96" viewBox="0 0 260 260" role="img" aria-label="Aguja de presión sistólica al tope de la escala" style="flex: none"><circle cx="130" cy="130" r="126" fill="url(#laton)"></circle><circle cx="130" cy="130" r="114" fill="url(#ventana)"></circle><line x1="130" y1="22" x2="130" y2="38" stroke="#3A2410" stroke-width="4" transform="rotate(-135.0 130 130)"></line><line x1="130" y1="22" x2="130" y2="32" stroke="#3A2410" stroke-width="2.5" transform="rotate(-112.5 130 130)"></line><line x1="130" y1="22" x2="130" y2="32" stroke="#3A2410" stroke-width="2.5" transform="rotate(-90.0 130 130)"></line><line x1="130" y1="22" x2="130" y2="38" stroke="#3A2410" stroke-width="4" transform="rotate(-67.5 130 130)"></line><line x1="130" y1="22" x2="130" y2="32" stroke="#3A2410" stroke-width="2.5" transform="rotate(-45.0 130 130)"></line><line x1="130" y1="22" x2="130" y2="32" stroke="#3A2410" stroke-width="2.5" transform="rotate(-22.5 130 130)"></line><line x1="130" y1="22" x2="130" y2="38" stroke="#3A2410" stroke-width="4" transform="rotate(0.0 130 130)"></line><line x1="130" y1="22" x2="130" y2="32" stroke="#3A2410" stroke-width="2.5" transform="rotate(22.5 130 130)"></line><line x1="130" y1="22" x2="130" y2="32" stroke="#3A2410" stroke-width="2.5" transform="rotate(45.0 130 130)"></line><line x1="130" y1="22" x2="130" y2="38" stroke="#3A2410" stroke-width="4" transform="rotate(67.5 130 130)"></line><line x1="130" y1="22" x2="130" y2="32" stroke="#3A2410" stroke-width="2.5" transform="rotate(90.0 130 130)"></line><line x1="130" y1="22" x2="130" y2="32" stroke="#3A2410" stroke-width="2.5" transform="rotate(112.5 130 130)"></line><line x1="130" y1="22" x2="130" y2="38" stroke="#3A2410" stroke-width="4" transform="rotate(135.0 130 130)"></line><line x1="130" y1="130" x2="130" y2="44" stroke="#B3362F" stroke-width="10" stroke-linecap="round" transform="rotate(133 130 130)"></line><circle cx="130" cy="130" r="18" fill="url(#laton)" stroke="#5C4418" stroke-width="3"></circle></svg>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <span style="align-self: flex-start; padding: 3px 8px; border-radius: 6px; background: #2E2617; border: 1px dashed {{accent}}; font-size: 13px; color: {{accent}}">Fuera del rango del modelo</span>
+        <p style="margin: 0; font-size: 14px; line-height: 1.4; color: #CFC6B6">La aguja toca el tope: el valor real sería extremo, no exacto.</p>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"acento":{"editor":"color","default":"#F2B544","options":["#F2B544","#E8875B","#8FC7A6"]},"$preview":{"width":480,"height":560}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.acento ?? '#F2B544' };
+  }
+}
+</script>
+</body>
+</html>

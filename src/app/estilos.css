@@ -1,0 +1,4928 @@
+/* Tema Retro (por defecto). Los colores están en variables para que el tema
+   Clásico del hito 3e solo tenga que redefinirlas. */
+:root,
+[data-tema='retro'] {
+  --fondo: #1c1916;
+  --superficie: #26221e;
+  --linea: #3a342e;
+  --linea-fuerte: #4a423a;
+  --texto: #ede6d6;
+  --texto-2: #cfc6b6;
+  --tenue: #a89f91;
+  --acento: #f2b544;
+  --baja: #6fa8dc;
+
+  --nogal: repeating-linear-gradient(92deg, #5a3420 0, #6b3f26 7px, #4e2c1a 13px, #633923 21px);
+  --nogal-marco: #3a2114;
+  --placa-fondo: linear-gradient(180deg, #f3e7c6, #dcc99a);
+  --placa-borde: #a88a48;
+  --placa-texto: #2b1e0a;
+  --placa-texto-2: #5c4418;
+
+  --cristal-tinta: #3a2410;
+  --cristal-marco: #2b211b;
+  --aguja: #1c1916;
+
+  --papel: #ede6d6;
+  --papel-celda: #f7f1e3;
+  --papel-borde: #d9cfbb;
+  --papel-texto: #1c1916;
+  --papel-tenue: #5c5348;
+  --papel-sube: #f2d79a;
+  --papel-baja: #c9ddf0;
+  --papel-neutro: #e4dccb;
+
+  /* Avisos de realismo */
+  --aviso-fondo: #2e2617;
+  --frecuencia-fondo: #2b1e0a;
+  --frecuencia-texto: #f3e7c6;
+
+  --pas: #b3362f;
+  --pad: #8a5a2e;
+  --pad-leyenda: #c58b4e;
+
+  --sangre: #d04a42;
+  --pared-media: #8e443c;
+  --pared-adventicia: #6e3530;
+  --pared-intima: #e2a196;
+  --luz-arteriola: #5e1517;
+  --vaso-fondo: #211a17;
+  /* Arteria elástica (conducción): pared clara y rosada con láminas de elastina. */
+  --vaso-fondo-arteria: #241c19;
+  --arteria-media: #c98a80;
+  --arteria-adventicia: #9c5e56;
+  --arteria-intima: #f0c2b4;
+  --arteria-elastina: #f7e2d4;
+  --marco-arteria: #6b5a4e;
+  /* Arteriola muscular (resistencia): músculo liso oscuro, rojizo-violáceo. */
+  --vaso-fondo-arteriola: #1d1520;
+  --arteriola-media: #6a2a3c;
+  --arteriola-adventicia: #47202f;
+  --arteriola-musculo: #93485e;
+  --arteriola-intima: #d79aa0;
+  --marco-arteriola: #6e4a68;
+  --placa-ateroma: #e3c26a;
+
+  --letra: 'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  color-scheme: dark;
+}
+
+/* Tamaño «Grande» (hito 3e): toda la interfaz al 125 %, como la ampliación del
+   navegador. Las media queries se duplican escaladas en la build
+   (src/compartido/tamano.ts) y las medidas con vh/vw se dividen por --zoom. */
+:root {
+  --zoom: 1;
+}
+html[data-tamano='grande'] {
+  zoom: 1.25;
+  --zoom: 1.25;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Barras de scroll finas, en el tono de las líneas del tema. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--linea-fuerte) transparent;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--linea-fuerte);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--tenue);
+}
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--letra);
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+#app {
+  position: relative;
+  min-height: calc(100vh / var(--zoom));
+  padding: 24px 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1720px;
+  margin: 0 auto;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+.tenue {
+  color: var(--tenue);
+}
+.pequeno {
+  font-size: 13px;
+}
+.fuerte {
+  font-weight: 600;
+}
+.oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.defs-globales {
+  position: absolute;
+}
+
+:focus-visible {
+  outline: 3px solid var(--acento);
+  outline-offset: 2px;
+}
+
+/* --- Botones --- */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  background: transparent;
+  color: var(--texto);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 10px;
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+.boton:hover {
+  border-color: var(--tenue);
+}
+.boton-acento {
+  background: var(--acento);
+  color: var(--fondo);
+  border: 0;
+  font-weight: 600;
+}
+.boton:disabled {
+  cursor: not-allowed;
+}
+/* Funciones de versiones posteriores: claramente apagadas. */
+.boton-proximamente {
+  color: var(--tenue);
+  border: 1px dashed var(--linea-fuerte);
+  background: transparent;
+  font-weight: 400;
+}
+.etiqueta-proximamente {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--linea);
+  color: var(--texto-2);
+}
+.icono-trazo {
+  stroke: currentColor;
+}
+.icono-relleno {
+  fill: currentColor;
+}
+
+/* --- Cabecera --- */
+.cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+}
+.titulo h1 {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.titulo p {
+  font-size: 14px;
+}
+.controles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.campo-caso {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 4px 0 14px;
+  background: var(--superficie);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 10px;
+  max-width: 100%;
+}
+.selector {
+  min-height: 42px;
+  max-width: 100%;
+  padding: 0 8px;
+  background: transparent;
+  color: var(--texto);
+  border: 0;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.selector[data-puntero]:focus-visible {
+  outline: none;
+}
+.boton-sonido[aria-pressed='false'] .icono-ondas {
+  opacity: 0.25;
+}
+.boton-sonido[aria-pressed='true'] {
+  border-color: var(--acento);
+  color: var(--acento);
+}
+.selector option {
+  background: var(--superficie);
+  color: var(--texto);
+  font-weight: 400;
+}
+.interruptor {
+  display: flex;
+  padding: 4px;
+  gap: 4px;
+  background: var(--superficie);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 12px;
+}
+.interruptor button {
+  min-height: 40px;
+  min-width: 44px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--texto-2);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+.interruptor button[aria-pressed='true'] {
+  background: var(--texto);
+  color: var(--fondo);
+  font-weight: 600;
+}
+
+/* --- Columnas --- */
+.columnas,
+.pie {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: stretch;
+}
+.tarjeta {
+  padding: 20px;
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* --- Panel de causas (nogal) --- */
+.panel-causas {
+  flex: 1 1 320px;
+  max-width: 410px;
+  padding: 20px 16px;
+  border-radius: 18px;
+  background: var(--nogal);
+  border: 6px solid var(--nogal-marco);
+  box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.panel-causas-cabecera {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.panel-causas-cabecera p,
+.ayuda-mandos {
+  font-size: 13px;
+  color: var(--texto);
+  text-align: center;
+}
+.ayuda-mandos {
+  color: var(--texto-2);
+  font-size: 12px;
+}
+/* Fase 7: franja de la variante de una causa (estenosis bilateral, unilateral o
+   de riñón único). Ocupa el sitio de la ayuda del panel y no es más alta que ella
+   en la pantalla ancha, para no empujar «Qué mirar». */
+.franja-variante {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2px 8px;
+}
+.franja-variante[hidden] {
+  display: none;
+}
+.franja-variante-etiqueta {
+  font-size: 12px;
+  color: var(--texto-2);
+}
+.franja-variante-grupo {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 100%;
+  gap: 2px;
+  padding: 1px;
+  border-radius: 6px;
+  background: var(--placa-fondo);
+  box-shadow: inset 0 0 0 1px var(--placa-borde), 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.franja-variante-boton {
+  min-height: 20px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--placa-texto-2);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+  cursor: pointer;
+}
+.franja-variante-boton:hover {
+  color: var(--placa-texto);
+}
+.franja-variante-boton[aria-pressed='true'] {
+  background: var(--placa-texto);
+  color: #f3e7c6;
+}
+/* En el móvil, botones a la medida del dedo. */
+.en-movil .franja-variante-boton {
+  min-height: 36px;
+  padding: 0 12px;
+  font-size: 13px;
+  line-height: 36px;
+}
+.placa-variante {
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1.1;
+  color: var(--placa-texto-2);
+}
+.placa-variante[hidden] {
+  display: none;
+}
+
+.placa-titulo {
+  padding: 4px 18px;
+  border-radius: 4px;
+  background: var(--placa-fondo);
+  box-shadow: inset 0 0 0 1px var(--placa-borde);
+  color: var(--placa-texto);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.rejilla-mandos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* Todas las filas igual de altas: las placas quedan iguales en todo el panel. */
+  grid-auto-rows: 1fr;
+  gap: 16px 6px;
+  justify-items: center;
+}
+
+/* --- Mando --- */
+.mando {
+  user-select: none;
+  -webkit-user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+.mando-control {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  cursor: grab;
+  /* El dedo desplaza la página en vertical; para girar se mantiene pulsada (mando.ts). */
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.mando.arrastrando .mando-control {
+  cursor: grabbing;
+}
+.mando-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.mando-marca {
+  stroke: var(--texto);
+  stroke-opacity: 0.85;
+}
+.mando-pista {
+  stroke: #2a1810;
+}
+.mando-arco {
+  stroke: var(--acento);
+}
+.mando-arco[data-sentido='baja'] {
+  stroke: var(--baja);
+}
+.mando-contorno {
+  fill: #1f120a;
+}
+.mando-moleteado-base {
+  fill: #7a5a22;
+}
+.mando-moleteado {
+  stroke: #e6c878;
+}
+.mando-laton {
+  fill: url(#laton);
+}
+.mando-estria {
+  stroke: #5c4418;
+  stroke-opacity: 0.25;
+}
+.mando-puntero {
+  stroke: #2b1e0a;
+}
+.mando-extremo {
+  fill: var(--texto);
+  font-size: 11px;
+  font-family: var(--mono);
+}
+.mando-control:focus-visible {
+  outline-offset: 4px;
+}
+/* Con ratón o dedo no se dibuja el reborde de foco; con teclado, sí. */
+.mando-control[data-puntero]:focus-visible {
+  outline: none;
+}
+.placa {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 118px;
+  min-height: 44px;
+  padding: 4px 8px;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+  /* Partir por sílabas (diccionario del navegador y guiones blandos de los
+     datos) antes que dejar letras sueltas; «anywhere» queda como último recurso. */
+  hyphens: auto;
+  /* Palabra de 7 letras como mínimo; al menos 3 a cada lado del guion. */
+  hyphenate-limit-chars: 7 3 3;
+  border-radius: 4px;
+  background: var(--placa-fondo);
+  box-shadow: inset 0 0 0 1px var(--placa-borde), 0 1px 2px rgba(0, 0, 0, 0.5);
+  color: var(--placa-texto);
+  text-align: center;
+}
+.placa:hover {
+  box-shadow: inset 0 0 0 2px var(--placa-borde), 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.placa-nombre {
+  font-size: 12px;
+  line-height: 1.15;
+  font-weight: 500;
+}
+.mando.activo .placa:hover {
+  box-shadow: inset 0 0 0 2px var(--placa-borde), 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.placa-nombre {
+  font-weight: 600;
+}
+.placa-valor {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--placa-texto-2);
+}
+
+/* --- Centro --- */
+.columna-centro {
+  flex: 2 1 560px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.tarjeta-cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+.tarjeta-cabecera h2,
+.panel-analitica h2,
+.nota h2 {
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.boton-pausa,
+.boton-leer {
+  font-size: 14px;
+  padding: 0 14px;
+}
+
+/* --- Vasos --- */
+.vasos-figuras {
+  /* Columnas en la proporción de los dibujos (640 : 240): con el mismo alto de
+     viewBox, los dos recuadros salen exactamente igual de altos. Los rótulos
+     comparten fila (subgrid) y quedan alineados aunque partan línea. */
+  display: grid;
+  grid-template-columns: minmax(0, 8fr) minmax(0, 3fr);
+  grid-template-rows: auto auto;
+  column-gap: 16px;
+  row-gap: 8px;
+}
+.vasos-figuras figure {
+  margin: 0;
+  min-width: 0;
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  row-gap: 8px;
+}
+.vasos-figuras figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 13px;
+  line-height: 1.25;
+}
+.vaso-longitudinal,
+.vaso-transversal {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+}
+.vaso-fondo-arteria {
+  fill: var(--vaso-fondo-arteria);
+}
+.vaso-fondo-arteriola {
+  fill: var(--vaso-fondo-arteriola);
+}
+.marco-arteria {
+  fill: none;
+  stroke: var(--marco-arteria);
+  stroke-width: 2;
+}
+.marco-arteriola {
+  fill: none;
+  stroke: var(--marco-arteriola);
+  stroke-width: 2;
+}
+.marco-arteriola.fino {
+  stroke-width: 1;
+}
+.arteria-media {
+  fill: var(--arteria-media);
+}
+.arteria-adventicia {
+  fill: var(--arteria-adventicia);
+}
+.arteria-intima {
+  fill: var(--arteria-intima);
+}
+.arteria-elastina {
+  stroke: var(--arteria-elastina);
+  stroke-width: 1.6;
+  opacity: 0.85;
+}
+.arteriola-media {
+  fill: var(--arteriola-media);
+}
+.arteriola-adventicia {
+  fill: var(--arteriola-adventicia);
+}
+.arteriola-musculo {
+  fill: var(--arteriola-musculo);
+}
+.arteriola-intima {
+  fill: var(--arteriola-intima);
+}
+.vaso-escala {
+  fill: var(--texto-2);
+  font-size: 12px;
+  font-family: var(--mono);
+}
+.vaso-transversal .vaso-escala,
+.vaso-transversal .vaso-rotulo-luz {
+  font-size: 14px;
+}
+.nota-vasos {
+  font-size: 13px;
+  color: var(--texto-2);
+}
+.vaso-fondo {
+  fill: var(--vaso-fondo);
+}
+.hematie {
+  fill: var(--sangre);
+}
+.onda {
+  fill: #fff;
+  opacity: 0.07;
+}
+.pared-media {
+  fill: var(--pared-media);
+}
+.pared-adventicia {
+  fill: var(--pared-adventicia);
+}
+.pared-intima {
+  fill: var(--pared-intima);
+}
+.luz-arteriola {
+  fill: var(--luz-arteriola);
+}
+.placa-ateroma {
+  fill: var(--placa-ateroma);
+  stroke: #b8923e;
+  stroke-width: 1.5;
+}
+.vaso-rotulo {
+  fill: var(--texto);
+  font-size: 13px;
+  opacity: 0.8;
+  font-family: var(--letra);
+}
+.vaso-rotulo-luz {
+  fill: var(--tenue);
+  font-size: 12px;
+  font-family: var(--letra);
+}
+.lista-vaso {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
+}
+.lista-vaso li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--fondo);
+  border-radius: 8px;
+  font-size: 13px;
+}
+.flecha {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--tenue);
+}
+[data-tono='sube'] {
+  color: var(--acento);
+}
+[data-tono='baja'] {
+  color: var(--baja);
+}
+
+/* --- Presión --- */
+.presion {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+}
+.dial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin: 0 auto;
+}
+.dial-svg {
+  width: 220px;
+  height: 220px;
+  display: block;
+}
+.dial-aro {
+  fill: url(#laton);
+}
+.dial-esfera {
+  fill: url(#cristal);
+}
+.dial-marca {
+  stroke: var(--cristal-tinta);
+}
+.dial-zona {
+  fill: var(--cristal-tinta);
+  font-size: 13px;
+  font-family: var(--mono);
+}
+.dial-aguja-pas,
+.dial-aguja-pad {
+  transform-origin: 130px 130px;
+  transition: transform 0.45s ease-out;
+}
+.dial-aguja-pas {
+  stroke: var(--pas);
+}
+.dial-aguja-pad {
+  stroke: var(--pad);
+}
+.dial-eje {
+  fill: url(#laton);
+  stroke: #5c4418;
+  stroke-width: 2;
+}
+.dial-pam {
+  fill: var(--placa-texto);
+  font-size: 15px;
+  font-family: var(--mono);
+}
+.dial-leyenda {
+  display: flex;
+  gap: 14px;
+  font-size: 13px;
+}
+.leyenda {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.muestra {
+  width: 14px;
+  height: 4px;
+  border-radius: 2px;
+}
+.muestra.pas {
+  background: var(--sangre);
+}
+.muestra.pad {
+  background: var(--pad-leyenda);
+}
+.determinantes {
+  flex: 1 1 240px;
+  max-width: 460px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.determinantes h3 {
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--texto-2);
+}
+
+/* --- Ventanas de sintonía --- */
+.ventana {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.ventana-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 44px;
+}
+.ventana-marco {
+  fill: var(--cristal-marco);
+}
+.ventana-cristal {
+  fill: url(#cristal);
+}
+.ventana-marca {
+  stroke: var(--cristal-tinta);
+}
+.ventana-nombre {
+  fill: var(--placa-texto);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--letra);
+}
+.ventana-nombre.ancha {
+  font-size: 13px;
+}
+.ventana-flecha {
+  fill: var(--placa-texto);
+  font-size: 12px;
+  font-family: var(--mono);
+}
+.ventana.ancha .ventana-flecha {
+  font-size: 13px;
+}
+.ventana-aguja {
+  fill: var(--aguja);
+  transition: transform 0.45s ease-out;
+}
+.ventana:hover .ventana-marco {
+  fill: #4a3a2c;
+}
+
+/* --- Mecanismos --- */
+.columna-izquierda {
+  flex: 1 1 320px;
+  max-width: 410px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.columna-izquierda .panel-causas {
+  max-width: none;
+}
+.columna-derecha {
+  flex: 1 1 340px;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.panel-mecanismos h2 {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.grupo h3 {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--texto-2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.rejilla-ventanas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+/* --- Analítica (papel crema) --- */
+.panel-analitica {
+  padding: 20px;
+  background: var(--papel);
+  color: var(--papel-texto);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.analitica-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.analitica-escala {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--papel-tenue);
+}
+.rejilla-analitica {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+.analito {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--papel-celda);
+  border: 1px solid var(--papel-borde);
+  border-radius: 8px;
+  font-size: 14px;
+}
+.analito-flecha {
+  min-width: 32px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 14px;
+  background: var(--papel-neutro);
+  color: var(--papel-texto);
+}
+.analito-flecha[data-tono='sube'] {
+  background: var(--papel-sube);
+  color: var(--papel-texto);
+}
+.analito-flecha[data-tono='baja'] {
+  background: var(--papel-baja);
+  color: var(--papel-texto);
+}
+
+/* --- Qué mirar --- */
+.nota {
+  border-color: var(--acento);
+  gap: 8px;
+}
+.nota h2 {
+  font-size: 15px;
+  color: var(--acento);
+}
+.nota-cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.nota-principal,
+.nota-cuerpo > p:only-child {
+  font-size: 15px;
+  line-height: 1.4;
+}
+.nota-secundaria,
+.nota-caso {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--texto-2);
+}
+.botones-vasos {
+  display: flex;
+  gap: 8px;
+}
+.vasos-cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.pie-pagina {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 16px;
+  font-size: 12px;
+}
+.pie-pagina .version {
+  font-family: var(--mono);
+}
+
+/* --- Ficha (hito 3d) --- */
+.ficha {
+  width: min(480px, calc(100vw / var(--zoom) - 32px));
+  max-height: calc(100vh / var(--zoom) - 32px);
+  margin: 16px 16px 16px auto;
+  padding: 20px;
+  background: var(--superficie);
+  color: var(--texto);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 16px;
+}
+.ficha::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+}
+.ficha-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.ficha-cabecera h2 {
+  font-size: 20px;
+  font-weight: 600;
+}
+.ficha-cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ficha-cuerpo h3 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--texto-2);
+  margin-top: 6px;
+}
+.ficha-valor {
+  font-size: 16px;
+}
+.ficha-valor .flecha {
+  font-size: 18px;
+  color: inherit;
+}
+.ficha-relaciones {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+.signo {
+  display: inline-block;
+  width: 1.4em;
+  text-align: center;
+  font-family: var(--mono);
+  color: var(--acento);
+}
+
+/* --- Pantallas estrechas (la distribución de móvil llega en el hito 3c) --- */
+@media (max-width: 720px) {
+  #app {
+    padding: 16px;
+  }
+  .panel-causas,
+  .panel-mecanismos {
+    max-width: none;
+  }
+  .rejilla-analitica {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .columna-centro {
+    flex-basis: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dial-aguja-pas,
+  .dial-aguja-pad,
+  .ventana-aguja {
+    transition: none;
+  }
+}
+
+
+/* --- Tablero de escritorio: toda la pantalla sin scroll de página ---
+   Con ventana ancha y alta, cada zona se ajusta al alto disponible. Si algo no
+   cabe (ventana algo baja o «Cómo leerlos» abierto), solo la columna afectada
+   hace scroll; la nota «Qué mirar» es lo único que lo hace por diseño. */
+@media (min-width: 1200px) and (min-height: 700px) {
+  #app {
+    height: calc(100vh / var(--zoom));
+    height: calc(100dvh / var(--zoom));
+    overflow: hidden;
+    padding: 14px 24px 10px;
+    gap: 12px;
+  }
+  .titulo h1 {
+    font-size: 24px;
+  }
+  .titulo p {
+    font-size: 13px;
+  }
+  .columnas {
+    flex: 1;
+    min-height: 0;
+    flex-wrap: nowrap;
+    gap: 16px;
+  }
+  .columna-izquierda,
+  .columna-centro,
+  .columna-derecha {
+    min-height: 0;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+  .columna-izquierda {
+    gap: 12px;
+    overflow: hidden;
+  }
+  .tarjeta {
+    padding: 14px 16px;
+    gap: 10px;
+  }
+
+  /* Causas */
+  .panel-causas {
+    flex: 0 0 auto;
+    padding: 12px;
+    gap: 8px;
+  }
+  .panel-causas-cabecera {
+    gap: 4px;
+  }
+
+  /* La ayuda de arrastre sobra aquí: el mando ya lo dice con el cursor y el lector de pantalla. */
+  .ayuda-mandos {
+    display: none;
+  }
+  .rejilla-mandos {
+    gap: 10px 6px;
+  }
+  .mando-control {
+    width: 72px;
+    height: 72px;
+  }
+
+  /* Centro */
+  .columna-centro {
+    gap: 12px;
+  }
+  .vasos {
+    container-type: inline-size;
+  }
+  .lista-vaso li {
+    padding: 6px 10px;
+  }
+  .presion {
+    gap: 16px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .dial-svg {
+    width: 144px;
+    height: 144px;
+  }
+  .determinantes {
+    gap: 6px;
+    max-width: 330px;
+  }
+  .determinantes h3 {
+    font-size: 13px;
+  }
+  .panel-analitica {
+    container-type: inline-size;
+  }
+  .panel-analitica {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+  .panel-analitica h2 {
+    font-size: 16px;
+  }
+  .analito {
+    padding: 6px 10px;
+  }
+
+  /* Derecha */
+  .panel-mecanismos {
+    flex: 1 0 auto;
+  }
+  .grupo {
+    gap: 4px;
+  }
+  .rejilla-ventanas {
+    gap: 4px 6px;
+  }
+  .nota {
+    flex: 1 1 auto;
+    min-height: 100px;
+    overflow-y: auto;
+  }
+  .nota-principal,
+  .nota-cuerpo > p:only-child {
+    font-size: 14px;
+  }
+  .nota-secundaria,
+  .nota-caso {
+    font-size: 13px;
+  }
+}
+
+/* Tablero con poco alto: la lista de propiedades de los vasos va a la derecha
+   de los dibujos, en una columna, para ahorrar alto. Con ventanas altas
+   (1000 px o más) vuelve debajo y los dibujos crecen. */
+@media (max-height: 999px) {
+@container (min-width: 740px) {
+  .vasos-cuerpo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 210px;
+    gap: 16px;
+    align-items: start;
+  }
+  .vasos-cuerpo .lista-vaso {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+}
+
+/* Analítica en una fila de 8 cuando hay ancho: nombre arriba, flecha abajo. */
+@container (min-width: 720px) {
+  .rejilla-analitica {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .analito {
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 6px 4px;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.15;
+  }
+}
+
+/* Pantallas muy estrechas (móvil con el texto ampliado): nada desborda. */
+@media (max-width: 400px) {
+  .controles,
+  .campo-caso {
+    width: 100%;
+    min-width: 0;
+  }
+  .selector {
+    flex: 1;
+    min-width: 0;
+    text-overflow: ellipsis;
+  }
+  .interruptor button {
+    padding: 0 10px;
+  }
+  .rejilla-mandos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .placa {
+    overflow-wrap: anywhere;
+  }
+}
+
+/* Extremo: móvil con el texto al 200 % (unos 200 px útiles). */
+@media (max-width: 300px) {
+  .interruptor {
+    flex-wrap: wrap;
+  }
+  .lista-vaso {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lista-vaso li,
+  .analito {
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+  .rejilla-analitica {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .dial-svg {
+    width: min(220px, 100%);
+    height: auto;
+  }
+  .dial,
+  .dial-leyenda {
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+}
+
+/* Cabecera en una línea en portátiles: «Sonido» queda solo con su icono
+   (el nombre se sigue leyendo con lector de pantalla). */
+@media (min-width: 1200px) and (max-width: 1499px) {
+  .etiqueta-proximamente {
+    display: none;
+  }
+  .boton-sonido span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* ===================================================================
+   Móvil (hito 3c). La clase .en-movil la pone main.ts con la misma
+   consulta que recoloca las piezas (hasta 720 px de ancho).
+   =================================================================== */
+
+/* Piezas que solo existen en el móvil. */
+.icono-movil,
+.escala-corta,
+.asa {
+  display: none;
+}
+.pastilla-presion[hidden] {
+  display: none;
+}
+
+#app.en-movil {
+  padding: 12px 16px 0;
+  gap: 12px;
+}
+
+/* Texto solo para el lector de pantalla en los botones de icono. */
+.en-movil .texto-boton,
+.en-movil .vasos .tarjeta-cabecera h2,
+.en-movil .placa-titulo,
+.en-movil .panel-mecanismos h2,
+.en-movil .determinantes h3 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.en-movil .icono-movil {
+  display: block;
+}
+
+/* --- Cabecera: título con Sonido y Restablecer; caso; escala de tiempo --- */
+.en-movil .cabecera {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 8px;
+}
+.en-movil .titulo {
+  grid-row: 1;
+  grid-column: 1;
+  min-width: 0;
+}
+.en-movil .titulo h1 {
+  font-size: 22px;
+}
+.en-movil .titulo p {
+  display: none;
+}
+.en-movil .controles {
+  display: contents;
+}
+.en-movil .boton-sonido {
+  grid-column: 2;
+}
+.en-movil .boton-restablecer {
+  grid-column: 3;
+}
+.en-movil .boton-sonido,
+.en-movil .boton-restablecer {
+  grid-row: 1;
+  justify-content: center;
+  width: 44px;
+  padding: 0;
+}
+.en-movil .boton-proximamente {
+  display: none;
+}
+.en-movil .campo-caso {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+.en-movil .selector {
+  flex: 1;
+  min-width: 0;
+  text-overflow: ellipsis;
+  font-size: 14px;
+}
+.en-movil .interruptor {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.en-movil .interruptor button {
+  padding: 0 6px;
+  font-size: 14px;
+}
+.en-movil .escala-larga {
+  display: none;
+}
+.en-movil .escala-corta {
+  display: inline;
+}
+
+/* --- Cabeza: vasos, presión y pestañas --- */
+.movil {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+.cabeza-movil {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 -16px;
+  padding: 6px 16px 0;
+  background: var(--fondo);
+  z-index: 5;
+}
+/* Fija al bajar solo si queda sitio para el panel (con el texto ampliado o el
+   móvil en horizontal no lo hay: entonces aparece la pastilla de presión). */
+@media (min-height: 640px) {
+  .cabeza-movil {
+    position: sticky;
+    top: 0;
+    box-shadow: 0 6px 10px -8px rgba(0, 0, 0, 0.8);
+  }
+}
+
+/* Sin sitio para el panel (la cabeza pasa del 55 % del alto, p. ej. con «Grande»):
+   no se fija. Fuera de la @media para que valga también con «Grande». */
+.cabeza-movil.libre {
+  position: static;
+  box-shadow: none;
+}
+
+/* Vasos en una fila: arteria, arteriola y botones en columna. */
+.en-movil .vasos {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 12px;
+}
+.en-movil .vasos .tarjeta-cabecera {
+  display: contents;
+}
+.en-movil .botones-vasos {
+  grid-column: 2;
+  grid-row: 1;
+  flex-direction: column;
+  gap: 6px;
+}
+.en-movil .boton-pausa,
+.en-movil .boton-leer {
+  justify-content: center;
+  width: 44px;
+  padding: 0;
+}
+.en-movil .vasos-cuerpo {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+}
+.en-movil .vasos-figuras {
+  column-gap: 8px;
+  row-gap: 4px;
+}
+.en-movil .vasos-figuras figure {
+  row-gap: 4px;
+}
+.en-movil .vasos-figuras figcaption {
+  font-size: 12px;
+}
+.en-movil .vasos-figuras figcaption .tenue,
+.en-movil .rol-vaso {
+  display: none;
+}
+.en-movil .vaso-longitudinal,
+.en-movil .vaso-transversal {
+  border-radius: 6px;
+}
+
+/* Presión: dial pequeño a la izquierda y las tres salidas a la derecha. */
+.en-movil .presion {
+  flex-wrap: nowrap;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 12px;
+}
+.en-movil .dial {
+  flex: none;
+  margin: 0;
+  gap: 4px;
+}
+.en-movil .dial-svg {
+  width: 96px;
+  height: 96px;
+}
+.en-movil .dial-leyenda {
+  flex-direction: column;
+  gap: 0;
+  font-size: 12px;
+}
+.en-movil .determinantes {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  gap: 5px;
+}
+
+/* Pestañas */
+.pestanas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-bottom: 1px solid var(--linea);
+}
+.pestanas button {
+  min-height: 44px;
+  padding: 0 4px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: var(--texto-2);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+.pestanas button[aria-selected='true'] {
+  border-bottom-color: var(--acento);
+  color: var(--texto);
+  font-weight: 600;
+}
+.pestanas button:focus-visible {
+  outline-offset: -3px;
+}
+
+/* --- Paneles --- */
+.panel-pestana[hidden] {
+  display: none;
+}
+.en-movil .panel-causas {
+  max-width: none;
+  padding: 12px 6px;
+  gap: 10px;
+  border-width: 4px;
+  border-radius: 14px;
+}
+.en-movil .panel-causas-cabecera p {
+  font-size: 12px;
+}
+.en-movil .ayuda-mandos {
+  display: none;
+}
+.en-movil .rejilla-mandos {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px 4px;
+}
+.en-movil .mando-control {
+  width: 72px;
+  height: 72px;
+}
+.en-movil .placa {
+  max-width: 84px;
+  min-height: 40px;
+  padding: 3px 3px;
+  overflow-wrap: anywhere;
+}
+.en-movil .placa-nombre {
+  font-size: 11px;
+}
+.en-movil .placa-valor {
+  font-size: 10px;
+}
+.en-movil .panel-mecanismos {
+  max-width: none;
+  padding: 12px;
+  gap: 10px;
+}
+.en-movil .panel-analitica {
+  padding: 14px;
+}
+.en-movil .rejilla-analitica {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* --- «Qué mirar» al pie --- */
+.barra-nota {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  margin: auto -16px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 6px 16px calc(6px + env(safe-area-inset-bottom));
+  background: var(--superficie);
+  color: var(--texto);
+  border: 0;
+  border-top: 1px solid var(--acento);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.barra-nota-contenido {
+  flex: 1;
+  min-width: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  line-height: 1.3;
+}
+.barra-nota-titulo {
+  color: var(--acento);
+  font-weight: 600;
+}
+.barra-nota svg {
+  flex: none;
+}
+.en-movil .pie-pagina {
+  padding-bottom: 12px;
+}
+
+/* --- Pastilla de presión (cuando el dial sale de la vista) --- */
+.pastilla-presion {
+  position: fixed;
+  top: 8px;
+  right: 12px;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 44px;
+  padding: 0 12px;
+  background: var(--superficie);
+  color: var(--texto);
+  border: 1px solid var(--acento);
+  border-radius: 22px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.pastilla-flecha {
+  font-family: var(--mono);
+  margin-right: 4px;
+}
+
+/* --- Ficha y hojas: suben desde abajo --- */
+.en-movil .ficha {
+  width: 100%;
+  max-width: 100%;
+  max-height: calc(85vh / var(--zoom));
+  max-height: calc(85dvh / var(--zoom));
+  margin: auto 0 0;
+  padding: 8px 16px calc(16px + env(safe-area-inset-bottom));
+  border-radius: 16px 16px 0 0;
+  border-bottom: 0;
+  animation: hoja-sube 0.25s ease-out;
+}
+/* Tras abrirse (o al empezar a arrastrarla), la hoja no repite la animación de
+   apertura; el arrastre y el rebote los lleva hoja.ts. */
+.en-movil .ficha.abierta,
+.en-movil .ficha.deslizando {
+  animation: none;
+}
+.en-movil .ficha-cabecera {
+  position: sticky;
+  top: -8px;
+  z-index: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: -8px -16px 8px;
+  padding: 8px 16px 8px;
+  background: var(--superficie);
+  touch-action: none;
+}
+.en-movil .ficha-cabecera h2 {
+  flex: 1;
+  min-width: 0;
+  font-size: 18px;
+}
+.en-movil .asa {
+  display: block;
+  flex: 0 0 100%;
+  height: 12px;
+  position: relative;
+}
+.en-movil .asa::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 2px;
+  width: 40px;
+  height: 4px;
+  margin-left: -20px;
+  border-radius: 2px;
+  background: var(--linea-fuerte);
+}
+.hoja .lista-vaso {
+  grid-template-columns: minmax(0, 1fr);
+}
+.hoja .nota-vasos,
+.hoja #como-leer-vasos {
+  font-size: 14px;
+}
+@keyframes hoja-sube {
+  from {
+    transform: translateY(100%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .en-movil .ficha {
+    animation: none;
+  }
+}
+
+/* Móviles estrechos y texto ampliado: los mandos pasan a 3 y luego a 2 columnas. */
+@media (max-width: 340px) {
+  .en-movil .rejilla-mandos {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .en-movil .rejilla-mandos .placa {
+    max-width: 96px;
+  }
+}
+/* Las salidas, debajo del dial y a todo el ancho, para que sus rótulos se lean.
+   Desde 301 px caben al lado del dial (con «Grande», un móvil de 412 px mide
+   330 px y uno de 384 px, 307: antes el dial quedaba solo en su fila, 18 nov 2026). */
+@media (max-width: 300px) {
+  .en-movil .presion {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .en-movil .determinantes {
+    flex-basis: 100%;
+  }
+}
+@media (max-width: 300px) {
+  .pestanas {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /* Botones de los vasos debajo de los dibujos. */
+  .en-movil .vasos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .en-movil .botones-vasos {
+    grid-column: 1;
+    grid-row: 2;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+@media (max-width: 240px) {
+  .en-movil .rejilla-mandos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* --- Ficha: secciones, relaciones y avisos (hito 3d) --- */
+.ficha {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.ficha-titulos {
+  flex: 1;
+  min-width: 0;
+}
+.ficha-tipo {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tenue);
+}
+.ficha-cabecera h2:focus {
+  outline: none;
+}
+.ficha-volver {
+  /* Icono a la izquierda del título; el asa queda siempre arriba del todo. */
+  flex: none;
+  justify-content: center;
+  width: 44px;
+  min-height: 44px;
+  padding: 0;
+  font-size: 20px;
+  border-color: var(--linea);
+  color: var(--texto-2);
+}
+/* El cuerpo deja al navegador el scroll vertical y recibe los gestos
+   horizontales (deslizar a la derecha vuelve a la ficha anterior). */
+.ficha-cuerpo {
+  touch-action: pan-y;
+}
+.ficha-cabecera {
+  flex-wrap: wrap;
+}
+.ficha-cuerpo {
+  gap: 14px;
+}
+.ficha-seccion {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ficha-seccion p {
+  line-height: 1.45;
+}
+.ficha-valor {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 6px;
+}
+.ficha-valor[data-tono] .flecha {
+  color: inherit;
+}
+.ficha-frecuencia {
+  padding: 1px 8px;
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--texto-2);
+}
+.ficha-relaciones {
+  gap: 4px;
+}
+.ficha-enlace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  padding: 6px 10px;
+  background: var(--fondo);
+  color: var(--texto);
+  border: 1px solid var(--linea);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.ficha-enlace:hover {
+  border-color: var(--linea-fuerte);
+}
+.ficha-enlace-nombre {
+  font-weight: 600;
+}
+.ficha-enlace .flecha {
+  font-size: 15px;
+}
+.ficha-enlace-peso {
+  grid-column: 1 / -1;
+  color: var(--texto-2);
+}
+.ficha-enlace-por {
+  grid-column: 1 / -1;
+  font-size: 13px;
+}
+.ficha-relaciones li.inactiva .ficha-enlace {
+  opacity: 0.6;
+  border-style: dashed;
+}
+.ficha-aviso {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px dashed var(--linea-fuerte);
+  border-radius: 8px;
+  background: var(--fondo);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--texto-2);
+}
+.ficha-aviso-icono {
+  color: var(--acento);
+}
+.ficha-capas {
+  align-self: flex-start;
+}
+
+/* Animación del mecanismo celular */
+.ficha-animacion {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  background: var(--fondo);
+  border-radius: 12px;
+}
+.ficha-animacion-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.ficha-animacion-cabecera h3 {
+  margin: 0;
+}
+.boton-icono {
+  justify-content: center;
+  width: 44px;
+  padding: 0;
+  flex: none;
+}
+.animacion-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+.ficha-animacion-pasos {
+  margin: 0;
+  padding-left: 1.4em;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.ficha-animacion .ficha-aviso {
+  padding: 6px 10px;
+  font-size: 13px;
+}
+.animacion-svg text {
+  font-family: var(--letra);
+}
+.an-orina { fill: #1f2630; }
+.an-celula { fill: #3a2f28; }
+.an-sangre { fill: #3a1c1c; }
+.an-fondo { fill: #2a221d; }
+.an-membrana { stroke: var(--texto-2); stroke-width: 2; }
+.an-zona { fill: var(--texto-2); font-size: 13px; font-weight: 600; }
+.an-zona-acento { fill: var(--acento); }
+.an-texto { fill: var(--texto); font-size: 11px; }
+.an-texto-tenue { fill: var(--tenue); font-size: 11px; }
+.an-texto-oscuro { fill: #1c1916; font-size: 10px; font-family: var(--mono); }
+.an-texto-acento { fill: var(--acento); font-size: 12px; font-weight: 600; }
+.an-ion { fill: #1c1916; font-size: 8px; font-weight: 700; }
+.an-canal { fill: var(--texto); }
+.an-nuevo { stroke: var(--acento); stroke-width: 1.5; }
+.an-bomba { fill: var(--texto); }
+.an-nucleo { fill: #4e4036; stroke: var(--tenue); }
+.an-brillo { fill: var(--acento); opacity: 0; filter: blur(4px); }
+.an-receptor { fill: none; stroke: var(--texto); stroke-width: 3; stroke-linecap: round; }
+.an-hormona { fill: var(--acento); }
+.an-vesicula { fill: none; stroke: var(--baja); stroke-width: 1.5; }
+.an-agua { fill: var(--baja); }
+.an-na { fill: var(--acento); }
+.an-k { fill: var(--baja); }
+.an-enzima { fill: #b9d3a0; }
+.an-bloqueo { stroke: #e2574c; stroke-width: 4; stroke-linecap: round; }
+.an-cortisol { fill: #e8955a; }
+.an-cortisona { fill: #8a8178; }
+.an-regaliz { fill: #7cc47a; }
+.an-pared-vaso { fill: var(--arteria-media); }
+.an-luz { fill: #5e1517; }
+.an-capsula { fill: #2f2420; stroke: var(--tenue); stroke-width: 2; }
+.an-ovillo { fill: none; stroke: var(--sangre); stroke-width: 6; stroke-linecap: round; }
+.an-tubulo { fill: #6b5a4e; }
+.an-luz-tubulo { fill: #2a3340; }
+.an-macula { fill: #c9b089; }
+.an-granular { fill: #c98a80; stroke: var(--acento); stroke-width: 1.5; }
+.an-guia { stroke: var(--tenue); stroke-width: 1; stroke-dasharray: 3 3; }
+.an-hematie { fill: var(--sangre); }
+.an-nacl { fill: #e8e2d0; }
+.an-renina { fill: var(--acento); }
+.an-intima { fill: #e8c9b8; }
+.an-media { fill: var(--arteria-media); }
+.an-lamina { fill: none; stroke: var(--arteria-elastina); stroke-width: 2; }
+.an-endotelio { fill: var(--arteria-intima); stroke: #b77a6c; }
+.an-musculo { fill: #a8584f; }
+.an-migra { stroke: var(--acento); stroke-width: 1.5; }
+.an-lesion { fill: #3a1010; stroke: #e2574c; stroke-width: 1.5; }
+.an-ldl { fill: #f2d36b; }
+.an-ldl-ox { fill: #a8702e; }
+.an-monocito { fill: #d6d0e6; stroke: #8a7fa8; }
+.an-nucleo-celula { fill: #6e5f94; }
+.an-espumosa { fill: #f3e2b8; stroke: #c9a24a; stroke-width: 1.5; }
+.an-vacuola { fill: #fff7e0; stroke: #d8bf7a; }
+.an-capa { fill: none; stroke: var(--acento); stroke-width: 4; stroke-linecap: round; }
+.an-bulto { fill: #e8c9b8; }
+
+/* Analítica: cada valor abre su ficha */
+.analito-celda {
+  display: contents;
+}
+button.analito {
+  width: 100%;
+  font: inherit;
+  font-size: 14px;
+  color: var(--papel-texto);
+  text-align: left;
+  cursor: pointer;
+}
+button.analito:hover {
+  border-color: var(--papel-tenue);
+}
+
+/* «Rotular capas» */
+.boton-capas {
+  font-size: 14px;
+  padding: 0 14px;
+}
+.boton-capas[aria-pressed='true'] {
+  border-color: var(--acento);
+  color: var(--acento);
+}
+.marca-capa circle {
+  fill: var(--fondo);
+  stroke: var(--acento);
+  stroke-width: 2.5;
+}
+.marca-capa text {
+  fill: var(--acento);
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 700;
+}
+.marca-arteriola circle:not(.marca-zona) {
+  r: 15px;
+}
+.marca-arteriola text {
+  font-size: 17px;
+}
+.en-movil .boton-capas {
+  justify-content: center;
+  width: 44px;
+  padding: 0;
+}
+.ficha-volver[hidden] {
+  display: none;
+}
+/* La cabecera de la ficha queda fija arriba al bajar por el texto. */
+.ficha-cabecera {
+  position: sticky;
+  top: -20px;
+  z-index: 1;
+  margin: -20px -20px 12px;
+  padding: 20px 20px 10px;
+  background: var(--superficie);
+  border-bottom: 1px solid var(--linea);
+}
+/* En el móvil, «Rotular capas» va en la hoja «Cómo leer los vasos», con texto. */
+.hoja .boton-capas {
+  align-self: flex-start;
+  width: auto;
+  padding: 0 16px;
+}
+.hoja .boton-capas .texto-boton {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip-path: none;
+}
+.hoja .boton-capas .icono-movil {
+  display: block;
+}
+/* El dial y su leyenda abren las fichas de la presión. */
+.dial-boton {
+  max-width: 100%;
+  display: block;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.dial-boton .dial-svg {
+  display: block;
+}
+button.leyenda {
+  min-height: 32px;
+  padding: 0 4px;
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Globo de «Rotular capas»: aparece al tocar un número o pasar el cursor. */
+.marca-capa {
+  cursor: pointer;
+}
+.marca-capa .marca-zona {
+  fill: transparent;
+  stroke: none;
+}
+.marca-capa:focus {
+  outline: none;
+}
+.marca-capa:focus-visible circle:not(.marca-zona) {
+  stroke: var(--texto);
+}
+.globo-capa {
+  position: fixed;
+  z-index: 50;
+  max-width: min(280px, calc(100vw / var(--zoom) - 16px));
+  padding: 8px 12px;
+  background: var(--superficie);
+  color: var(--texto);
+  border: 1px solid var(--acento);
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  font-size: 14px;
+  line-height: 1.4;
+  pointer-events: none;
+}
+.globo-capa[hidden] {
+  display: none;
+}
+.globo-capa strong {
+  color: var(--acento);
+}
+.globo-capa-vaso {
+  color: var(--tenue);
+  font-size: 13px;
+}
+.globo-capa-texto {
+  display: block;
+  margin-top: 2px;
+}
+/* En el móvil los vasos se ven pequeños: números más grandes para leerlos y tocarlos. */
+.en-movil .marca-capa circle:not(.marca-zona) {
+  r: 24px;
+}
+.en-movil .marca-capa text {
+  font-size: 28px;
+  transform: translateY(4px);
+}
+.en-movil .marca-arteriola circle:not(.marca-zona) {
+  r: 26px;
+}
+.en-movil .marca-arteriola text {
+  font-size: 30px;
+}
+/* «Qué mirar» ampliada (tablero de escritorio, al posar el cursor). */
+@media (min-width: 1200px) and (min-height: 700px) {
+  .columna-izquierda {
+    position: relative;
+  }
+  .nota.ampliada {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 100%;
+    overflow-y: auto;
+    z-index: 10;
+    background: var(--superficie);
+    box-shadow: 0 -12px 30px rgba(0, 0, 0, 0.6);
+  }
+  /* Mientras la nota flota, su hueco se conserva para que no se mueva nada. */
+  .columna-izquierda:has(.nota.ampliada)::after {
+    content: '';
+    flex: 1 1 auto;
+    min-height: 100px;
+  }
+}
+.nota:focus {
+  outline: none;
+}
+.nota:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+/* Móvil: vasos plegados en una barra al bajar por Mecanismos o Analítica. */
+.cabeza-movil.plegada .vasos {
+  display: none;
+}
+.barra-vasos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  background: var(--superficie);
+  color: var(--texto);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 12px;
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.barra-vasos[hidden] {
+  display: none;
+}
+.barra-vasos-ver {
+  flex: none;
+  color: var(--tenue);
+}
+/* Tablero: si en la columna central sobra alto, la tarjeta de presión lo ocupa y el dial crece. */
+@media (min-width: 1200px) and (min-height: 700px) {
+  .presion.crece {
+    flex: 1 1 auto;
+    align-items: center;
+  }
+  .presion.crece .dial-svg {
+    width: var(--dial);
+    height: var(--dial);
+  }
+}
+
+/* --- Enlaces internos entre fichas --- */
+.enlace-ficha {
+  color: inherit;
+  text-decoration: underline dotted var(--acento);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.enlace-ficha:hover {
+  background: rgba(242, 181, 68, 0.15);
+}
+.enlace-ficha:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 1px;
+}
+/* En el móvil, algo más de zona táctil sin mover el texto. */
+.en-movil .enlace-ficha {
+  padding: 4px 0;
+}
+
+/* --- «Ampliar con IA» --- */
+.ia-barra,
+.ia-menu {
+  position: absolute;
+  z-index: 60;
+}
+.ia-barra {
+  display: flex;
+  border: 1px solid var(--acento);
+  border-radius: 10px;
+  background: var(--superficie);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  font-size: 14px;
+}
+.ia-barra[hidden],
+.ia-menu[hidden] {
+  display: none;
+}
+.ia-ir,
+.ia-mas {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  color: var(--acento);
+  background: none;
+  border: 0;
+  font: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.ia-barra .ia-mas {
+  border-left: 1px solid var(--linea-fuerte);
+}
+.ia-menu {
+  position: fixed;
+  z-index: 61;
+  width: min(320px, calc(100vw / var(--zoom) - 16px));
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 12px;
+  background: var(--superficie);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6);
+}
+.ia-opcion {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  color: var(--texto);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.ia-opcion strong {
+  display: block;
+  font-size: 14px;
+}
+.ia-opcion span {
+  display: block;
+  margin-top: 2px;
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--texto-2);
+}
+.ia-opcion[aria-checked='true'] {
+  background: var(--fondo);
+  outline: 1px solid var(--acento);
+}
+.ia-opcion[aria-checked='true'] strong::after {
+  content: ' ✓';
+}
+.ia-opcion:hover {
+  background: var(--fondo);
+}
+.ia-menu-pie {
+  padding: 6px 10px 2px;
+  font-size: 12px;
+  color: var(--tenue);
+}
+.ia-pie {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 4px;
+  border-top: 1px solid var(--linea);
+}
+.ia-pie-botones {
+  display: flex;
+  align-self: flex-start;
+  border: 1px solid var(--acento);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.ia-pie-ir {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  color: var(--acento);
+  text-decoration: none;
+  font-size: 15px;
+}
+.ia-pie-mas {
+  border-left: 1px solid var(--linea-fuerte);
+}
+.ia-pie-nota {
+  font-size: 12.5px;
+  color: var(--tenue);
+}
+::selection {
+  background: rgba(242, 181, 68, 0.45);
+}
+
+/* --- Avisos de realismo (hito 3e; docs/diseno.md) --- */
+/* Pastilla de frecuencia: sobre el borde superior de la placa. Empieza justo
+   donde acaba el dibujo del mando (top = −gap del .mando, 4 px), para no tapar
+   nunca los rótulos de los extremos; la placa deja sitio debajo de ella. */
+.placa.con-frecuencia {
+  position: relative;
+  padding-top: 12px;
+}
+.pastilla-frecuencia {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 6px;
+  border: 1px solid var(--placa-borde);
+  border-radius: 999px;
+  background: var(--frecuencia-fondo);
+  color: var(--frecuencia-texto);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 13px;
+  white-space: nowrap;
+}
+.pastilla-frecuencia[data-frecuencia='rara'] {
+  border-color: var(--acento);
+  color: var(--acento);
+}
+
+/* Combinación hipotética */
+.banda-hipotetica {
+  display: flex;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--aviso-fondo);
+  border: 1px solid var(--acento);
+  border-radius: 12px;
+}
+.banda-hipotetica[hidden] {
+  display: none;
+}
+.icono-aviso {
+  flex: none;
+  stroke: var(--acento);
+}
+.icono-aviso-punto {
+  fill: var(--acento);
+  stroke: none;
+}
+.banda-hipotetica h2,
+.banda-hipotetica h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--acento);
+}
+.banda-hipotetica p {
+  font-size: 14px;
+  line-height: 1.4;
+}
+.tira-hipotetica {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  padding: 7px 14px;
+}
+.tira-hipotetica h2 {
+  white-space: nowrap;
+}
+.tira-hipotetica p {
+  flex: 1 1 320px;
+  color: var(--texto-2);
+  font-size: 13px;
+}
+.banda-cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.chips-aviso {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chip-aviso {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--fondo);
+  font-size: 13px;
+}
+/* En el móvil la tira no se ve: la barra «Qué mirar» anuncia el aviso y la hoja
+   muestra la banda. En la pantalla ancha, al revés. */
+.en-movil .tira-hipotetica,
+#app:not(.en-movil) .nota .banda-nota {
+  display: none;
+}
+.barra-nota.con-aviso {
+  border-top-width: 3px;
+}
+
+/* Fuera de rango: chip con borde discontinuo junto al indicador saturado. */
+.fuera-de-rango {
+  position: relative;
+  outline: 1.5px dashed var(--acento);
+  outline-offset: 2px;
+}
+.chip-fuera {
+  display: inline-block;
+  padding: 0 6px;
+  border: 1px dashed var(--acento);
+  border-radius: 6px;
+  background: var(--aviso-fondo);
+  color: var(--acento);
+  font-family: var(--letra);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 15px;
+  white-space: nowrap;
+}
+/* En la analítica (papel) el chip va bajo la flecha, en tinta oscura. */
+button.analito.fuera-de-rango {
+  outline-color: #b07a17;
+  flex-wrap: wrap;
+}
+button.analito .chip-fuera {
+  border-color: #b07a17;
+  background: #fbefd2;
+  color: #6b4a0e;
+}
+/* En ventanas, dial y leyenda, el chip flota sobre la esquina. */
+.ventana .chip-fuera,
+.dial-boton .chip-fuera,
+.leyenda .chip-fuera {
+  position: absolute;
+  top: -9px;
+  right: 10px;
+  z-index: 1;
+}
+.leyenda.fuera-de-rango {
+  border-radius: 6px;
+}
+
+/* --- Ajustes: tema y tamaño (hito 3e) --- */
+.ajustes {
+  position: relative;
+}
+.boton-ajustes[aria-expanded='true'] {
+  border-color: var(--acento);
+  color: var(--acento);
+}
+.panel-ajustes {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  width: 300px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: var(--superficie);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+.panel-ajustes[hidden],
+.velo-ajustes[hidden] {
+  display: none;
+}
+.cabecera-ajustes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cabecera-ajustes h2 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-2);
+}
+/* En la pantalla ancha el panel se cierra tocando fuera o con Escape. */
+.cerrar-ajustes,
+.velo-ajustes {
+  display: none;
+}
+.grupo-ajuste {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.grupo-ajuste > span {
+  font-size: 14px;
+  color: var(--texto-2);
+}
+.grupo-ajuste .interruptor button {
+  flex: 1;
+}
+.nota-ajustes {
+  font-size: 12px;
+  color: var(--tenue);
+}
+@media (min-width: 1200px) and (max-width: 1499px) {
+  .boton-ajustes .texto-boton {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+/* Móvil: icono en la cabecera y hoja desde abajo, como las demás. */
+.en-movil .cabecera {
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+}
+.en-movil .ajustes {
+  grid-row: 1;
+  grid-column: 2;
+}
+.en-movil .boton-sonido {
+  grid-column: 3;
+}
+.en-movil .boton-restablecer {
+  grid-column: 4;
+}
+.en-movil .boton-ajustes {
+  justify-content: center;
+  width: 44px;
+  padding: 0;
+}
+.en-movil .panel-ajustes {
+  position: fixed;
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  width: auto;
+  padding: 16px 16px calc(20px + env(safe-area-inset-bottom));
+  border-width: 1px 0 0;
+  border-radius: 18px 18px 0 0;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
+}
+.en-movil .cabecera-ajustes h2 {
+  font-size: 18px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--texto);
+}
+.en-movil .cerrar-ajustes {
+  display: inline-flex;
+}
+.en-movil .velo-ajustes {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  background: rgba(0, 0, 0, 0.5);
+}
+.en-movil .velo-ajustes[hidden] {
+  display: none;
+}
+
+/* ===================================================================
+   Tema Clásico (docs/diseno.md, «Temas»): mismos fondos, textos y
+   acentos; cambian los componentes, no la distribución.
+   =================================================================== */
+.vu,
+.dial-franja {
+  display: none;
+}
+[data-tema='clasico'] {
+  --frecuencia-fondo: var(--superficie);
+  --frecuencia-texto: var(--texto-2);
+}
+/* Panel de causas sin madera ni placas */
+[data-tema='clasico'] .panel-causas {
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  box-shadow: none;
+}
+[data-tema='clasico'] .placa-titulo {
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--texto-2);
+}
+/* Mando de baquelita */
+[data-tema='clasico'] .mando-pista {
+  stroke: var(--linea);
+}
+[data-tema='clasico'] .mando-contorno {
+  fill: var(--fondo);
+}
+[data-tema='clasico'] .mando-moleteado-base,
+[data-tema='clasico'] .mando-moleteado,
+[data-tema='clasico'] .mando-estria {
+  display: none;
+}
+[data-tema='clasico'] .mando-laton {
+  fill: url(#baquelita);
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.55));
+}
+[data-tema='clasico'] .mando-puntero {
+  stroke: var(--linea);
+}
+[data-tema='clasico'] .placa,
+[data-tema='clasico'] .en-movil .placa {
+  background: none;
+  box-shadow: none;
+  color: var(--texto);
+}
+[data-tema='clasico'] .placa:hover,
+[data-tema='clasico'] .mando.activo .placa:hover {
+  box-shadow: inset 0 0 0 1px var(--linea-fuerte);
+}
+[data-tema='clasico'] .placa-valor,
+[data-tema='clasico'] .placa-variante {
+  color: var(--tenue);
+}
+[data-tema='clasico'] .pastilla-frecuencia {
+  border-color: var(--linea-fuerte);
+}
+[data-tema='clasico'] .pastilla-frecuencia[data-frecuencia='rara'] {
+  border-color: var(--acento);
+}
+/* Vúmetros en lugar de ventanas de sintonía */
+[data-tema='clasico'] .vu {
+  display: inline;
+}
+[data-tema='clasico'] .ventana-cristal {
+  fill: var(--fondo);
+}
+[data-tema='clasico'] .ventana-marco {
+  fill: var(--linea);
+}
+[data-tema='clasico'] .ventana:hover .ventana-marco {
+  fill: var(--linea-fuerte);
+}
+[data-tema='clasico'] .ventana-marca,
+[data-tema='clasico'] .ventana-aguja {
+  display: none;
+}
+[data-tema='clasico'] .ventana-nombre {
+  fill: var(--texto);
+  transform: translate(34px, -4px);
+}
+[data-tema='clasico'] .ventana-flecha {
+  fill: var(--texto);
+  transform: translateY(-4px);
+}
+[data-tema='clasico'] .ventana[data-tono='sube'] .ventana-flecha {
+  fill: var(--acento);
+}
+[data-tema='clasico'] .ventana[data-tono='baja'] .ventana-flecha {
+  fill: var(--baja);
+}
+.vu-baja {
+  stroke: var(--baja);
+  stroke-opacity: 0.35;
+}
+.vu-sube {
+  stroke: var(--acento);
+  stroke-opacity: 0.35;
+}
+.vu-aguja {
+  stroke: var(--texto);
+  transform-box: view-box;
+  transform-origin: 22px 37px;
+  transition: transform 0.45s ease-out;
+}
+.vu-eje {
+  fill: var(--texto);
+}
+/* Dial oscuro con tres zonas */
+[data-tema='clasico'] .dial-franja {
+  display: inline;
+  stroke-opacity: 0.7;
+}
+.dial-franja-baja {
+  stroke: var(--baja);
+}
+.dial-franja-normal {
+  stroke: var(--texto);
+}
+.dial-franja-alta {
+  stroke: var(--acento);
+}
+[data-tema='clasico'] .dial-aro {
+  fill: var(--linea);
+}
+[data-tema='clasico'] .dial-esfera {
+  fill: #211d19;
+}
+[data-tema='clasico'] .dial-marca {
+  stroke: var(--texto-2);
+}
+[data-tema='clasico'] .dial-zona,
+[data-tema='clasico'] .dial-pam {
+  fill: var(--texto);
+}
+[data-tema='clasico'] .dial-aguja-pas {
+  stroke: var(--sangre);
+}
+[data-tema='clasico'] .dial-aguja-pad {
+  stroke: var(--texto);
+}
+[data-tema='clasico'] .dial-eje {
+  fill: var(--linea);
+  stroke: var(--texto);
+}
+[data-tema='clasico'] .muestra.pad {
+  background: var(--texto);
+}
+@media (prefers-reduced-motion: reduce) {
+  .vu-aguja {
+    transition: none;
+  }
+}
+.en-movil .grupo-ajuste .interruptor {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+/* Muy estrecho (texto al 200 %, o al 150 % con «Grande»): los tres iconos de la
+   cabecera no caben junto al título y bajan a una segunda fila. */
+@media (max-width: 300px) {
+  .en-movil .titulo {
+    grid-column: 1 / -1;
+  }
+  .en-movil .ajustes,
+  .en-movil .boton-sonido,
+  .en-movil .boton-restablecer {
+    grid-row: 2;
+  }
+}
+/* Tablero de escritorio: pastilla más pequeña y placa que crece lo mínimo, para
+   que el panel de causas no le quite sitio a «Qué mirar» en pantallas bajas. */
+@media (min-width: 1200px) and (min-height: 700px) {
+  /* Sin tapar los rótulos de los extremos («0 1», «− +»): la pastilla asoma
+     sobre el borde de la placa, justo bajo ellos. */
+  .placa.con-frecuencia {
+    padding-top: 11px;
+  }
+  .pastilla-frecuencia {
+    top: -4px;
+    font-size: 9.5px;
+    line-height: 12px;
+    padding: 0 5px;
+  }
+}
+/* Tablero en pantallas muy bajas (main.ts añade .compacto si ni al 80 % caben
+   las causas y «Qué mirar»): sin la línea de ayuda y con mandos algo menores. */
+@media (min-width: 1200px) and (min-height: 700px) {
+  .panel-causas.compacto .panel-causas-cabecera p {
+    display: none;
+  }
+  .panel-causas.compacto {
+    padding: 8px 12px;
+    gap: 6px;
+  }
+  .panel-causas.compacto .placa-titulo {
+    padding: 2px 14px;
+    font-size: 13px;
+  }
+  .panel-causas.compacto .rejilla-mandos {
+    gap: 4px 6px;
+  }
+  .panel-causas.compacto .mando-control {
+    width: 56px;
+    height: 56px;
+  }
+  .panel-causas.compacto .placa {
+    min-height: 40px;
+    padding-bottom: 2px;
+  }
+}
+
+/* Hueco alrededor de la pastilla de frecuencia (mando.ts calcula --recorte):
+   el fondo de la placa va en ::before con una máscara que deja ver el panel. */
+.placa.con-frecuencia {
+  isolation: isolate;
+  background: none;
+  box-shadow: none;
+}
+.placa.con-frecuencia::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--placa-fondo);
+  box-shadow: inset 0 0 0 1px var(--placa-borde);
+  -webkit-mask: var(--recorte, none) 0 0 / 100% 100% no-repeat;
+  mask: var(--recorte, none) 0 0 / 100% 100% no-repeat;
+}
+.placa.con-frecuencia:hover,
+.mando.activo .placa.con-frecuencia:hover {
+  box-shadow: none;
+}
+.placa.con-frecuencia:hover::before {
+  box-shadow: inset 0 0 0 2px var(--placa-borde);
+}
+[data-tema='clasico'] .placa.con-frecuencia::before {
+  background: none;
+  box-shadow: none;
+}
+[data-tema='clasico'] .placa.con-frecuencia:hover::before {
+  box-shadow: inset 0 0 0 1px var(--linea-fuerte);
+}
+/* Con varios indicadores en tope de escala a la vez, cada chip necesita su sitio
+   y no debe montarse sobre el borde del indicador de arriba. */
+.determinantes .ventana.fuera-de-rango,
+.dial-leyenda .leyenda.fuera-de-rango {
+  margin-top: 12px;
+}
+.dial-boton.fuera-de-rango {
+  margin-top: 10px;
+}
+/* Sonido encendido «en espera» (tras recargar, hasta el primer toque): borde
+   discontinuo y ondas atenuadas. */
+.boton-sonido[data-espera] {
+  border-style: dashed;
+}
+.boton-sonido[data-espera] .icono-ondas {
+  opacity: 0.35;
+}
+
+/* ===================================================================
+   Fase 4: fármacos (docs/diseno.md, «Fármacos»)
+   =================================================================== */
+:root,
+[data-tema='retro'] {
+  --acero-placa: linear-gradient(180deg, #e9eef1, #c9d2d8);
+  --acero-borde: #7c8a94;
+  --acero-texto: #14202a;
+  --acero-texto-2: #3a4a56;
+  --farmaco: #8fbbe3;
+  --farmaco-fondo: #1f2a33;
+  --contraindicado: #e0703a;
+}
+/* Pestañas «Causas | Fármacos» dentro del panel de madera. */
+.pestanas-panel {
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--nogal-marco);
+}
+.pestanas-panel button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 6px 16px;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  color: var(--texto);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.pestanas-panel button[aria-selected='true'] {
+  background: var(--placa-fondo);
+  box-shadow: inset 0 0 0 1px var(--placa-borde);
+  color: var(--placa-texto);
+}
+.pestanas-panel button:focus-visible {
+  outline-offset: 2px;
+}
+.cuenta-farmacos {
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--baja);
+  color: #10202e;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: 0;
+  text-align: center;
+}
+.cuenta-farmacos[hidden] {
+  display: none;
+}
+/* Las dos rejillas ocupan la misma celda: el panel no cambia de alto al
+   pasar de una a otra. */
+.pila-rejillas {
+  display: grid;
+}
+.pila-rejillas > .rejilla-mandos {
+  grid-area: 1 / 1;
+}
+.panel-causas[data-vista='causas'] .rejilla-farmacos,
+.panel-causas[data-vista='farmacos'] #rejilla-causas {
+  visibility: hidden;
+}
+/* En el móvil cada rejilla es una pestaña: solo ocupa sitio la visible. */
+.en-movil .pestanas-panel {
+  display: none;
+}
+.en-movil .panel-causas[data-vista='causas'] .rejilla-farmacos,
+.en-movil .panel-causas[data-vista='farmacos'] #rejilla-causas {
+  display: none;
+}
+.celda-quitar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.quitar-tratamiento {
+  max-width: 118px;
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 1px dashed var(--tenue);
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--texto);
+  font-size: 14px;
+  line-height: 1.2;
+  white-space: normal;
+}
+.en-movil .celda-quitar {
+  grid-column: 1 / -1;
+}
+/* Mando de acero: lo que se toca sigue siendo metal, pero distinto del latón. */
+.mando.farmaco .mando-laton {
+  fill: url(#acero);
+}
+.mando.farmaco .mando-moleteado-base {
+  fill: #5d666e;
+}
+.mando.farmaco .mando-moleteado {
+  stroke: #dfe6ea;
+}
+.mando.farmaco .mando-estria {
+  stroke: #3d454c;
+}
+.mando.farmaco .mando-arco {
+  stroke: var(--farmaco);
+}
+.mando.farmaco .mando-puntero {
+  stroke: var(--acero-texto);
+}
+.mando.farmaco .placa,
+.mando.farmaco .placa.con-frecuencia::before {
+  background: var(--acero-placa);
+  box-shadow: inset 0 0 0 1px var(--acero-borde), 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.mando.farmaco .placa.con-frecuencia {
+  background: none;
+  box-shadow: none;
+}
+.mando.farmaco .placa {
+  color: var(--acero-texto);
+}
+.mando.farmaco .placa-valor {
+  color: var(--acero-texto-2);
+}
+.pastilla-frecuencia[data-frecuencia='farmaco'] {
+  border-color: var(--baja);
+  background: var(--farmaco-fondo);
+  color: #cfe3f5;
+}
+[data-tema='clasico'] .mando.farmaco .mando-laton {
+  fill: url(#acero);
+}
+[data-tema='clasico'] .mando.farmaco .placa,
+[data-tema='clasico'] .mando.farmaco .placa.con-frecuencia::before {
+  background: none;
+  box-shadow: none;
+  color: var(--texto);
+}
+[data-tema='clasico'] .mando.farmaco .placa-valor {
+  color: var(--tenue);
+}
+[data-tema='clasico'] .pestanas-panel {
+  background: var(--fondo);
+  border-color: var(--linea);
+}
+[data-tema='clasico'] .pestanas-panel button[aria-selected='true'] {
+  background: var(--superficie);
+  box-shadow: inset 0 0 0 1px var(--linea-fuerte);
+  color: var(--texto);
+}
+/* Chip «Tratamiento» de la cabecera. */
+.chip-tratamiento {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  max-width: 260px;
+  padding: 4px 12px;
+  border: 1px solid var(--baja);
+  border-radius: 999px;
+  background: var(--farmaco-fondo);
+  color: #cfe3f5;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.chip-tratamiento[hidden] {
+  display: none;
+}
+.chip-tratamiento-texto {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.icono-pastilla {
+  flex: none;
+}
+.icono-pastilla .icono-trazo {
+  stroke: currentColor;
+}
+.en-movil .chip-tratamiento {
+  display: none;
+}
+/* Insignia en las ventanas sobre las que actúa un fármaco («⊘ IECA»). */
+.ventana {
+  position: relative;
+}
+.insignia-farmaco {
+  position: absolute;
+  top: -8px;
+  right: 6px;
+  z-index: 2;
+  padding: 0 7px;
+  border: 1px solid var(--baja);
+  border-radius: 999px;
+  background: var(--farmaco-fondo);
+  color: #cfe3f5;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 15px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+/* Aviso de interacción de fármacos (en la nota y en la hoja del móvil). */
+.banda-interaccion {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  border-left: 4px solid var(--contraindicado);
+  border-radius: 6px;
+  background: var(--aviso-fondo);
+}
+.banda-interaccion .icono-aviso {
+  stroke: var(--contraindicado);
+}
+.banda-interaccion .icono-aviso-punto {
+  fill: var(--contraindicado);
+}
+.banda-interaccion[data-nivel='precaucion'] {
+  border-left-color: var(--acento);
+}
+.banda-interaccion[data-nivel='precaucion'] .icono-aviso {
+  stroke: var(--acento);
+}
+.banda-interaccion[data-nivel='precaucion'] .icono-aviso-punto {
+  fill: var(--acento);
+}
+.banda-interaccion h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--acento);
+}
+.banda-interaccion p {
+  font-size: 14px;
+  line-height: 1.4;
+}
+.barra-nota[data-nivel='contraindicado'] {
+  border-top-color: var(--contraindicado);
+}
+/* Ficha: dosis en lugar de flecha, y apartado de la consulta. */
+.ficha-enlace .dosis {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--farmaco);
+}
+/* La rejilla de fármacos tiene menos filas que la de causas: no se estiran las
+   placas para llenar el alto, se reparte el sitio sobrante. */
+.rejilla-farmacos {
+  grid-auto-rows: max-content;
+  align-content: space-evenly;
+}
+.en-movil .rejilla-farmacos {
+  align-content: start;
+}
+/* Cabecera: el selector de caso cede sitio al chip del tratamiento antes de
+   que la fila de controles se parta en dos. */
+#app:not(.en-movil) .campo-caso {
+  flex: 0 1 330px;
+  min-width: 230px;
+}
+#app:not(.en-movil) .campo-caso .selector {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-overflow: ellipsis;
+}
+.chip-tratamiento {
+  max-width: 220px;
+}
+/* Cuatro pestañas en el móvil (Causas · Fármacos · Mecanismos · Analítica). La
+   cuenta de fármacos va sobre la palabra, sin ocupar ancho. */
+.pestanas {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.pestanas button {
+  position: relative;
+  font-size: 14px;
+}
+.pestanas .cuenta-farmacos {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 16px;
+  padding: 0 4px;
+  font-size: 10.5px;
+  line-height: 15px;
+}
+@media (max-width: 320px) {
+  .pestanas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 300px) {
+  .pestanas {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* La fila de controles ocupa el sitio que deja el título y se reparte por
+   dentro antes de bajar entera a otra línea. */
+#app:not(.en-movil) .controles {
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  min-width: 0;
+}
+#app:not(.en-movil) .campo-caso {
+  flex: 0 1 270px;
+  min-width: 200px;
+}
+#app:not(.en-movil) .chip-tratamiento {
+  max-width: 200px;
+}
+/* Tablero de escritorio: pestañas del panel algo más bajas, para no quitarle
+   alto a «Qué mirar» (con ratón no hace falta el objetivo táctil de 44 px). */
+@media (min-width: 1200px) and (min-height: 700px) {
+  .pestanas-panel button {
+    min-height: 32px;
+    padding: 3px 14px;
+    font-size: 14px;
+  }
+  .panel-causas.compacto .pestanas-panel button {
+    min-height: 28px;
+    font-size: 13px;
+  }
+}
+/* «Quitar tratamiento»: apagado sin fármacos; con fármacos, en el color de los
+   fármacos y con borde continuo. */
+.quitar-tratamiento:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.quitar-tratamiento:not(:disabled) {
+  border: 1px solid var(--baja);
+  background: var(--farmaco-fondo);
+  color: #cfe3f5;
+}
+.quitar-tratamiento:not(:disabled):hover {
+  border-color: #cfe3f5;
+}
+/* Portátiles con la pantalla escalada (p. ej. 1920×1080 al 150 % en Windows:
+   1280 px de ancho y menos de 700 de alto, sin tablero fijo): las tres
+   columnas caben en una fila si se estrechan un poco. Antes, los mecanismos
+   bajaban a una segunda fila por debajo de unos 1325 px. */
+@media (min-width: 1180px) {
+  .columna-izquierda {
+    flex-basis: 290px;
+  }
+  .columna-centro {
+    flex-basis: 460px;
+  }
+  .columna-derecha {
+    flex-basis: 300px;
+  }
+}
+/* Móvil: «Quitar tratamiento» a lo ancho, como una fila más de la rejilla. */
+.en-movil .quitar-tratamiento {
+  width: 100%;
+  max-width: none;
+}
+.en-movil .celda-quitar {
+  justify-self: stretch;
+}
+.quitar-tratamiento {
+  justify-content: center;
+  text-align: center;
+}
+
+/* ===================================================================
+   Fase 5: ejercicio (docs/diseno.md, «Ejercicio»)
+   =================================================================== */
+:root,
+[data-tema='retro'] {
+  --cobre-placa: linear-gradient(180deg, #f5e1d2, #ddbba2);
+  --cobre-borde: #a8683f;
+  --cobre-texto: #2b1406;
+  --cobre-texto-2: #5a2e16;
+  --ejercicio: #e58a4e;
+  --ejercicio-claro: #fbe3cf;
+  --ejercicio-fondo: #2b1a10;
+}
+/* Tercera rejilla en la misma celda que las otras dos. */
+.panel-causas[data-vista='causas'] .rejilla-ejercicio,
+.panel-causas[data-vista='farmacos'] .rejilla-ejercicio,
+.panel-causas[data-vista='ejercicio'] #rejilla-causas,
+.panel-causas[data-vista='ejercicio'] #rejilla-farmacos {
+  visibility: hidden;
+}
+.en-movil .panel-causas[data-vista='causas'] .rejilla-ejercicio,
+.en-movil .panel-causas[data-vista='farmacos'] .rejilla-ejercicio,
+.en-movil .panel-causas[data-vista='ejercicio'] #rejilla-causas,
+.en-movil .panel-causas[data-vista='ejercicio'] #rejilla-farmacos {
+  display: none;
+}
+.rejilla-ejercicio {
+  grid-auto-rows: max-content;
+  align-content: start;
+  row-gap: 10px;
+}
+.rotulo-ejercicio {
+  grid-column: 1 / -1;
+  justify-self: stretch;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 2px 2px -4px;
+  color: var(--placa-fondo-claro, #f3e7c6);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.rotulo-detalle {
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  opacity: 0.85;
+}
+.selector-momento {
+  grid-column: 1 / -1;
+  justify-self: stretch;
+  display: flex;
+  background: var(--ejercicio-fondo);
+  border-color: #1f120a;
+}
+.selector-momento button {
+  flex: 1 1 0;
+  min-height: 40px;
+  color: var(--texto);
+}
+.selector-momento button[aria-pressed='true'] {
+  background: linear-gradient(#f6c9a0, #c9824f);
+  color: var(--cobre-texto);
+  font-weight: 600;
+}
+/* Mando de cobre. */
+.mando.ejercicio .mando-laton {
+  fill: url(#cobre);
+}
+.mando.ejercicio .mando-moleteado-base {
+  fill: #6e3a1c;
+}
+.mando.ejercicio .mando-moleteado {
+  stroke: #f1b98e;
+}
+.mando.ejercicio .mando-estria {
+  stroke: #5a2e16;
+}
+.mando.ejercicio .mando-arco {
+  stroke: var(--ejercicio);
+}
+.mando.ejercicio .mando-puntero {
+  stroke: var(--cobre-texto);
+}
+.mando.ejercicio .placa,
+.mando.ejercicio .placa.con-frecuencia::before {
+  background: var(--cobre-placa);
+  box-shadow: inset 0 0 0 1px var(--cobre-borde), 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.mando.ejercicio .placa.con-frecuencia {
+  background: none;
+  box-shadow: none;
+}
+.mando.ejercicio .placa {
+  color: var(--cobre-texto);
+}
+.mando.ejercicio .placa-valor {
+  color: var(--cobre-texto-2);
+}
+.pastilla-frecuencia[data-frecuencia='ejercicio'] {
+  border-color: var(--ejercicio);
+  background: #5a2e16;
+  color: var(--ejercicio-claro);
+}
+[data-tema='clasico'] .mando.ejercicio .mando-laton {
+  fill: url(#cobre);
+}
+[data-tema='clasico'] .mando.ejercicio .placa,
+[data-tema='clasico'] .mando.ejercicio .placa.con-frecuencia::before {
+  background: none;
+  box-shadow: none;
+  color: var(--texto);
+}
+[data-tema='clasico'] .mando.ejercicio .placa-valor {
+  color: var(--tenue);
+}
+[data-tema='clasico'] .rotulo-ejercicio {
+  color: var(--texto-2);
+}
+[data-tema='clasico'] .selector-momento {
+  background: var(--fondo);
+  border-color: var(--linea);
+}
+/* «Sin ejercicio», como «Quitar tratamiento» pero en el color del ejercicio. */
+.quitar-ejercicio:not(:disabled) {
+  border-color: var(--ejercicio);
+  background: var(--ejercicio-fondo);
+  color: var(--ejercicio-claro);
+}
+.quitar-ejercicio:not(:disabled):hover {
+  border-color: var(--ejercicio-claro);
+}
+.cuenta-ejercicio {
+  background: var(--ejercicio);
+  color: #2b1406;
+}
+/* Chip «Ejercicio» de la cabecera. */
+.chip-ejercicio {
+  border-color: var(--ejercicio);
+  background: var(--ejercicio-fondo);
+  color: var(--ejercicio-claro);
+}
+.chip-ejercicio .icono-relleno {
+  fill: currentColor;
+}
+/* Interruptor de tiempo durante la sesión: apagado, con una nota debajo. */
+.grupo-escala {
+  position: relative;
+  display: flex;
+}
+.interruptor-escala[data-sesion] button {
+  opacity: 0.4;
+}
+.interruptor-escala[data-sesion] button[aria-pressed='false']:hover {
+  opacity: 0.75;
+}
+.nota-escala-sesion {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  margin-top: 2px;
+  color: #f1b98e;
+  font-size: 11px;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.nota-escala-sesion[hidden],
+.en-movil .nota-escala-sesion {
+  display: none;
+}
+.en-movil .grupo-escala {
+  grid-column: 1 / -1;
+  display: block;
+}
+/* Dial: la presión de antes de la sesión, en trazo discontinuo y tenue. */
+.dial-aguja-antes {
+  transform-origin: 130px 130px;
+  transition: transform 0.45s ease-out;
+  opacity: 0.45;
+}
+.dial-aguja-antes-pas {
+  stroke: var(--pas);
+}
+.dial-aguja-antes-pad {
+  stroke: var(--pad);
+}
+[data-tema='clasico'] .dial-aguja-antes-pas {
+  stroke: var(--sangre);
+}
+[data-tema='clasico'] .dial-aguja-antes-pad {
+  stroke: var(--texto);
+}
+.leyenda-antes {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--tenue);
+  font-size: 13px;
+}
+.leyenda-antes[hidden] {
+  display: none;
+}
+.muestra.antes {
+  width: 14px;
+  border-top: 3px dashed var(--tenue);
+  background: none;
+  height: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dial-aguja-antes {
+    transition: none;
+  }
+}
+/* Móvil: cinco pestañas (Causas · Fármacos · Ejercicio · Mecanismos · Analítica). */
+.pestanas {
+  grid-template-columns: repeat(5, minmax(0, auto));
+  justify-content: space-between;
+}
+.pestanas button {
+  padding: 0 6px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+@media (max-width: 380px) {
+  .pestanas button {
+    padding: 0 3px;
+    font-size: 13px;
+  }
+}
+/* Las cinco pestañas caben en una fila hasta 321 px (con «Grande», 330 px). */
+@media (max-width: 320px) {
+  .pestanas {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    justify-content: stretch;
+  }
+}
+@media (max-width: 300px) {
+  .pestanas {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* Cabecera con los dos chips (tratamiento y ejercicio): se estrechan y el
+   botón inactivo «Modo reto» pierde su etiqueta para no partir la fila. */
+#app:not(.en-movil) .controles:has(.chip-ejercicio:not([hidden])) .chip-tratamiento {
+  max-width: 170px;
+}
+#app:not(.en-movil) .controles:has(.chip-ejercicio:not([hidden])) .campo-caso {
+  flex-basis: 240px;
+  min-width: 170px;
+}
+#app:not(.en-movil) .controles:has(.chip-ejercicio:not([hidden])):has(.chip-tratamiento:not([hidden])) .etiqueta-proximamente {
+  display: none;
+}
+@media (max-width: 1500px) {
+  #app:not(.en-movil) .controles:has(.chip-ejercicio:not([hidden])):has(.chip-tratamiento:not([hidden])) .chip-tratamiento {
+    max-width: 130px;
+  }
+  #app:not(.en-movil) .controles:has(.chip-ejercicio:not([hidden])):has(.chip-tratamiento:not([hidden])) .campo-caso {
+    flex-basis: 200px;
+    min-width: 150px;
+  }
+}
+
+/* ===================================================================
+   Fase 5: selector de casos con buscador (opción C de la maqueta)
+   =================================================================== */
+.selector-boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  text-align: left;
+}
+.selector-texto {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.selector-flecha {
+  flex: none;
+}
+.selector-flecha .icono-trazo {
+  stroke: currentColor;
+}
+.selector-dialogo[open] {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+}
+#app:not(.en-movil) .selector-dialogo {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  width: min(560px, calc(100vw / var(--zoom) - 32px));
+  max-height: min(680px, calc(100vh / var(--zoom) - 90px));
+  border-radius: 12px;
+}
+#app:not(.en-movil) .selector-dialogo::backdrop {
+  background: rgba(0, 0, 0, 0.35);
+}
+.selector-dialogo .ficha-cabecera {
+  align-items: center;
+  margin: 0;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--linea);
+}
+.en-movil .selector-dialogo .ficha-cabecera {
+  position: static;
+  margin: 0;
+  padding: 8px 16px 10px;
+}
+.selector-dialogo .ficha-cabecera h2 {
+  font-size: 17px;
+}
+.selector-buscar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin: 10px 16px 6px;
+  padding: 0 12px;
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 10px;
+  background: var(--fondo);
+  color: var(--texto-2);
+}
+.selector-buscar:focus-within {
+  border-color: var(--acento);
+}
+.selector-buscar .icono-trazo {
+  stroke: currentColor;
+}
+.selector-buscar-campo {
+  flex: 1;
+  min-width: 0;
+  min-height: 40px;
+  border: 0;
+  background: none;
+  color: var(--texto);
+  font: inherit;
+  font-size: 16px;
+  outline: none;
+}
+.selector-buscar-campo::placeholder {
+  color: var(--tenue);
+}
+.selector-buscar-campo::-webkit-search-cancel-button {
+  filter: invert(0.7);
+}
+.selector-resultados {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 8px 8px calc(12px + env(safe-area-inset-bottom));
+}
+.selector-grupo[hidden] {
+  display: none;
+}
+.selector-grupo h3 {
+  margin: 12px 8px 4px;
+  color: var(--texto-2);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.selector-lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.selector-lista li[hidden] {
+  display: none;
+}
+.selector-opcion {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.selector-opcion:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+.selector-opcion:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: -2px;
+}
+.selector-opcion[aria-current='true'] {
+  background: rgba(242, 181, 68, 0.14);
+  box-shadow: inset 3px 0 0 var(--acento);
+}
+.selector-num {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 24px;
+  border: 1px solid var(--linea);
+  border-radius: 6px;
+  background: var(--fondo);
+  color: var(--texto-2);
+  font-family: var(--mono);
+  font-size: 12px;
+}
+.selector-cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.selector-nombre {
+  font-size: 15px;
+  line-height: 1.25;
+}
+.selector-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.selector-chip {
+  padding: 0 7px;
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 999px;
+  color: var(--texto-2);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 17px;
+  white-space: nowrap;
+}
+.selector-chip[data-tipo='rara'] {
+  border-color: var(--contraindicado);
+  color: #f5b08a;
+}
+.selector-chip[data-tipo='poco_frecuente'] {
+  border-color: var(--acento);
+  color: var(--acento);
+}
+.selector-chip[data-tipo='farmaco'] {
+  border-color: var(--baja);
+  background: var(--farmaco-fondo);
+  color: #cfe3f5;
+}
+.selector-chip[data-tipo='ejercicio'] {
+  border-color: var(--ejercicio);
+  background: var(--ejercicio-fondo);
+  color: var(--ejercicio-claro);
+}
+.selector-dialogo mark {
+  border-radius: 2px;
+  background: rgba(242, 181, 68, 0.35);
+  color: inherit;
+}
+.selector-vacio {
+  padding: 16px 10px;
+}
+.selector-vacio[hidden] {
+  display: none;
+}
+/* En el móvil la hoja del selector no cambia de alto al filtrar: si encogiera,
+   el buscador bajaría con cada letra, bajo el dedo y hacia el teclado. En la
+   pantalla ancha el panel cuelga del botón y encoge hacia arriba, como un
+   desplegable. */
+.en-movil .selector-dialogo[open] {
+  height: calc(85vh / var(--zoom));
+  height: calc(85dvh / var(--zoom));
+}
+
+/* ===================================================================
+   Fase 6 · Compartir por enlace (modo profesor; opción A de la maqueta).
+   Verde agua: el ámbar es de los avisos, el azul de las bajadas y el
+   acero de los fármacos.
+   =================================================================== */
+:root {
+  --enlace: #8fd0c0;
+  --enlace-fondo: #1d2a27;
+  --enlace-texto: #10201c;
+}
+.compartir {
+  position: relative;
+}
+.boton-compartir[aria-expanded='true'] {
+  border-color: var(--enlace);
+  color: var(--enlace);
+}
+.panel-compartir {
+  width: 380px;
+  gap: 12px;
+}
+.lleva-enlace {
+  font-size: 13px;
+  color: var(--tenue);
+}
+.chips-enlace {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chip-enlace {
+  padding: 2px 9px;
+  font-size: 13px;
+  line-height: 20px;
+  white-space: normal;
+}
+.chip-enlace[data-tipo='tiempo'] {
+  font-weight: 400;
+}
+.grupo-pregunta {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px;
+  align-items: end;
+}
+.grupo-pregunta label {
+  font-size: 14px;
+  color: var(--texto-2);
+}
+.contador-pregunta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--tenue);
+}
+.pregunta-enlace {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  width: 100%;
+  min-height: 64px;
+  padding: 8px 10px;
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 10px;
+  background: var(--fondo);
+  color: var(--texto);
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.35;
+  resize: none;
+}
+.contador-pregunta {
+  grid-column: 2;
+  grid-row: 1;
+}
+.pregunta-enlace:focus-visible,
+.campo-enlace:focus-visible {
+  outline: 2px solid var(--enlace);
+  outline-offset: 1px;
+}
+.campo-enlace {
+  width: 100%;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px dashed var(--linea-fuerte);
+  border-radius: 10px;
+  background: var(--fondo);
+  color: var(--tenue);
+  font-family: var(--mono);
+  font-size: 12px;
+  text-overflow: ellipsis;
+}
+.campo-enlace[hidden] {
+  display: none;
+}
+.botones-enlace {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.botones-enlace .boton {
+  flex: 1 1 auto;
+  justify-content: center;
+}
+.boton.boton-enlace {
+  border-color: var(--enlace);
+  background: var(--enlace);
+  color: var(--enlace-texto);
+  font-weight: 600;
+}
+.boton-sistema[hidden] {
+  display: none;
+}
+.estado-enlace {
+  font-size: 13px;
+  color: var(--enlace);
+}
+.estado-enlace:empty {
+  display: none;
+}
+.estado-enlace[data-ok='false'] {
+  color: var(--acento);
+}
+/* Hoja del móvil: el contenido en columna, con el mismo hueco que en el panel. */
+.hoja-compartir .ficha-cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Tira «Caso compartido» bajo la cabecera y banda en «Qué mirar» (móvil). */
+.tira-compartido {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  padding: 7px 8px 7px 14px;
+  background: var(--enlace-fondo);
+  border: 1px solid var(--enlace);
+  border-radius: 12px;
+}
+.tira-compartido[hidden] {
+  display: none;
+}
+.tira-compartido h2,
+.tira-compartido h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--enlace);
+  white-space: nowrap;
+}
+.icono-enlace {
+  flex: none;
+}
+.pregunta-compartida {
+  flex: 1 1 320px;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.pregunta-compartida strong {
+  color: var(--enlace);
+  font-weight: 600;
+}
+.pregunta-compartida.sin-pregunta {
+  color: var(--texto-2);
+  font-size: 13px;
+}
+.boton-ocultar {
+  min-height: 36px;
+  padding: 0 12px;
+  font-size: 14px;
+}
+.banda-compartido {
+  flex-direction: column;
+  align-items: stretch;
+  padding: 10px 14px;
+}
+.banda-compartido .pregunta-compartida {
+  flex: none;
+}
+.banda-compartido .boton-ocultar {
+  align-self: flex-end;
+}
+.en-movil .tira-compartido:not(.banda-compartido) {
+  display: none;
+}
+.barra-nota[data-nivel='enlace'] {
+  border-top-color: var(--enlace);
+}
+.barra-nota[data-nivel='enlace'] .barra-nota-titulo {
+  color: var(--enlace);
+}
+
+/* Móvil: «Compartir» va al final de la fila del caso, bajo «Restablecer». */
+.en-movil .compartir {
+  grid-row: 2;
+  grid-column: 4;
+}
+.en-movil .campo-caso {
+  grid-column: 1 / 4;
+}
+.en-movil .boton-compartir {
+  justify-content: center;
+  width: 44px;
+  min-height: 44px;
+  padding: 0;
+  color: var(--enlace);
+}
+@media (min-width: 1200px) and (max-width: 1499px) {
+  .boton-compartir .texto-boton {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+/* Cabecera apretada (fase 6): ver compactarCabecera() en main.ts. */
+.cabecera[data-apretada] .boton-reto .texto-boton,
+.cabecera[data-apretada='2'] :is(.boton-compartir, .boton-ajustes, .boton-sonido) .texto-boton {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Fase 6: notas de interacción entre causas. Gris azulado y icono «i»: cuentan
+   cómo se combinan dos causas; no son un riesgo como los avisos de fármacos. */
+:root {
+  --nota: #a9bccd;
+  --nota-fondo: #222a31;
+}
+.banda-interaccion[data-nivel='nota'] {
+  border-left-color: var(--nota);
+  background: var(--nota-fondo);
+}
+.banda-interaccion[data-nivel='nota'] .icono-aviso {
+  stroke: var(--nota);
+}
+.banda-interaccion[data-nivel='nota'] .icono-aviso-punto {
+  fill: var(--nota);
+}
+.banda-interaccion[data-nivel='nota'] h3 {
+  color: var(--nota);
+}
+.barra-nota[data-nivel='nota'] {
+  border-top-color: var(--nota);
+}
+.barra-nota[data-nivel='nota'] .barra-nota-titulo {
+  color: var(--nota);
+}
+
+/* ===================================================================
+   Fase 6 · Modo reto (opción A de la maqueta). Violeta: ni aviso, ni
+   fármaco, ni ejercicio, ni enlace.
+   =================================================================== */
+:root {
+  --reto: #c4a8f0;
+  --reto-fondo: #241f30;
+  --reto-texto: #1a1424;
+  --reto-acierto: #8fd0a0;
+}
+.boton-reto,
+.icono-reto {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.boton-reto[aria-pressed='true'] {
+  border-color: var(--reto);
+  color: var(--reto);
+}
+.chip-reto {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--reto);
+  border-radius: 12px;
+  background: var(--reto-fondo);
+  font-size: 15px;
+  white-space: nowrap;
+}
+.chip-reto[hidden],
+.en-reto .campo-caso,
+.en-reto .compartir {
+  display: none;
+}
+.chip-reto strong {
+  color: var(--reto);
+  font-weight: 600;
+}
+.chip-reto-puntos {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  /* Toda la altura del chip para tocar o arrastrar; el desplazamiento vertical
+     de la página sigue funcionando. */
+  align-self: stretch;
+  padding: 0 4px;
+  cursor: pointer;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.chip-reto-puntos:focus-visible {
+  outline-offset: -2px;
+}
+.chip-reto-puntos i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--linea-fuerte);
+  transition: transform 0.1s;
+}
+.chip-reto-puntos i.sobre {
+  transform: scale(1.6);
+  box-shadow: 0 0 0 1px var(--reto);
+}
+@media (hover: hover) {
+  .chip-reto-puntos i:hover {
+    transform: scale(1.6);
+    box-shadow: 0 0 0 1px var(--reto);
+  }
+}
+/* Número del reto sobre el punto mientras se arrastra (debajo lo taparía el dedo). */
+.chip-reto-globo {
+  position: fixed;
+  z-index: 1000;
+  transform: translate(-50%, -100%);
+  padding: 2px 8px;
+  border: 1px solid var(--reto);
+  border-radius: 8px;
+  background: var(--reto-fondo);
+  color: var(--texto);
+  font-size: 13px;
+  pointer-events: none;
+}
+.chip-reto-globo.debajo {
+  transform: translateX(-50%);
+}
+.chip-reto-globo[hidden] {
+  display: none;
+}
+.chip-reto-puntos i[data-resultado='acierto'] { background: var(--reto-acierto); }
+.chip-reto-puntos i[data-resultado='parcial'] { background: var(--acento); }
+.chip-reto-puntos i[data-resultado='fallo'] { background: var(--contraindicado); }
+.chip-reto-puntos i[data-resultado='actual'] { background: var(--reto); }
+
+/* Entrada desde la lista de casos. Separada de la lista, que se desplaza
+   debajo: sin el hueco y la línea, las opciones asomaban pegadas a la tarjeta. */
+.selector-reto + .selector-resultados {
+  border-top: 1px solid var(--linea);
+}
+.selector-reto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: none;
+  gap: 2px;
+  margin: 10px 16px 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--reto);
+  border-radius: 10px;
+  background: var(--reto-fondo);
+  color: var(--texto);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.selector-reto-titulo {
+  color: var(--reto);
+  font-weight: 600;
+}
+.selector-reto-texto {
+  color: var(--texto-2);
+  font-size: 13px;
+  line-height: 1.35;
+}
+.en-reto .selector-reto {
+  display: none;
+}
+
+/* Causas ocultas: sin mando, sin valor ni frecuencia; las placas se eligen. */
+.reto-oculto #rejilla-causas .mando-control,
+.reto-oculto #rejilla-causas .placa-valor,
+.reto-oculto #rejilla-causas .placa-variante,
+.reto-oculto #rejilla-causas .pastilla-frecuencia {
+  display: none;
+}
+.reto-oculto #rejilla-causas .placa.con-frecuencia::before {
+  -webkit-mask: none;
+  mask: none;
+}
+.reto-oculto #rejilla-causas .placa {
+  min-height: 62px;
+}
+.mando[data-reto] .placa {
+  position: relative;
+  outline: 3px solid var(--reto);
+  outline-offset: 2px;
+}
+.mando[data-reto] .placa::after {
+  position: absolute;
+  top: -10px;
+  right: -8px;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--reto);
+  color: var(--reto-texto);
+  font-size: 13px;
+  font-weight: 700;
+  content: '✓';
+}
+.mando[data-reto='acierto'] .placa { outline-color: var(--reto-acierto); }
+.mando[data-reto='acierto'] .placa::after { background: var(--reto-acierto); }
+.mando[data-reto='sobra'] .placa { outline-color: var(--contraindicado); }
+.mando[data-reto='sobra'] .placa::after { background: var(--contraindicado); content: '✗'; }
+.mando[data-reto='falta'] .placa { outline-style: dashed; }
+.mando[data-reto='falta'] .placa::after { content: '!'; }
+.clave-reto {
+  outline: 3px solid var(--reto) !important;
+  outline-offset: 1px;
+}
+
+/* «Qué mirar» en el reto. */
+.reto-enunciado {
+  font-size: 15px;
+  line-height: 1.45;
+}
+.reto-pregunta,
+.reto-eleccion,
+.reto-detalle,
+.reto-pie {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--texto-2);
+}
+.reto-pistas,
+.reto-delata,
+.reto-resumen {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.reto-pistas li::marker {
+  color: var(--reto);
+}
+.reto-subtitulo {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--reto);
+}
+.reto-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.boton-accion-reto {
+  flex: 1 1 auto;
+  justify-content: center;
+}
+.boton-accion-reto.primario {
+  border-color: var(--reto);
+  background: var(--reto);
+  color: var(--reto-texto);
+  font-weight: 600;
+}
+.boton-accion-reto:disabled {
+  opacity: 0.45;
+}
+.reto-titular,
+.reto-resultado {
+  font-size: 16px;
+  font-weight: 600;
+}
+.reto-titular[data-resultado='acierto'] { color: var(--reto-acierto); }
+.reto-titular[data-resultado='parcial'] { color: var(--acento); }
+.reto-titular[data-resultado='fallo'] { color: var(--contraindicado); }
+.reto-resumen li[data-resultado='acierto']::marker { color: var(--reto-acierto); }
+.reto-resumen li[data-resultado='parcial']::marker { color: var(--acento); }
+.reto-resumen li[data-resultado='fallo']::marker { color: var(--contraindicado); }
+.en-reto .nota-cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.barra-nota[data-nivel='reto'] {
+  border-top-color: var(--reto);
+}
+.barra-nota[data-nivel='reto'] .barra-nota-titulo {
+  color: var(--reto);
+}
+
+/* Móvil: el chip del reto ocupa la fila del caso y «Salir» va al final, con icono. */
+.en-movil .boton-reto {
+  display: none;
+}
+.en-movil.en-reto .boton-reto {
+  display: inline-flex;
+  grid-row: 2;
+  grid-column: 4;
+  justify-content: center;
+  width: 44px;
+  padding: 0;
+}
+.en-movil .chip-reto {
+  grid-row: 2;
+  grid-column: 1 / 4;
+  min-width: 0;
+  overflow: hidden;
+}
+/* En el móvil los puntos ocupan el resto del chip y se reparten, para que los
+   once quepan y se puedan tocar o recorrer con el dedo. */
+.en-movil .chip-reto-puntos {
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: space-between;
+  gap: 2px;
+  max-width: 220px;
+}
+.en-movil .chip-reto-puntos i {
+  flex: 0 1 8px;
+  min-width: 5px;
+  height: auto;
+  aspect-ratio: 1;
+}
+/* Muy estrecho: «de 11» sobra, ya lo dicen los puntos. */
+@media (max-width: 400px) {
+  .en-movil .chip-reto-total {
+    display: none;
+  }
+}
+/* Muy estrecho: los iconos ya ocupan la segunda fila; la fila del caso (o del
+   reto) con «Compartir» (o «Salir del reto») pasa a la tercera. */
+@media (max-width: 300px) {
+  .en-movil .campo-caso,
+  .en-movil .chip-reto,
+  .en-movil .compartir,
+  .en-movil.en-reto .boton-reto {
+    grid-row: 3;
+  }
+}
+
+/* Ficha de estudio exportable (fase 6, punto 4): botón y opciones en el panel
+   «Compartir o exportar»; la hoja solo existe al imprimir. */
+.seccion-ficha {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--linea);
+}
+.seccion-ficha h3 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-2);
+}
+.en-movil .seccion-ficha h3,
+.hoja-compartir .seccion-ficha h3 {
+  letter-spacing: 0.08em;
+}
+.opciones-ficha {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.opcion-ficha {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.opcion-ficha:has(input:checked) {
+  border-color: var(--enlace);
+  background: var(--enlace-fondo);
+}
+.opcion-ficha input,
+.casilla-ficha input {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  accent-color: var(--enlace);
+}
+.opcion-ficha > span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.opcion-ficha-titulo {
+  font-size: 15px;
+  color: var(--texto);
+}
+.opcion-ficha-detalle {
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--tenue);
+}
+.casilla-ficha {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  font-size: 14px;
+  color: var(--texto-2);
+  cursor: pointer;
+}
+.boton-imprimir {
+  justify-content: center;
+}
+.ficha-estudio {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+  html,
+  body {
+    background: #fff !important;
+    zoom: 1 !important;
+  }
+  body > :not(.ficha-estudio) {
+    display: none !important;
+  }
+  .ficha-estudio {
+    display: block !important;
+    color: #1c1916;
+    font-family: var(--letra);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+.fe-pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 4mm;
+  min-height: 268mm;
+  break-after: page;
+}
+.fe-pagina:last-child {
+  break-after: auto;
+}
+.fe-cabecera {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 6mm;
+  padding-bottom: 2mm;
+  border-bottom: 0.6mm solid #1c1916;
+}
+.fe-cabecera h1 {
+  margin: 0;
+  font-size: 19pt;
+  line-height: 1.15;
+}
+.fe-cabecera p {
+  margin: 1mm 0 0;
+  font-size: 10pt;
+  color: #5c5348;
+}
+.fe-etiqueta {
+  display: inline-block;
+  margin-left: 3mm;
+  padding: 0.5mm 2mm;
+  border-radius: 1mm;
+  background: #1c1916;
+  color: #fff;
+  font-size: 8pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.fe-marca {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 9pt;
+  color: #5c5348;
+}
+.fe-marca b {
+  font-size: 11pt;
+  letter-spacing: 0.06em;
+  color: #1c1916;
+}
+.fe-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5mm;
+}
+.fe-chip {
+  padding: 0.3mm 2.5mm;
+  border: 0.35mm solid #1c1916;
+  border-radius: 99px;
+  font-size: 9.5pt;
+}
+.fe-chip[data-tipo='farmaco'] {
+  border-style: dashed;
+}
+.fe-chip[data-tipo='ejercicio'] {
+  border-style: dotted;
+}
+.fe-chip[data-tipo='tiempo'] {
+  border-color: #9b9184;
+  color: #5c5348;
+}
+.fe-pregunta {
+  margin: 0;
+  padding: 2mm 3mm;
+  border-left: 1mm solid #1c1916;
+  font-size: 10.5pt;
+}
+.fe-dos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4mm;
+}
+.fe-caja {
+  padding: 2.5mm 3mm;
+  border: 0.25mm solid #cfc4ae;
+  border-radius: 2mm;
+  break-inside: avoid;
+}
+.fe-caja h2 {
+  margin: 0 0 1.5mm;
+  font-size: 8.5pt;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5c5348;
+}
+.fe-caja p {
+  margin: 0 0 1.5mm;
+  font-size: 10pt;
+  line-height: 1.4;
+}
+.fe-presion {
+  display: flex;
+  gap: 6mm;
+  font-size: 11pt;
+}
+.fe-grupo {
+  margin: 1.5mm 0 0.5mm;
+  font-size: 7.5pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7a7064;
+}
+.fe-rejilla {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8mm 4mm;
+}
+.fe-cuatro {
+  grid-template-columns: repeat(4, 1fr);
+}
+.fe-celda {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2mm;
+  padding: 0.4mm 0;
+  border-bottom: 0.2mm dotted #cfc4ae;
+  font-size: 9.5pt;
+}
+.fe-flecha {
+  display: inline-block;
+  flex: none;
+  min-width: 8mm;
+  padding: 0 1mm;
+  border-radius: 1mm;
+  font-family: var(--mono);
+  font-size: 9.5pt;
+  text-align: center;
+}
+.fe-sube { background: #f2d79a; }
+.fe-baja { background: #c9ddf0; }
+.fe-igual { background: #eee7d8; }
+.fe-hueco {
+  height: 5mm;
+  border: 0.35mm solid #1c1916;
+  background: #fff;
+}
+.fe-aviso {
+  display: flex;
+  flex-direction: column;
+  margin: 1.5mm 0 0;
+  padding: 1mm 3mm;
+  border-left: 1mm solid #9b9184;
+  font-size: 9.5pt;
+  line-height: 1.35;
+}
+.fe-aviso[data-nivel='contraindicado'] { border-color: #e0703a; }
+.fe-aviso[data-nivel='precaucion'],
+.fe-aviso[data-nivel='hipotetica'] { border-color: #f2b544; }
+.fe-preguntas {
+  margin: 0;
+  padding-left: 5mm;
+  font-size: 10pt;
+}
+.fe-preguntas li {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2mm;
+}
+.fe-linea {
+  height: 7mm;
+  border-bottom: 0.25mm solid #b9ad99;
+}
+.fe-ficha {
+  padding-top: 2mm;
+  border-top: 0.25mm solid #cfc4ae;
+  break-inside: avoid;
+}
+.fe-ficha h3 {
+  margin: 0 0 1mm;
+  font-size: 12pt;
+}
+.fe-ficha p {
+  margin: 0 0 1mm;
+  font-size: 10pt;
+  line-height: 1.4;
+}
+.fe-pie {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 4mm;
+  margin-top: auto;
+  padding-top: 2mm;
+  border-top: 0.25mm solid #cfc4ae;
+  font-size: 8.5pt;
+  color: #5c5348;
+}
+.fe-pie p {
+  margin: 0 0 0.5mm;
+}
+.fe-pie code {
+  font-family: var(--mono);
+  font-size: 7.5pt;
+  color: #1c1916;
+  word-break: break-all;
+}
+.fe-pie-derecha {
+  display: flex;
+  flex: none;
+  align-items: flex-end;
+  gap: 3mm;
+}
+.fe-qr {
+  width: 22mm;
+  height: 22mm;
+}
+/* El panel «Compartir o exportar» crece con la ficha de estudio: en pantallas bajas, se desplaza por dentro. */
+#app:not(.en-movil) .panel-compartir {
+  max-height: calc(100vh / var(--zoom, 1) - 110px);
+  overflow-y: auto;
+}
+.chip-reto .boton-accion-reto {
+  min-height: 32px;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/* En el móvil, «Siguiente» va en la hoja de «Qué mirar», que se abre desde la barra del pie. */
+.en-movil .chip-reto .boton-accion-reto {
+  display: none;
+}
+
+/* Fase 6, punto 5: valores orientativos (opción en Ajustes, desactivada por defecto). */
+.etiqueta-orientativo {
+  display: inline-block;
+  padding: 0 5px;
+  border: 1px dashed currentColor;
+  border-radius: 4px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+.analito-cifra,
+.analito-rango {
+  display: block;
+  text-align: center;
+  line-height: 1.2;
+}
+.analito-cifra[hidden],
+.analito-rango[hidden],
+.presion-orientativa[hidden] {
+  display: none;
+}
+.analito-cifra {
+  margin-top: 3px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--papel-texto);
+}
+.analito-rango {
+  font-size: 10px;
+  color: var(--papel-tenue);
+}
+.presion-orientativa {
+  margin-top: 4px;
+  font-size: 13px;
+  text-align: center;
+  color: var(--texto-2);
+}
+.presion-orientativa strong {
+  font-family: var(--mono);
+  font-weight: 500;
+  color: var(--texto);
+}
+.presion-normal {
+  color: var(--tenue);
+}
+.ficha-orientativo {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--texto-2);
+}
+.nota-valores {
+  line-height: 1.4;
+}
+/* Con cifras, la celda de la analítica pasa a dos líneas (nombre y flecha; cifra y
+   rango) y el texto largo se parte dentro de la celda. */
+.con-valores .analito {
+  flex-wrap: wrap;
+  row-gap: 2px;
+}
+.con-valores .analito-cifra,
+.con-valores .analito-rango {
+  width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.en-movil.con-valores .analito-cifra,
+.en-movil.con-valores .analito-rango {
+  margin-top: 0;
+  text-align: left;
+}
+/* La línea de la presión se ajusta al ancho del dial y no lo ensancha. */
+.presion-orientativa {
+  contain: inline-size;
+  width: 100%;
+}
+
+/* ===================================================================
+   Retos por enlace (opción A de la maqueta): «El enlace abre: El caso |
+   Un reto» en «Compartir» y «Reto del profesor» en el modo reto. Violeta,
+   como el modo reto.
+   =================================================================== */
+.interruptor-enlace button[data-modo='reto'][aria-pressed='true'] {
+  background: var(--reto);
+  color: var(--reto-texto);
+}
+.chip-enlace[data-oculta] {
+  border: 1px dashed var(--reto);
+  background: var(--reto-fondo);
+  color: var(--reto);
+}
+.chip-oculta {
+  font-weight: 400;
+  opacity: 0.8;
+}
+.grupo-pregunta[hidden],
+.claves-enlace[hidden],
+.aviso-reto-enlace[hidden] {
+  display: none;
+}
+.claves-enlace {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--texto-2);
+}
+.claves-enlace strong {
+  color: var(--reto);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.aviso-reto-enlace {
+  font-size: 13px;
+  color: var(--acento);
+}
+[data-modo='reto'] .boton.boton-enlace {
+  border-color: var(--reto);
+  background: var(--reto);
+  color: var(--reto-texto);
+}
+[data-modo='reto'] .pregunta-enlace:focus-visible {
+  outline-color: var(--reto);
+}
+.boton-copiar:disabled,
+.boton-sistema:disabled {
+  opacity: 0.45;
+}
+/* «Reto del profesor» en la cabecera, sin puntos. */
+.chip-reto-profesor {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.chip-reto-profesor svg {
+  flex: none;
+  color: var(--reto);
+}
+.chip-reto-profesor strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Solución: explicación del profesor y valores que más se mueven. */
+.reto-explicacion {
+  padding-left: 10px;
+  border-left: 3px solid var(--reto);
+  font-size: 14px;
+  line-height: 1.45;
+}
+.reto-claves {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.reto-claves li {
+  padding: 2px 8px;
+  border: 1px solid var(--reto);
+  border-radius: 8px;
+  background: var(--reto-fondo);
+  color: var(--reto);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* Móvil (más de 300 px): dial y determinantes en la fila de arriba; debajo, a
+   todo el ancho, la leyenda en una fila y la presión orientativa. Antes iban
+   bajo el dial, en una columna estrecha que quedaba mucho más alta que la de
+   los determinantes (sobre todo con «Grande»), 18 nov 2026. */
+/* «not all and (max-width: 300px)» y no «min-width: 301px»: con «Grande» las medidas
+   se multiplican por 1,25 y entre 375 y 376,25 px no se aplicaba ninguna de las dos
+   (un Pixel 8 con el tamaño de visualización subido mide 375,65 px). */
+@media not all and (max-width: 300px) {
+  .en-movil .presion {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: 'dial det' 'ley ley' 'ori ori';
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 4px;
+  }
+  .en-movil .presion > .dial {
+    display: contents;
+  }
+  .en-movil .dial-boton {
+    grid-area: dial;
+  }
+  .en-movil .presion > .determinantes {
+    grid-area: det;
+  }
+  .en-movil .dial-leyenda {
+    grid-area: ley;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 18px;
+  }
+  .en-movil .presion-orientativa {
+    grid-area: ori;
+    text-align: center;
+  }
+  /* «normal en reposo < 130/85» no se parte: si no cabe, pasa entera a la línea siguiente.
+     La cifra («≈ 140/90 mmHg») va con espacios que no se cortan (main.ts). */
+  .en-movil .presion-normal {
+    white-space: nowrap;
+  }
+}
+
+/* Enlaces del pie de la página. */
+.pie-pagina a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Ruedas con el dedo (18 nov 2026): se agarran manteniéndolas pulsadas. Aro
+   mientras están agarradas y aviso si solo se tocan. */
+.mando {
+  position: relative;
+}
+.mando.agarrada .mando-control {
+  box-shadow: 0 0 0 3px var(--acento);
+}
+.pista-mantener {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  z-index: 3;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  border: 1px solid var(--acento);
+  border-radius: 8px;
+  background: var(--fondo);
+  color: var(--texto);
+  font-size: 12px;
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.pista-mantener[hidden] {
+  display: none;
+}
+
+/* Modo diagnóstico de las ruedas (?depurar). */
+.registro-depurar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  max-height: 40vh;
+  margin: 0;
+  padding: 6px 8px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.85);
+  color: #9f9;
+  font: 11px/1.3 monospace;
+  white-space: pre-wrap;
+  pointer-events: none;
+}

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es" data-tema="retro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#1C1916" />
+    <meta name="description" content="Simulador docente de las causas de la hipertensión arterial: gira las causas y mira cómo responden los mecanismos, los vasos, la presión y la analítica." />
+    <title>Radiostasis · Tensión arterial</title>
+    <script>
+      // Tema y tamaño guardados (src/app/preferencias.ts), antes de pintar para que no parpadee.
+      try {
+        var t = localStorage.getItem('radiostasis-tema');
+        var z = localStorage.getItem('radiostasis-tamano');
+        if (t === 'retro' || t === 'clasico') document.documentElement.dataset.tema = t;
+        if (z === 'grande') document.documentElement.dataset.tamano = 'grande';
+      } catch (e) {}
+    </script>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Radiostasis" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Condensed:wght@400;500;600&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <main id="app"></main>
+    <noscript>Radiostasis necesita JavaScript.</noscript>
+    <script type="module" src="./src/app/main.ts"></script>
+  </body>
+</html>

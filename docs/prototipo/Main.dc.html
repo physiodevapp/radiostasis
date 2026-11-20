@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Simulador de hipertensión — pantalla horizontal</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans+Condensed:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1C1916}
+a{color:#F2B544}a:hover{color:#F7CF7A}
+@keyframes flujo{from{transform:translateX(0)}to{transform:translateX(640px)}}
+@keyframes latidoArriba-alto{0%{transform:translateY(0)}14%{transform:translateY(-6px)}45%{transform:translateY(0)}100%{transform:translateY(0)}}
+@keyframes latidoAbajo-alto{0%{transform:translateY(0)}14%{transform:translateY(6px)}45%{transform:translateY(0)}100%{transform:translateY(0)}}
+@keyframes latidoArriba-medio{0%{transform:translateY(0)}14%{transform:translateY(-3px)}45%{transform:translateY(0)}100%{transform:translateY(0)}}
+@keyframes latidoAbajo-medio{0%{transform:translateY(0)}14%{transform:translateY(3px)}45%{transform:translateY(0)}100%{transform:translateY(0)}}
+@keyframes latidoArriba-bajo{0%{transform:translateY(0)}14%{transform:translateY(-1px)}45%{transform:translateY(0)}100%{transform:translateY(0)}}
+@keyframes latidoAbajo-bajo{0%{transform:translateY(0)}14%{transform:translateY(1px)}45%{transform:translateY(0)}100%{transform:translateY(0)}}
+@keyframes onda{from{transform:translateX(-160px)}to{transform:translateX(800px)}}
+.flujo{animation-name:flujo;animation-timing-function:linear;animation-iteration-count:infinite}
+.latido-arriba-alto{animation-name:latidoArriba-alto;animation-timing-function:ease-out;animation-iteration-count:infinite}
+.latido-abajo-alto{animation-name:latidoAbajo-alto;animation-timing-function:ease-out;animation-iteration-count:infinite}
+.latido-arriba-medio{animation-name:latidoArriba-medio;animation-timing-function:ease-out;animation-iteration-count:infinite}
+.latido-abajo-medio{animation-name:latidoAbajo-medio;animation-timing-function:ease-out;animation-iteration-count:infinite}
+.latido-arriba-bajo{animation-name:latidoArriba-bajo;animation-timing-function:ease-out;animation-iteration-count:infinite}
+.latido-abajo-bajo{animation-name:latidoAbajo-bajo;animation-timing-function:ease-out;animation-iteration-count:infinite}
+.onda{animation-name:onda;animation-timing-function:ease-in;animation-iteration-count:infinite}
+@keyframes paso{0%{opacity:0;transform:scale(0.4)}35%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.35)}}
+.paso{transform-box:fill-box;transform-origin:center;animation-name:paso;animation-timing-function:ease-in-out;animation-iteration-count:infinite}
+@media (prefers-reduced-motion: reduce){.paso,.flujo,.onda,.latido-arriba-alto,.latido-abajo-alto,.latido-arriba-medio,.latido-abajo-medio,.latido-arriba-bajo,.latido-abajo-bajo{animation:none}}
+</style>
+</helmet>
+<div style="min-height: 1080px; box-sizing: border-box; padding: 24px 32px 28px; background: #1C1916; color: #EDE6D6; font-family: 'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif; display: flex; flex-direction: column; gap: 20px">
+
+  <svg width="0" height="0" aria-hidden="true" style="position: absolute">
+    <defs>
+      <radialGradient id="laton" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#F6E3A6"></stop><stop offset="0.55" stop-color="#C9A24A"></stop><stop offset="1" stop-color="#7E5E22"></stop></radialGradient>
+      <radialGradient id="ventana" cx="50%" cy="50%" r="65%"><stop offset="0" stop-color="#FFE7B0"></stop><stop offset="1" stop-color="#E0A63E"></stop></radialGradient>
+    </defs>
+  </svg>
+
+  <header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px">
+    <div style="display: flex; flex-direction: column; gap: 2px">
+      <h1 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: 0.02em">Tensión arterial</h1>
+      <p style="margin: 0; font-size: 14px; color: #A89F91">Simulador de causas de hipertensión · modelo cualitativo</p>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+      <button type="button" aria-haspopup="listbox" style="display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px; background: #26221E; color: #EDE6D6; border: 1px solid #4A423A; border-radius: 10px; font: inherit; font-size: 15px; cursor: pointer">
+        <span style="color: #A89F91">Caso</span>
+        <span style="font-weight: 600">8 · Hiperaldosteronismo primario</span>
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 5l4 4 4-4" fill="none" stroke="#EDE6D6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </button>
+      <div role="group" aria-label="Escala de tiempo" style="display: flex; padding: 4px; gap: 4px; background: #26221E; border: 1px solid #4A423A; border-radius: 12px">
+        <button type="button" aria-pressed="false" style="min-height: 40px; padding: 0 14px; border: 0; border-radius: 8px; background: transparent; color: #CFC6B6; font: inherit; font-size: 15px; cursor: pointer">Minutos</button>
+        <button type="button" aria-pressed="false" style="min-height: 40px; padding: 0 14px; border: 0; border-radius: 8px; background: transparent; color: #CFC6B6; font: inherit; font-size: 15px; cursor: pointer">Días</button>
+        <button type="button" aria-pressed="true" style="min-height: 40px; padding: 0 14px; border: 0; border-radius: 8px; background: #EDE6D6; color: #1C1916; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Estado estable</button>
+      </div>
+      <button type="button" style="min-height: 44px; padding: 0 16px; background: {{accent}}; color: #1C1916; border: 0; border-radius: 10px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Modo reto</button>
+      <button type="button" style="min-height: 44px; padding: 0 16px; background: transparent; color: #EDE6D6; border: 1px solid #4A423A; border-radius: 10px; font: inherit; font-size: 15px; cursor: pointer">Restablecer</button>
+    </div>
+  </header>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch">
+
+    <section aria-labelledby="t-causas" style="flex: 1 1 320px; max-width: 410px; box-sizing: border-box; padding: 20px 16px; border-radius: 18px; background: repeating-linear-gradient(92deg, #5A3420 0px, #6B3F26 7px, #4E2C1A 13px, #633923 21px); border: 6px solid #3A2114; box-shadow: inset 0 0 24px rgba(0,0,0,0.45); display: flex; flex-direction: column; gap: 16px">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 6px">
+        <h2 id="t-causas" style="margin: 0; padding: 4px 18px; border-radius: 4px; background: linear-gradient(180deg, #F3E7C6, #DCC99A); box-shadow: inset 0 0 0 1px #A88A48; color: #2B1E0A; font-size: 15px; font-weight: 600; letter-spacing: 0.14em">CAUSAS</h2>
+        <p style="margin: 0; font-size: 13px; color: #EDE6D6">Gira un mando para activar una causa</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 6px; justify-items: center">
+        <sc-for list="{{causas}}" as="c" hint-placeholder-count="12">
+          <button type="button" aria-label="{{c.aria}}" style="display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; padding: 0; background: transparent; border: 0; font: inherit; cursor: grab">
+            <svg width="92" height="92" viewBox="0 0 120 120" aria-hidden="true" style="display: block"><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="2.5" transform="rotate(-135.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(-108.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(-81.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(-54.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(-27.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="2.5" transform="rotate(0.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(27.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(54.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(81.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="1.5" transform="rotate(108.0 60 60)"></line><line x1="60" y1="4" x2="60" y2="10" stroke="#EDE6D6" stroke-opacity="0.85" stroke-width="2.5" transform="rotate(135.0 60 60)"></line><circle cx="60" cy="60" r="46" fill="none" stroke="#2A1810" stroke-width="5" stroke-dasharray="216.8 1000" transform="rotate(135 60 60)"></circle><circle cx="60" cy="60" r="46" fill="none" stroke="{{c.arcColor}}" stroke-width="5" stroke-dasharray="{{c.arcDash}}" transform="rotate(135 60 60)"></circle><circle cx="60" cy="60" r="39.5" fill="#1F120A"></circle><circle cx="60" cy="60" r="38" fill="#7A5A22"></circle><circle cx="60" cy="60" r="36.5" fill="none" stroke="#E6C878" stroke-width="4" stroke-dasharray="2.2 1.8"></circle><circle cx="60" cy="60" r="33" fill="url(#laton)"></circle><circle cx="60" cy="60" r="9" fill="none" stroke="#5C4418" stroke-opacity="0.25" stroke-width="1"></circle><circle cx="60" cy="60" r="16" fill="none" stroke="#5C4418" stroke-opacity="0.25" stroke-width="1"></circle><circle cx="60" cy="60" r="23" fill="none" stroke="#5C4418" stroke-opacity="0.25" stroke-width="1"></circle><circle cx="60" cy="60" r="29" fill="none" stroke="#5C4418" stroke-opacity="0.25" stroke-width="1"></circle><line x1="60" y1="30" x2="60" y2="44" stroke="#2B1E0A" stroke-width="3" stroke-linecap="round" transform="rotate({{c.angle}} 60 60)"></line><text x="10" y="116" fill="#EDE6D6" font-size="11" font-family="IBM Plex Mono, monospace">{{c.lo}}</text><text x="110" y="116" text-anchor="end" fill="#EDE6D6" font-size="11" font-family="IBM Plex Mono, monospace">{{c.hi}}</text></svg>
+            <span style="display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 118px; box-sizing: border-box; padding: 4px 6px; border-radius: 4px; background: linear-gradient(180deg, #F3E7C6, #DCC99A); box-shadow: inset 0 0 0 1px #A88A48, 0 1px 2px rgba(0,0,0,0.5); color: #2B1E0A; text-align: center">
+              <span style="font-size: 12px; line-height: 1.15; font-weight: {{c.weight}}">{{c.name}}</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #5C4418">{{c.valText}}</span>
+            </span>
+          </button>
+        </sc-for>
+      </div>
+    </section>
+
+    <section aria-labelledby="t-vaso" style="flex: 2 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+      <div style="box-sizing: border-box; padding: 20px; background: #26221E; border: 1px solid #3A342E; border-radius: 16px; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px">
+          <h2 id="t-vaso" style="margin: 0; font-size: 18px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em">Vasos</h2>
+          <button type="button" aria-pressed="{{paused}}" onClick="{{togglePause}}" style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; background: transparent; color: #EDE6D6; border: 1px solid #4A423A; border-radius: 10px; font: inherit; font-size: 14px; cursor: pointer">
+            <sc-if value="{{paused}}" hint-placeholder-val="{{ false }}">
+              <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 2.5v9l7-4.5z" fill="#EDE6D6"></path></svg>
+            </sc-if>
+            <sc-if value="{{running}}" hint-placeholder-val="{{ true }}">
+              <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 2.5v9M10 2.5v9" stroke="#EDE6D6" stroke-width="2.2" stroke-linecap="round"></path></svg>
+            </sc-if>
+            <span>{{pauseLabel}}</span>
+          </button>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
+          <figure style="flex: 2 1 360px; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: 8px">
+            <svg viewBox="0 0 640 240" role="img" aria-label="Arteria grande en corte longitudinal: pared elástica sin placas, sangre abundante y flujo con pulso" style="width: 100%; height: auto; border-radius: 10px; display: block">
+              <defs>
+                <linearGradient id="luz" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#4A1013"></stop>
+                  <stop offset="0.5" stop-color="#6E1A1C"></stop>
+                  <stop offset="1" stop-color="#4A1013"></stop>
+                </linearGradient>
+                <clipPath id="recorteLuz"><rect x="0" y="70" width="640" height="100"></rect></clipPath>
+              </defs>
+              <rect width="640" height="240" fill="#211A17"></rect>
+              <rect x="0" y="70" width="640" height="100" fill="url(#luz)"></rect>
+              <g clip-path="url(#recorteLuz)">
+                <g class="flujo" style="animation-duration: {{flowDur}}s; animation-play-state: {{playState}}" fill="#D04A42">
+                    <ellipse cx="-635" cy="98" rx="9" ry="5"></ellipse> <ellipse cx="-602" cy="88" rx="9" ry="5"></ellipse> <ellipse cx="-585" cy="128" rx="9" ry="5"></ellipse> <ellipse cx="-544" cy="92" rx="9" ry="5"></ellipse>
+                    <ellipse cx="-532" cy="117" rx="9" ry="5"></ellipse> <ellipse cx="-503" cy="134" rx="9" ry="5"></ellipse> <ellipse cx="-479" cy="129" rx="9" ry="5"></ellipse> <ellipse cx="-437" cy="140" rx="9" ry="5"></ellipse>
+                    <ellipse cx="-417" cy="116" rx="9" ry="5"></ellipse> <ellipse cx="-383" cy="88" rx="9" ry="5"></ellipse> <ellipse cx="-358" cy="110" rx="9" ry="5"></ellipse> <ellipse cx="-345" cy="84" rx="9" ry="5"></ellipse>
+                    <ellipse cx="-310" cy="142" rx="9" ry="5"></ellipse> <ellipse cx="-292" cy="131" rx="9" ry="5"></ellipse> <ellipse cx="-260" cy="129" rx="9" ry="5"></ellipse> <ellipse cx="-230" cy="131" rx="9" ry="5"></ellipse>
+                    <ellipse cx="-205" cy="134" rx="9" ry="5"></ellipse> <ellipse cx="-173" cy="123" rx="9" ry="5"></ellipse> <ellipse cx="-154" cy="94" rx="9" ry="5"></ellipse> <ellipse cx="-121" cy="93" rx="9" ry="5"></ellipse>
+                    <ellipse cx="-97" cy="135" rx="9" ry="5"></ellipse> <ellipse cx="-65" cy="147" rx="9" ry="5"></ellipse> <ellipse cx="-49" cy="81" rx="9" ry="5"></ellipse> <ellipse cx="-18" cy="97" rx="9" ry="5"></ellipse>
+                    <ellipse cx="5" cy="98" rx="9" ry="5"></ellipse> <ellipse cx="38" cy="88" rx="9" ry="5"></ellipse> <ellipse cx="55" cy="128" rx="9" ry="5"></ellipse> <ellipse cx="96" cy="92" rx="9" ry="5"></ellipse>
+                    <ellipse cx="108" cy="117" rx="9" ry="5"></ellipse> <ellipse cx="137" cy="134" rx="9" ry="5"></ellipse> <ellipse cx="161" cy="129" rx="9" ry="5"></ellipse> <ellipse cx="203" cy="140" rx="9" ry="5"></ellipse>
+                    <ellipse cx="223" cy="116" rx="9" ry="5"></ellipse> <ellipse cx="257" cy="88" rx="9" ry="5"></ellipse> <ellipse cx="282" cy="110" rx="9" ry="5"></ellipse> <ellipse cx="295" cy="84" rx="9" ry="5"></ellipse>
+                    <ellipse cx="330" cy="142" rx="9" ry="5"></ellipse> <ellipse cx="348" cy="131" rx="9" ry="5"></ellipse> <ellipse cx="380" cy="129" rx="9" ry="5"></ellipse> <ellipse cx="410" cy="131" rx="9" ry="5"></ellipse>
+                    <ellipse cx="435" cy="134" rx="9" ry="5"></ellipse> <ellipse cx="467" cy="123" rx="9" ry="5"></ellipse> <ellipse cx="486" cy="94" rx="9" ry="5"></ellipse> <ellipse cx="519" cy="93" rx="9" ry="5"></ellipse>
+                    <ellipse cx="543" cy="135" rx="9" ry="5"></ellipse> <ellipse cx="575" cy="147" rx="9" ry="5"></ellipse> <ellipse cx="591" cy="81" rx="9" ry="5"></ellipse> <ellipse cx="622" cy="97" rx="9" ry="5"></ellipse>
+                </g>
+                <ellipse class="onda" cx="0" cy="120" rx="70" ry="40" fill="#FFFFFF" opacity="0.07" style="animation-duration: {{beatDur}}s; animation-play-state: {{playState}}"></ellipse>
+              </g>
+              <g class="latido-arriba-{{ampLevel}}" style="animation-duration: {{beatDur}}s; animation-play-state: {{playState}}">
+                <rect x="0" y="22" width="640" height="56" fill="#8E443C"></rect>
+                <rect x="0" y="22" width="640" height="10" fill="#6E3530"></rect>
+                <rect x="0" y="72" width="640" height="6" fill="#E2A196"></rect>
+              </g>
+              <g class="latido-abajo-{{ampLevel}}" style="animation-duration: {{beatDur}}s; animation-play-state: {{playState}}">
+                <rect x="0" y="162" width="640" height="56" fill="#8E443C"></rect>
+                <rect x="0" y="208" width="640" height="10" fill="#6E3530"></rect>
+                <rect x="0" y="162" width="640" height="6" fill="#E2A196"></rect>
+              </g>
+              <text x="560" y="126" fill="#EDE6D6" font-size="13" font-family="IBM Plex Sans Condensed, sans-serif" opacity="0.8">flujo →</text>
+            </svg>
+            <figcaption style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px">
+              <span style="font-weight: 600">Arteria grande · conducción</span>
+              <span style="color: #A89F91">pulso, rigidez y placas</span>
+            </figcaption>
+          </figure>
+          <figure style="flex: 1 1 180px; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: 8px">
+            <svg viewBox="0 0 240 240" role="img" aria-label="Arteriola en corte transversal con la luz algo estrechada y hematíes que atraviesan el corte" style="width: 100%; max-width: 240px; height: auto; align-self: center; display: block">
+              <defs><clipPath id="recorteArteriola"><circle cx="120" cy="120" r="{{lumenR}}"></circle></clipPath></defs>
+              <rect width="240" height="240" rx="10" fill="#211A17"></rect>
+              <circle cx="120" cy="120" r="100" fill="#6E3530"></circle>
+              <circle cx="120" cy="120" r="88" fill="#8E443C"></circle>
+              <circle cx="120" cy="120" r="{{intimaR}}" fill="#E2A196"></circle>
+              <circle cx="120" cy="120" r="{{lumenR}}" fill="#5E1517"></circle>
+              <g clip-path="url(#recorteArteriola)">
+                <circle class="paso" cx="120" cy="120" r="7" fill="#D04A42" style="animation-duration: {{pasoDur}}s; animation-delay: -{{pasoDelay0}}s; animation-play-state: {{playState}}"></circle>
+                <circle class="paso" cx="102" cy="110" r="7" fill="#D04A42" style="animation-duration: {{pasoDur}}s; animation-delay: -{{pasoDelay1}}s; animation-play-state: {{playState}}"></circle>
+                <circle class="paso" cx="136" cy="106" r="7" fill="#D04A42" style="animation-duration: {{pasoDur}}s; animation-delay: -{{pasoDelay2}}s; animation-play-state: {{playState}}"></circle>
+                <circle class="paso" cx="108" cy="136" r="7" fill="#D04A42" style="animation-duration: {{pasoDur}}s; animation-delay: -{{pasoDelay3}}s; animation-play-state: {{playState}}"></circle>
+                <circle class="paso" cx="140" cy="130" r="7" fill="#D04A42" style="animation-duration: {{pasoDur}}s; animation-delay: -{{pasoDelay4}}s; animation-play-state: {{playState}}"></circle>
+                <circle class="paso" cx="96" cy="124" r="7" fill="#D04A42" style="animation-duration: {{pasoDur}}s; animation-delay: -{{pasoDelay5}}s; animation-play-state: {{playState}}"></circle>
+                <circle class="paso" cx="126" cy="96" r="7" fill="#D04A42" style="animation-duration: {{pasoDur}}s; animation-delay: -{{pasoDelay6}}s; animation-play-state: {{playState}}"></circle>
+                <circle class="paso" cx="124" cy="142" r="7" fill="#D04A42" style="animation-duration: {{pasoDur}}s; animation-delay: -{{pasoDelay7}}s; animation-play-state: {{playState}}"></circle>
+              </g>
+              <text x="120" y="232" text-anchor="middle" fill="#A89F91" font-size="12" font-family="IBM Plex Sans Condensed, sans-serif">luz {{lumenPct}}% de lo normal</text>
+            </svg>
+            <figcaption style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px">
+              <span style="font-weight: 600">Arteriola · resistencia</span>
+              <span style="color: #A89F91">diámetro y pared</span>
+            </figcaption>
+          </figure>
+        </div>
+        <p style="margin: 0; font-size: 13px; color: #A89F91">Movimiento: velocidad de la sangre = gasto cardíaco · ritmo = frecuencia · amplitud del latido = elasticidad. En la arteriola el pulso ya llega amortiguado.</p>
+        <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+          <sc-for list="{{vista}}" as="p" hint-placeholder-count="6">
+            <li style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; background: #1C1916; border-radius: 8px; font-size: 13px">
+              <span><span style="color: #EDE6D6">{{p.prop}}</span> <span style="color: #A89F91">· {{p.node}}</span></span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: {{p.color}}">{{p.arrow}}</span>
+            </li>
+          </sc-for>
+        </ul>
+      </div>
+
+      <div style="box-sizing: border-box; padding: 20px; background: #26221E; border: 1px solid #3A342E; border-radius: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 24px">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px">
+          <svg width="220" height="220" viewBox="0 0 260 260" role="img" aria-label="Presión sistólica y diastólica algo altas" style="display: block">
+            <circle cx="130" cy="130" r="126" fill="url(#laton)"></circle>
+            <circle cx="130" cy="130" r="116" fill="url(#ventana)"></circle>
+            <line x1="130" y1="22" x2="130" y2="36" stroke="#3A2410" stroke-width="2.5" transform="rotate(-135.0 130 130)"></line><line x1="130" y1="22" x2="130" y2="30" stroke="#3A2410" stroke-width="1.5" transform="rotate(-112.5 130 130)"></line><line x1="130" y1="22" x2="130" y2="30" stroke="#3A2410" stroke-width="1.5" transform="rotate(-90.0 130 130)"></line><line x1="130" y1="22" x2="130" y2="36" stroke="#3A2410" stroke-width="2.5" transform="rotate(-67.5 130 130)"></line><line x1="130" y1="22" x2="130" y2="30" stroke="#3A2410" stroke-width="1.5" transform="rotate(-45.0 130 130)"></line><line x1="130" y1="22" x2="130" y2="30" stroke="#3A2410" stroke-width="1.5" transform="rotate(-22.5 130 130)"></line><line x1="130" y1="22" x2="130" y2="36" stroke="#3A2410" stroke-width="2.5" transform="rotate(0.0 130 130)"></line><line x1="130" y1="22" x2="130" y2="30" stroke="#3A2410" stroke-width="1.5" transform="rotate(22.5 130 130)"></line><line x1="130" y1="22" x2="130" y2="30" stroke="#3A2410" stroke-width="1.5" transform="rotate(45.0 130 130)"></line><line x1="130" y1="22" x2="130" y2="36" stroke="#3A2410" stroke-width="2.5" transform="rotate(67.5 130 130)"></line><line x1="130" y1="22" x2="130" y2="30" stroke="#3A2410" stroke-width="1.5" transform="rotate(90.0 130 130)"></line><line x1="130" y1="22" x2="130" y2="30" stroke="#3A2410" stroke-width="1.5" transform="rotate(112.5 130 130)"></line><line x1="130" y1="22" x2="130" y2="36" stroke="#3A2410" stroke-width="2.5" transform="rotate(135.0 130 130)"></line>
+            <text x="58" y="208" fill="#3A2410" font-size="13" font-family="IBM Plex Mono, monospace">BAJA</text>
+            <text x="130" y="56" text-anchor="middle" fill="#3A2410" font-size="13" font-family="IBM Plex Mono, monospace">NORMAL</text>
+            <text x="202" y="208" text-anchor="end" fill="#3A2410" font-size="13" font-family="IBM Plex Mono, monospace">ALTA</text>
+            <line x1="130" y1="130" x2="130" y2="52" stroke="#8A5A2E" stroke-width="5" stroke-linecap="round" transform="rotate({{padAngle}} 130 130)"></line>
+            <line x1="130" y1="130" x2="130" y2="40" stroke="#B3362F" stroke-width="5" stroke-linecap="round" transform="rotate({{pasAngle}} 130 130)"></line>
+            <circle cx="130" cy="130" r="12" fill="url(#laton)" stroke="#5C4418" stroke-width="2"></circle>
+            <text x="130" y="176" text-anchor="middle" fill="#2B1E0A" font-size="15" font-family="IBM Plex Mono, monospace">PAM {{pamArrow}}</text>
+          </svg>
+          <div style="display: flex; gap: 14px; font-size: 13px">
+            <span style="display: flex; align-items: center; gap: 6px"><span style="width: 14px; height: 4px; border-radius: 2px; background: #D04A42"></span>Sistólica {{pasArrow}}</span>
+            <span style="display: flex; align-items: center; gap: 6px"><span style="width: 14px; height: 4px; border-radius: 2px; background: #C58B4E"></span>Diastólica {{padArrow}}</span>
+          </div>
+        </div>
+        <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 14px">
+          <h3 style="margin: 0; font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #CFC6B6">Determinantes de la presión</h3>
+          <sc-for list="{{salidas}}" as="s" hint-placeholder-count="3">
+            <svg viewBox="0 0 300 44" role="img" aria-label="{{s.name}}: {{s.arrow}}" style="width: 100%; height: auto; display: block"><rect width="300" height="44" rx="6" fill="#2B211B"></rect><rect x="3" y="3" width="294" height="38" rx="4" fill="url(#ventana)"></rect><line x1="12.0" y1="6" x2="12.0" y2="11" stroke="#3A2410" stroke-width="1.2"></line><line x1="39.6" y1="6" x2="39.6" y2="11" stroke="#3A2410" stroke-width="1.2"></line><line x1="67.2" y1="6" x2="67.2" y2="11" stroke="#3A2410" stroke-width="1.2"></line><line x1="94.8" y1="6" x2="94.8" y2="11" stroke="#3A2410" stroke-width="1.2"></line><line x1="122.4" y1="6" x2="122.4" y2="11" stroke="#3A2410" stroke-width="1.2"></line><line x1="150.0" y1="6" x2="150.0" y2="14" stroke="#3A2410" stroke-width="2"></line><line x1="177.6" y1="6" x2="177.6" y2="11" stroke="#3A2410" stroke-width="1.2"></line><line x1="205.2" y1="6" x2="205.2" y2="11" stroke="#3A2410" stroke-width="1.2"></line><line x1="232.8" y1="6" x2="232.8" y2="11" stroke="#3A2410" stroke-width="1.2"></line><line x1="260.4" y1="6" x2="260.4" y2="11" stroke="#3A2410" stroke-width="1.2"></line><line x1="288.0" y1="6" x2="288.0" y2="11" stroke="#3A2410" stroke-width="1.2"></line><text x="10" y="34" fill="#2B1E0A" font-size="13" font-weight="600" font-family="IBM Plex Sans Condensed, sans-serif">{{s.name}}</text><text x="290" y="34" text-anchor="end" fill="#2B1E0A" font-size="13" font-family="IBM Plex Mono, monospace">{{s.arrow}}</text><rect x="{{s.x}}" y="5" width="2.5" height="34" fill="#1C1916"></rect></svg>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="t-mec" style="flex: 1 1 340px; max-width: 420px; box-sizing: border-box; padding: 20px; background: #26221E; border: 1px solid #3A342E; border-radius: 16px; display: flex; flex-direction: column; gap: 14px">
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <h2 id="t-mec" style="margin: 0; font-size: 15px; font-weight: 600; letter-spacing: 0.14em">MECANISMOS</h2>
+        <p style="margin: 0; font-size: 13px; color: #A89F91">Se mueven solos · toca uno para ver por qué</p>
+      </div>
+      <sc-for list="{{grupos}}" as="g" hint-placeholder-count="5">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h3 style="margin: 0; font-size: 12px; font-weight: 600; color: #CFC6B6; text-transform: uppercase; letter-spacing: 0.06em">{{g.name}}</h3>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+            <sc-for list="{{g.items}}" as="m" hint-placeholder-count="4">
+              <button type="button" aria-label="{{m.aria}}" style="display: block; padding: 0; background: transparent; border: 0; border-radius: 6px; cursor: pointer">
+                <svg viewBox="0 0 160 44" aria-hidden="true" style="width: 100%; height: auto; display: block"><rect width="160" height="44" rx="6" fill="#2B211B"></rect><rect x="3" y="3" width="154" height="38" rx="4" fill="url(#ventana)"></rect><line x1="12" y1="6" x2="12" y2="11" stroke="#3A2410" stroke-width="1.2"></line><line x1="29" y1="6" x2="29" y2="11" stroke="#3A2410" stroke-width="1.2"></line><line x1="46" y1="6" x2="46" y2="11" stroke="#3A2410" stroke-width="1.2"></line><line x1="63" y1="6" x2="63" y2="11" stroke="#3A2410" stroke-width="1.2"></line><line x1="80" y1="6" x2="80" y2="14" stroke="#3A2410" stroke-width="2"></line><line x1="97" y1="6" x2="97" y2="11" stroke="#3A2410" stroke-width="1.2"></line><line x1="114" y1="6" x2="114" y2="11" stroke="#3A2410" stroke-width="1.2"></line><line x1="131" y1="6" x2="131" y2="11" stroke="#3A2410" stroke-width="1.2"></line><line x1="148" y1="6" x2="148" y2="11" stroke="#3A2410" stroke-width="1.2"></line><text x="10" y="34" fill="#2B1E0A" font-size="11" font-weight="600" font-family="IBM Plex Sans Condensed, sans-serif">{{m.name}}</text><text x="150" y="34" text-anchor="end" fill="#2B1E0A" font-size="12" font-family="IBM Plex Mono, monospace">{{m.arrow}}</text><rect x="{{m.x}}" y="5" width="2.5" height="34" fill="#1C1916"></rect></svg>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </section>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch">
+    <section aria-labelledby="t-lab" style="flex: 2 1 560px; box-sizing: border-box; padding: 20px; background: #EDE6D6; color: #1C1916; border-radius: 16px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap">
+        <h2 id="t-lab" style="margin: 0; font-size: 18px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em">Analítica</h2>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #5C5348">Estado estable · respecto a lo normal</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+        <sc-for list="{{analitica}}" as="a" hint-placeholder-count="8">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; background: #F7F1E3; border: 1px solid #D9CFBB; border-radius: 8px">
+            <span style="font-size: 14px">{{a.name}}</span>
+            <span style="min-width: 32px; padding: 2px 6px; border-radius: 6px; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 14px; background: {{a.bg}}; color: {{a.fg}}">{{a.arrow}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <aside aria-labelledby="t-nota" style="flex: 1 1 320px; box-sizing: border-box; padding: 20px; background: #26221E; border: 1px solid {{accent}}; border-radius: 16px; display: flex; flex-direction: column; gap: 8px">
+      <h2 id="t-nota" style="margin: 0; font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: {{accent}}">Qué mirar en este caso</h2>
+      <p style="margin: 0; font-size: 15px; line-height: 1.4">Renina baja, aldosterona alta y potasio bajo: la aldosterona no viene del sistema renina-angiotensina. Compáralo con el tumor de renina (las dos altas) y con el regaliz (las dos bajas).</p>
+      <p style="margin: 0; font-size: 14px; line-height: 1.4; color: #CFC6B6">La diuresis es normal porque en estado estable se orina lo que se ingiere. Cambia a «Días» para ver la fase de retención.</p>
+    </aside>
+  </div>
+
+  <p style="margin: 0; font-size: 12px; color: #A89F91">Modelo cualitativo con fines docentes, basado en una clase de fisiología. No es un simulador clínico.</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"acento":{"editor":"color","default":"#F2B544","options":["#F2B544","#E8875B","#8FC7A6"]},"$preview":{"width":1440,"height":1080}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { paused: false };
+  }
+  renderVals() {
+    const accent = this.props.acento ?? '#F2B544';
+    const paused = !!this.state.paused;
+    const BLUE = '#6FA8DC';
+    const TRACK = '#3A342E';
+    const MUTED = '#A89F91';
+    const arrow = (v) => v >= 0.5 ? '↑↑' : v >= 0.15 ? '↑' : v <= -0.5 ? '↓↓' : v <= -0.15 ? '↓' : '=';
+    const tone = (v) => v >= 0.15 ? accent : v <= -0.15 ? BLUE : MUTED;
+
+    const knob = (c) => {
+      const t = (c.v - c.min) / (c.max - c.min);
+      const angle = (-135 + t * 270).toFixed(1);
+      const H = 108.4, F = 216.8;
+      let arcDash = '0 1000', arcColor = accent;
+      if (c.min < 0 && c.max > 0) {
+        if (c.v > 0) arcDash = `0 ${H} ${(H * c.v).toFixed(1)} 1000`;
+        else if (c.v < 0) { arcDash = `0 ${(H * (1 + c.v)).toFixed(1)} ${(H * -c.v).toFixed(1)} 1000`; arcColor = BLUE; }
+      } else if (c.max <= 0) {
+        if (c.v < 0) { arcDash = `0 ${(F * t).toFixed(1)} ${(F * (1 - t)).toFixed(1)} 1000`; arcColor = BLUE; }
+      } else if (c.v > 0) {
+        arcDash = `${(F * t).toFixed(1)} 1000`;
+      }
+      const lo = c.min < 0 && c.max > 0 ? '−' : c.max <= 0 ? 'nulo' : '0';
+      const hi = c.min < 0 && c.max > 0 ? '+' : c.max <= 0 ? 'libre' : '1';
+      const on = c.v !== 0;
+      const valText = c.zeroText && !on ? c.zeroText : (on ? (c.v > 0 ? '+' + c.v : String(c.v)) : 'normal');
+      return { ...c, angle, arcDash, arcColor, lo, hi, valText, weight: on ? 600 : 500, aria: `${c.name}: ${valText}` };
+    };
+
+    const causas = [
+      { name: 'Edad', v: 0, min: 0, max: 1, zeroText: 'joven' },
+      { name: 'Factores de riesgo', v: 0, min: 0, max: 1, zeroText: 'ninguno' },
+      { name: 'Sal', v: 0, min: -1, max: 1 },
+      { name: 'Hormonas tiroideas', v: 0, min: -1, max: 1 },
+      { name: 'ADH autónoma', v: 0, min: -1, max: 1 },
+      { name: 'Estenosis renal', v: 0, min: 0, max: 1, zeroText: 'no' },
+      { name: 'Caída de la filtración', v: 0, min: 0, max: 1, zeroText: 'no' },
+      { name: 'Tumor de renina', v: 0, min: 0, max: 1, zeroText: 'no' },
+      { name: 'Hiperaldosteronismo', v: 1, min: 0, max: 1 },
+      { name: 'Feocromocitoma', v: 0, min: 0, max: 1, zeroText: 'no' },
+      { name: 'Regaliz', v: 0, min: 0, max: 1, zeroText: 'no' },
+      { name: 'Acceso al agua', v: 0, min: -1, max: 0, zeroText: 'libre' }
+    ].map(knob);
+
+    const gauge = (name, v) => ({
+      name, v, angle: v * 80, arrow: arrow(v), color: tone(v), x: (12 + (v + 1) / 2 * 136 - 1.25).toFixed(1),
+      needle: Math.abs(v) >= 0.15 ? tone(v) : '#EDE6D6',
+      labelColor: Math.abs(v) >= 0.15 ? '#EDE6D6' : '#CFC6B6',
+      aria: `${name}: ${arrow(v)}`
+    });
+    const grupos = [
+      { name: 'Agua y ADH', items: [gauge('Osmolaridad', 0), gauge('ADH', 0), gauge('Sed', -0.1), gauge('Reabs. agua', 0), gauge('Diuresis', 0)] },
+      { name: 'Renina-angiotensina-aldosterona', items: [gauge('Renina', -0.65), gauge('Angiotensina II', -0.55), gauge('Aldosterona', 0.85), gauge('Act. mineralocort.', 0.85)] },
+      { name: 'Riñón', items: [gauge('Perfusión renal', 0.1), gauge('TFG', 0.05), gauge('Reabs. Na', 0.3)] },
+      { name: 'Corazón y simpático', items: [gauge('Simpático', -0.1), gauge('Frecuencia', 0), gauge('Contractilidad', 0)] },
+      { name: 'Vasos', items: [gauge('Rigidez', 0), gauge('Placa', 0)] }
+    ];
+
+    const bar = (name, v) => ({
+      name, arrow: arrow(v), color: tone(v), x: (12 + (v + 1) / 2 * 276 - 1.25).toFixed(1),
+      left: v >= 0 ? 50 : 50 + v * 50,
+      width: Math.max(Math.abs(v) * 50, 1)
+    });
+    const salidas = [bar('Volemia', 0.25), bar('Gasto cardíaco', 0.05), bar('Resistencia vascular periférica', 0.3)];
+
+    const pas = 0.35, pad = 0.3, pam = 0.32;
+    const gc = 0.05, fc = 0, rigidez = 0, rvp = 0.3;
+    const lumenR = Math.round(44 * (1 - 0.35 * rvp));
+    const pasoDur = Number((1.8 / (1 + 0.8 * gc)).toFixed(2));
+
+    const vista = [
+      { prop: 'Luz de la arteriola', node: 'RVP', v: 0.3 },
+      { prop: 'Placas', node: 'arteria grande', v: 0 },
+      { prop: 'Latido', node: 'rigidez', v: 0 },
+      { prop: 'Llenado', node: 'volemia', v: 0.25 },
+      { prop: 'Velocidad', node: 'gasto cardíaco', v: 0.05 },
+      { prop: 'Ritmo', node: 'frecuencia', v: 0 }
+    ].map((p) => ({ ...p, arrow: arrow(p.v), color: tone(p.v) }));
+
+    const lab = (name, v) => ({
+      name, arrow: arrow(v),
+      bg: v >= 0.15 ? '#F2D79A' : v <= -0.15 ? '#C9DDF0' : '#E4DCCB',
+      fg: '#1C1916'
+    });
+    const analitica = [
+      lab('Renina', -0.65), lab('Aldosterona', 0.85), lab('Potasio', -0.55), lab('Creatinina', 0),
+      lab('Natremia', 0), lab('Osm. plasmática', 0), lab('Osm. urinaria', 0), lab('Diuresis', 0)
+    ];
+
+    return {
+      accent, causas, grupos, salidas, vista, analitica,
+      paused, running: !paused,
+      pauseLabel: paused ? 'Reanudar' : 'Pausar',
+      playState: paused ? 'paused' : 'running',
+      togglePause: () => this.setState({ paused: !this.state.paused }),
+      flowDur: (4 / (1 + 0.8 * gc)).toFixed(2),
+      beatDur: (1 / (1 + 0.6 * fc)).toFixed(2),
+      ampLevel: rigidez >= 0.5 ? 'bajo' : rigidez >= 0.15 ? 'medio' : 'alto',
+      pasoDur,
+      pasoDelay0: (pasoDur * 0 / 8).toFixed(2),
+      pasoDelay1: (pasoDur * 1 / 8).toFixed(2),
+      pasoDelay2: (pasoDur * 2 / 8).toFixed(2),
+      pasoDelay3: (pasoDur * 3 / 8).toFixed(2),
+      pasoDelay4: (pasoDur * 4 / 8).toFixed(2),
+      pasoDelay5: (pasoDur * 5 / 8).toFixed(2),
+      pasoDelay6: (pasoDur * 6 / 8).toFixed(2),
+      pasoDelay7: (pasoDur * 7 / 8).toFixed(2),
+      lumenR, intimaR: lumenR + 5, lumenPct: Math.round(lumenR / 44 * 100),
+      pasAngle: pas * 135, padAngle: pad * 135,
+      pasArrow: arrow(pas), padArrow: arrow(pad), pamArrow: arrow(pam)
+    };
+  }
+}
+</script>
+</body>
+</html>

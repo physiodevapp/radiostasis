@@ -1,0 +1,31 @@
+{
+  "name": "radiostasis",
+  "private": true,
+  "version": "0.7.0",
+  "type": "module",
+  "description": "Simulador docente de las causas de la hipertensión arterial",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "calibrar": "tsx scripts/calibrar.ts",
+    "revision-fichas": "tsx scripts/revision-fichas.ts",
+    "revision-retos": "tsx scripts/revision-retos.ts",
+    "revision-fase-7": "tsx scripts/revision-fase-7.ts",
+    "fuentes": "tsx scripts/fuentes.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0",
+    "wrangler": "4.151.1"
+  },
+  "dependencies": {
+    "qrcode-generator": "^1.4.4"
+  }
+}

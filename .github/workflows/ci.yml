@@ -1,0 +1,25 @@
+name: CI
+
+# Tests, comprobación de tipos y build. Sin despliegue: lo hace Cloudflare
+# Workers Builds (ver wrangler.jsonc). Se ejecuta en cada push de cualquier rama
+# (como el antiguo tests.yml) y en cada PR.
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  comprobar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
