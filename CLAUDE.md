@@ -24,6 +24,8 @@ Como en `physiodevapp/dualkinema` y `physiodevapp/orbicula`.
 
 **Estado:** el Worker `radiostasis` está conectado al repo con Workers Builds desde el 14 nov 2026, con Production y Preview activados en *Domains → Worker URL*. Una rama solo tiene previsualización tras su primer push posterior a la conexión.
 
+**Repo nuevo (20 nov 2026):** `physiodevapp/radiostasis` empezó de cero con un único commit (v0.7.0), sin la historia anterior, que queda archivada en el repo privado `physiodevapp/radiostasis-archivo` (no se toca ni se publica). El Worker se reconectó al repo nuevo ese día; tras reconectar, hace falta un push para que construya.
+
 - Configuración en `wrangler.jsonc` (nombre `radiostasis`, `assets.directory: ./dist`, bloque `previews: {}`, que `wrangler preview` exige aunque vaya vacío). En Workers Builds: build `npm run build`; despliegue `npx wrangler deploy`; previsualización `npx wrangler preview`; *Enable Preview Builds* activado; direcciones públicas activadas en *Domains → Worker URL* (Production y Preview).
 - Producción (`main`): https://radiostasis.edu-gamboa-rodriguez.workers.dev
 - Previsualización de cada rama: `https://<rama>-radiostasis.edu-gamboa-rodriguez.workers.dev` (rama en minúsculas, lo que no sea letra o número cambiado por `-`). **Indica siempre esta URL a Edu al terminar una fase.**
