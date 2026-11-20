@@ -386,19 +386,21 @@ Ninguno de estos cambios toca el modelo de hipertensión: los 35 casos, los reto
 | N6 · Tratamientos | Ver «Alcance» | Opus 5.5 |
 | N7 · Ejercicio y uso docente | Hiponatremia del ejercicio, retos, valores orientativos | Opus 5.5; búsqueda de valores en una sesión aparte |
 
-## Decisiones que necesito de Edu
+## Decisiones de Edu
 
-| # | Pregunta | Mi propuesta |
-| --- | --- | --- |
-| P1 | ¿Las 10 causas y lo que queda fuera? | Sí, tal cual |
-| P2 | ¿Tiazida ya o en N6? | En N6, con el asa |
-| P3 | ¿Volumen neuronal y osmolitos en la primera versión? | Sí: es lo que da sentido a «aguda o crónica» y prepara la velocidad de corrección de N6 |
-| P4 | ¿Hiperglucemia en la primera versión? | Sí: enseña la hiponatremia no hipotónica con una sola rueda |
-| P5 | ¿Insuficiencia cardíaca y cirrosis juntas o separadas? | Juntas |
-| P6 | Las cinco relaciones ⚠ | Busco mejores artículos en la fase N3; si no aparecen, te las presento como supuestos |
-| P7 | Biblioteca común con intensidades por tema (no un modelo único) | Sí |
-| P8 | Un satélite con dos temas (selector y `#t=`) en lugar de una app aparte | Sí |
-| P9 | ¿La sal de la hipertensión y los «solutos» de la natremia, la misma rueda? | Sí, con texto propio en cada tema; en la natremia, el extremo bajo es «té con tostadas» |
+Edu aprobó las nueve propuestas el 20 nov 2026, antes de conocer la revisión de Fable 5.2. Si la revisión cambia alguna, se le vuelve a preguntar.
+
+| # | Pregunta | Propuesta | Decisión de Edu (20 nov 2026) |
+| --- | --- | --- | --- |
+| P1 | ¿Las 10 causas y lo que queda fuera? | Sí, tal cual | Aprobada |
+| P2 | ¿Tiazida ya o en N6? | En N6, con el asa | Aprobada |
+| P3 | ¿Volumen neuronal y osmolitos en la primera versión? | Sí: es lo que da sentido a «aguda o crónica» y prepara la velocidad de corrección de N6 | Aprobada |
+| P4 | ¿Hiperglucemia en la primera versión? | Sí: enseña la hiponatremia no hipotónica con una sola rueda | Aprobada |
+| P5 | ¿Insuficiencia cardíaca y cirrosis juntas o separadas? | Juntas | Aprobada |
+| P6 | Las cinco relaciones ⚠ | Busco mejores artículos en la fase N3; si no aparecen, te las presento como supuestos | Aprobada |
+| P7 | Biblioteca común con intensidades por tema (no un modelo único) | Sí | Aprobada |
+| P8 | Un satélite con dos temas (selector y `#t=`) en lugar de una app aparte | Sí | Aprobada |
+| P9 | ¿La sal de la hipertensión y los «solutos» de la natremia, la misma rueda? | Sí, con texto propio en cada tema; en la natremia, el extremo bajo es «té con tostadas» | Aprobada |
 
 ## Límites conocidos
 
