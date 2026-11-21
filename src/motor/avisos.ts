@@ -1,4 +1,4 @@
-import type { AvisosTema, Estado, Frecuencia, Interaccion, Modelo, Momento, Nodo, Variantes } from './tipos';
+import type { AvisosTema, Caso, Estado, Frecuencia, Interaccion, Modelo, Momento, Nodo, Variantes } from './tipos';
 
 /** Frecuencia de una causa con la rueda en `valor` (según el extremo, si difiere). */
 export function frecuenciaDe(nodo: Nodo, valor: number): Frecuencia | undefined {
@@ -30,11 +30,26 @@ export function combinacionHipotetica(modelo: Modelo, causas: Estado, reglas: Av
   return salta ? lista : [];
 }
 
-/** Nodos vigilados que llegan al tope del modelo («fuera de rango»). */
-export function fueraDeRango(valores: Estado, reglas: AvisosTema): string[] {
-  const { nodos, umbral } = reglas.fueraDeRango;
+/** Umbral del tope de un nodo vigilado (fase N2: puede ser propio del nodo). */
+export const umbralTope = (reglas: AvisosTema, id: string): number => reglas.fueraDeRango.umbralNodo?.[id] ?? reglas.fueraDeRango.umbral;
+
+/** Nodos vigilados que llegan al tope del modelo, sin mirar el caso. */
+export function enTope(valores: Estado, reglas: AvisosTema): string[] {
   // Pequeño margen por el redondeo: 0,9499… cuenta como 0,95.
-  return nodos.filter((id) => Math.abs(valores[id] ?? 0) >= umbral - 1e-9);
+  return reglas.fueraDeRango.nodos.filter((id) => Math.abs(valores[id] ?? 0) >= umbralTope(reglas, id) - 1e-9);
+}
+
+/**
+ * Nodos vigilados que llegan al tope del modelo («fuera de rango»). Fase N2
+ * (M7): si el tema declara los topes por caso (`fueraDeRango.casos:
+ * 'declarados'`) y hay un caso abierto, solo los que ese caso acepta como parte
+ * de la lección (`Caso.topes`). Sin caso, o en un tema con topes libres (la
+ * hipertensión), todos.
+ */
+export function fueraDeRango(valores: Estado, reglas: AvisosTema, caso?: Caso): string[] {
+  const lista = enTope(valores, reglas);
+  if (!caso || reglas.fueraDeRango.casos !== 'declarados') return lista;
+  return lista.filter((id) => caso.topes?.[id] !== undefined);
 }
 
 /**
