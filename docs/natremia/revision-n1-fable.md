@@ -164,6 +164,8 @@ Cada propuesta es el texto completo, listo para sustituir al actual.
 
 **Sobre P1–P9:** P1, de acuerdo, con A1–A7. P2, de acuerdo (N6). P3, de acuerdo, con E11 y E12. P4, de acuerdo, con E6. P5, de acuerdo. P6, resuelto en F5–F8. P7 y P8, de acuerdo, con el apartado 7. P9, recomiendo separar (T16).
 
+**Nota (21 nov 2026):** Edu aprobó P1–P9 el 20 nov 2026, antes de esta revisión (commit `cf2b30d`). La revisión coincide con ocho. **Solo P9 pide volver a preguntarle**: recomiendo una rueda propia para los solutos (T16), y eso deja el tema en 11 causas (afecta también a P1). Si Edu mantiene P9 como la aprobó, la alternativa de T16 es viable con C7, E7 y el caso de control de E10.
+
 ## 7. Motor compartido entre temas
 
 | # | Tipo | Dónde | Problema | Opción principal | Alternativa |
@@ -195,7 +197,7 @@ Cambios de modelo que no se aplican sin su visto bueno:
 | 6 | Solutos solo sobre la dilución: 16 partida en 16 y 16b (E7) | Sí |
 | 7 | Regla del estado estable y flechas de los casos 10 y 11 en «días» (E1, C10) | Sí; no añadir la relación alternativa |
 | 8 | Flechas esperadas que cambian: casos 1, 4, 5, 6, 8, 9 y 12 (C1, C2, C6, C7, C8, C12, C14, C17) | Sí |
-| 9 | Rueda propia «Dieta pobre en solutos» en lugar de compartir la sal (T16, P9) | Sí, separarla (11 causas) |
+| 9 | Rueda propia «Dieta pobre en solutos» en lugar de compartir la sal (T16). **Reabre P9, ya aprobada**, y toca P1 | Sí, separarla (11 causas) |
 | 10 | Reutilizar la 74 (E14) | Sí |
 | 11 | Casos de control «sal baja sola» y «edad sola» (E10) | Sí |
 | 12 | Fuentes nuevas para 202, 206, 207, 222, 223 y 226 (F5–F8) | Sí: con ellas dejan de ser ⚠ |
