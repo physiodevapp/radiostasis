@@ -1,14 +1,12 @@
 /**
  * Ajustes de intensidad hechos en la calibración (hito 3a). Cada ajuste dice
  * qué cambia respecto a docs/modelo-v2.1.md y por qué. Se aplican encima de
- * `relaciones.ts` (valores del documento) y de `propuestas.ts`.
+ * `relaciones.ts` (valores del documento, en la biblioteca común) y de `propuestas.ts`.
  */
-export interface Ajuste {
-  n: number;
-  campo: 'intensidad' | 'intensidadNegativa';
-  antes: number | undefined;
-  despues: number;
-  motivo: string;
+import type { Ajuste as AjusteTema } from '../../motor/ajustes';
+
+/** Fase N2: los ajustes son por tema (`aplicarAjustes`, en src/motor/ajustes.ts). */
+export interface Ajuste extends AjusteTema {
   /** Comprobaciones de la tabla que fallan si se quita solo este ajuste («caso nodo»). */
   sinEsteAjuste: string[];
 }

@@ -1,4 +1,5 @@
-import type { Relacion } from '../../motor/tipos';
+import { biblioteca } from '../../fisiologia';
+import { importarRelaciones } from '../../fisiologia/importar';
 
 /**
  * Revisión del nodo edad (17 nov 2026), aprobada por Edu. La persona mayor nota
@@ -14,11 +15,7 @@ import type { Relacion } from '../../motor/tipos';
  * Probado y descartado (docs/modelo-v2.1.md, «Revisión del nodo edad…»): atenuar
  * la sed (en el modelo la sed apenas compensa un acceso parcial) y empeorar la
  * natriuresis por presión (con la edad la sistólica ya está cerca del tope).
+ *
+ * Fase N2: la relación 121 está en la biblioteca común (src/fisiologia/relaciones.ts).
  */
-export const relacionesEdad: Relacion[] = [
-  {
-    n: 121, tipo: 'modula', origen: 'edad', destino: 'volemia', relaciones: [67, 68], signo: '+', intensidad: 0.5,
-    fuente: 'PubMed', pmid: ['11528342', '9050029', '6472364'],
-    explicacion: 'Con los años se nota menos la sed y el riñón concentra peor la orina: la misma falta de agua deshidrata más',
-  },
-];
+export const relacionesEdad = importarRelaciones(biblioteca, [121]);

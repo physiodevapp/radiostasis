@@ -1,4 +1,8 @@
-import { INTENSIDAD, type Relacion, type Variante } from '../../motor/tipos';
+import { biblioteca } from '../../fisiologia';
+import { importarRelaciones } from '../../fisiologia/importar';
+import { INTENSIDAD } from '../../motor/tipos';
+
+export { variantesEstenosis } from '../../fisiologia/nodos';
 
 /**
  * Fase 7: lateralidad de la estenosis renal (aprobada por Edu el 17 nov 2026).
@@ -9,27 +13,11 @@ import { INTENSIDAD, type Relacion, type Variante } from '../../motor/tipos';
  * «Unilateral» cambia tres relaciones: el riñón sano compensa la filtración y
  * expulsa el sodio, mientras el riñón afectado sigue liberando renina.
  */
-export const variantesEstenosis: Variante[] = [
-  { id: 'bilateral', nombre: 'Bilateral', corto: 'bilateral' },
-  { id: 'unilateral', nombre: 'Unilateral', corto: 'unilateral' },
-  { id: 'unico', nombre: 'Riñón único', corto: 'riñón único' },
-];
 
-const { debil: D, moderada: M } = INTENSIDAD;
-const UNILATERAL = { nodo: 'estenosis', solo: ['unilateral'] };
+const { debil: D } = INTENSIDAD;
 
 /** Relación 38 (Estenosis → Perfusión renal): en la unilateral, débil. */
 export const intensidad38 = { nodo: 'estenosis', intensidad: { unilateral: D } };
 
-export const relacionesLateralidad: Relacion[] = [
-  {
-    n: 119, tipo: 'suma', origen: 'estenosis', destino: 'renina', signo: '+', intensidad: M, tiempo: 'minutos',
-    fuente: 'PubMed', variante: UNILATERAL, pmid: ['2652313', '4332626', '16202699'],
-    explicacion: 'Solo en la unilateral: el riñón afectado sigue notando poca presión en su arteriola aferente y libera renina, aunque los dos riñones juntos filtren casi lo normal',
-  },
-  {
-    n: 120, tipo: 'suma', origen: 'estenosis', destino: 'reabNa', signo: '-', intensidad: D, tiempo: 'dias',
-    fuente: 'PubMed', variante: UNILATERAL, pmid: ['2652313', '4332626'],
-    explicacion: 'Solo en la unilateral: el riñón sano, con la presión alta, expulsa el sodio y el volumen no crece',
-  },
-];
+/** Relaciones 119 y 120, de la biblioteca común (src/fisiologia/relaciones.ts), sin cambios. */
+export const relacionesLateralidad = importarRelaciones(biblioteca, [119, 120]);

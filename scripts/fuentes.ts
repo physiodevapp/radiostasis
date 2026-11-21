@@ -4,7 +4,7 @@
  */
 import { writeFileSync } from 'node:fs';
 import { hipertension as m } from '../src/temas/hipertension';
-import { articulos, frases } from '../src/temas/hipertension/fuentes';
+import { articulos, frases } from '../src/fisiologia/bibliografia';
 import { relaciones as base } from '../src/temas/hipertension/relaciones';
 
 const nombre = (id: string) => m.nodos.find((n) => n.id === id)?.nombre ?? id;

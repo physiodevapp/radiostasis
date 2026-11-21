@@ -1,8 +1,12 @@
+import type { Frase } from '../motor/tipos';
+
 /**
- * Bibliografía del tema de hipertensión (19 nov 2026). Solo PubMed: cada relación
- * del modelo v2.1 cita en `pmid` los artículos que la respaldan, con su cita aquí
- * (un test lo vigila). docs/fuentes.md se genera a partir de estos datos
- * (npm run fuentes). Cada PMID se comprobó en PubMed (título, autores, revista y
+ * Bibliografía común de la biblioteca de fisiología (fase N2; antes,
+ * src/temas/hipertension/fuentes.ts, del 19 nov 2026). Solo PubMed: cada
+ * relación cita en `pmid` los artículos que la respaldan, con su cita aquí (un
+ * test lo vigila en cada tema). Los documentos de fuentes de cada tema
+ * (docs/fuentes.md en la hipertensión) se generan a partir de estos datos
+ * (npm run fuentes -- <tema>). Cada PMID se comprobó en PubMed (título, autores, revista y
  * año); `comprobado` dice si además se leyó el texto completo o solo el resumen.
  */
 
@@ -168,10 +172,13 @@ export const articulos: Record<string, Articulo> = {
 };
 
 /**
- * Frases literales (en inglés) que respaldan una relación: n.º de relación →
- * [{ pmid, frase }]. Salen del texto completo o del resumen, según `comprobado`.
+ * Frases literales (en inglés) que respaldan una relación de la biblioteca: n.º
+ * de relación → [{ pmid, frase }]. Salen del texto completo o del resumen, según
+ * `comprobado`. Una relación que un tema importa con otro origen o destino (con
+ * asterisco) no usa esta frase: lleva la suya, cotejada para ese tema, en
+ * `Modelo.frases` (M1 de docs/natremia/revision-n1-fable.md).
  */
-export const frases: Record<number, { pmid: string; frase: string }[]> = {
+export const frases: Record<number, Frase[]> = {
   23: [{ pmid: '20360309', frase: 'Reductions in extracellular fluid volume through four major mechanisms: low renal perfusion pressure (local baroreflex mechanism); activation of the sympathetic nervous system; reductions in macula densa salt transport; [...] ultimately increase circulating and interstitial renin levels' }],
   10: [{ pmid: '36974717', frase: 'Type A refers to a persistently raised AVP concentration regardless of an increase in serum osmolality, which occurs in the most common forms of SIAD due to ongoing “inappropriate” AVP secretion' }, { pmid: '38693275', frase: 'the name \'central diabetes insipidus\' was changed in 2022 to arginine vasopressin (AVP) deficiency' }],
   20: [{ pmid: '35779183', frase: 'Under normal conditions, serum sodium concentration is the major determinant of serum osmolality.' }, { pmid: '27156756', frase: 'Sodium is the major circulating cation and thus a key determinant of overall plasma osmolality.' }],

@@ -104,6 +104,19 @@ interface RelacionBase {
    * actúa en esas variantes; con `intensidad`, cambia su peso en esas variantes.
    */
   variante?: { nodo: string; solo?: string[]; intensidad?: Record<string, number> };
+  /**
+   * Fase N2: relación «con asterisco». El tema la importó de la biblioteca común
+   * con otro origen o destino (`importar.ts`): aquí van los nodos de la
+   * biblioteca que se cambiaron. Conserva número, signo y PMID; su explicación y
+   * su frase (en `Modelo.frases`) son las del tema.
+   */
+  reasignada?: { origen?: string; destino?: string };
+}
+
+/** Frase literal (en inglés) de un artículo de PubMed que respalda una relación. */
+export interface Frase {
+  pmid: string;
+  frase: string;
 }
 
 export interface RelacionSuma extends RelacionBase {
@@ -205,6 +218,13 @@ export interface Caso {
   /** Resultados esperados: el primero es el de estado estable de la tabla. */
   esperado: Expectativa[];
   nota?: string;
+  /**
+   * Fase N2 (M7): nodos vigilados que pueden llegar al tope del modelo en este
+   * caso porque es parte de la lección (nodo → por qué). Con
+   * `fueraDeRango.casos: 'declarados'`, un tope que no esté aquí es un defecto de
+   * calibración (lo vigila un test) y el aviso solo sale en los declarados.
+   */
+  topes?: Record<string, string>;
 }
 
 export interface Modelo {
@@ -217,6 +237,12 @@ export interface Modelo {
   parametros: ParametrosMotor;
   /** Avisos de realismo (docs/modelo-v2.1.md): textos y reglas del tema. */
   avisos?: AvisosTema;
+  /**
+   * Fase N2 (M1): frases propias del tema para las relaciones que importó con
+   * otro origen o destino (`reasignada`): la de la biblioteca respaldaba la
+   * relación original y no vale para la copia. Las demás usan la frase común.
+   */
+  frases?: Record<number, Frase[]>;
 }
 
 /**
@@ -260,6 +286,16 @@ export interface AvisosTema {
     umbral: number;
     /** Nodos vigilados: salidas y valores de analítica. */
     nodos: string[];
+    /** Fase N2: umbral propio de algunos nodos vigilados (los demás, `umbral`). */
+    umbralNodo?: Record<string, number>;
+    /**
+     * Fase N2 (M7): qué hacer con los topes en los casos del tema.
+     * - «libres» (por defecto): el aviso sale siempre que un nodo vigilado llega al tope.
+     * - «declarados»: en un caso, el tope solo es aceptable si el caso lo declara en
+     *   `Caso.topes` (parte de la lección); si no, es un defecto de calibración y
+     *   un test lo detecta. Con el caso abierto, el aviso solo sale en los declarados.
+     */
+    casos?: 'libres' | 'declarados';
   };
 }
 

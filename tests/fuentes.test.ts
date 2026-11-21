@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { hipertension as modelo } from '../src/temas/hipertension';
-import { articulos, frases } from '../src/temas/hipertension/fuentes';
+import { articulos, frases } from '../src/fisiologia/bibliografia';
 import { relaciones } from '../src/temas/hipertension/relaciones';
 
 // 19 nov 2026: solo PubMed. Cada relación del tema cita artículos con su cita

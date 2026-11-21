@@ -1,4 +1,8 @@
+import { relacionDe } from '../../fisiologia';
 import type { Escala, RelacionSuma } from '../../motor/tipos';
+
+/** Relación nueva de la biblioteca común (fase N2: allí está su definición). */
+const suma = (n: number) => relacionDe(n) as RelacionSuma;
 
 /**
  * Cambios de ESTRUCTURA propuestos en la calibración del hito 3a y validados por
@@ -57,22 +61,14 @@ export const cambiosUmbral: CambioUmbral[] = [
 export const relacionesNuevas: RelacionNueva[] = [
   {
     id: 'P2',
-    relacion: {
-      n: 75, tipo: 'suma', origen: 'volemia', destino: 'reabAgua', signo: '-', intensidad: 0.6, umbral: 0,
-      tiempo: 'estable', fuente: 'PubMed', pmid: ['9109429', '10026831'],
-      explicacion: 'Escape: con volumen alto mantenido el riñón deja de retener agua (en el SIADH, el colector pierde acuaporina 2 aunque la ADH siga alta)',
-    },
+    relacion: suma(75),
     motivo:
       'Caso 4 (SIADH, D1): con la ADH fija, la diuresis solo vuelve a «=» con volemia «=» si el riñón deja de responder ' +
       'a la ADH. El documento ya cita la «pérdida de respuesta a la ADH»; faltaba la relación. Solo actúa por encima de 0.',
   },
   {
     id: 'P3',
-    relacion: {
-      n: 76, tipo: 'suma', origen: 'volemia', destino: 'perfRenal', signo: '+', intensidad: 0, intensidadNegativa: 0.6,
-      tiempo: 'dias', fuente: 'PubMed', pmid: ['2221095', '2750938'],
-      explicacion: 'Con poco volumen, la vasoconstricción renal reduce el flujo al riñón (azotemia prerrenal)',
-    },
+    relacion: suma(76),
     motivo:
       'Casos 11 y 12 sin agua: la creatinina solo sube si la TFG baja de −0,45, y la única vía era la PAM (39, débil) ' +
       'contra la angiotensina II, que sostiene la TFG (74). Solo actúa por debajo de 0 (revisión fisiológica): por ' +
@@ -80,11 +76,7 @@ export const relacionesNuevas: RelacionNueva[] = [
   },
   {
     id: 'P5',
-    relacion: {
-      n: 77, tipo: 'suma', origen: 'volemia', destino: 'simpatico', signo: '-', intensidad: 0, intensidadNegativa: 0.6,
-      umbral: -0.4, tiempo: 'dias', fuente: 'PubMed', pmid: ['22557974'],
-      explicacion: 'Reflejo de volumen bajo: cuando la pérdida de volumen es moderada o mayor, los receptores de baja presión activan el simpático',
-    },
+    relacion: suma(77),
     motivo:
       'Revisión fisiológica (hallazgo 4): sin ella la deshidratación no daba taquicardia ni activación simpática, porque ' +
       'el barorreflejo (65) no actúa en estado estable. Solo actúa con volemia por debajo de −0,4 (revisión P5/48): sin ' +
@@ -93,11 +85,7 @@ export const relacionesNuevas: RelacionNueva[] = [
   },
   {
     id: 'P6',
-    relacion: {
-      n: 78, tipo: 'suma', origen: 'tiroides', destino: 'rigidez', signo: '-', intensidad: 0, intensidadNegativa: 0.3,
-      tiempo: 'estable', fuente: 'PubMed', pmid: ['12364455', '29545561'],
-      explicacion: 'En el hipotiroidismo mantenido las arterias grandes se vuelven algo más rígidas (disfunción endotelial y cambios de la pared); revierte con el tratamiento',
-    },
+    relacion: suma(78),
     motivo:
       'Caso 13 (hito 3e, aprobado por Edu y revisado por Fable 5.2, docs/revision-hipotiroidismo-3e.md): sin ella la sistólica del hipotiroidismo ' +
       'salía −0,46, casi ↓↓, y en el paciente real suele ser normal. Con intensidades no basta: al bajar más el gasto, ' +
@@ -106,11 +94,7 @@ export const relacionesNuevas: RelacionNueva[] = [
   // Fase 4 (fármacos), aprobadas por Edu el 16 nov 2026.
   {
     id: 'F4-1',
-    relacion: {
-      n: 79, tipo: 'suma', origen: 'simpatico', destino: 'rvp', signo: '-', intensidad: 0.3,
-      tiempo: 'minutos', fuente: 'PubMed', pmid: ['39229379', '23817839'], bloqueable: ['betabloqueante'],
-      explicacion: 'Receptores β2 de las arteriolas del músculo esquelético: la adrenalina las dilata',
-    },
+    relacion: suma(79),
     motivo:
       'Aplazada a la fase 4 en el modelo v2.1: explica por qué un betabloqueante sin alfabloqueante empeora el ' +
       'feocromocitoma (queda la vasoconstricción α sin la dilatación β2). La 53 sube de 0,557 a 0,857 para que, sin ' +
@@ -118,11 +102,7 @@ export const relacionesNuevas: RelacionNueva[] = [
   },
   {
     id: 'F4-2',
-    relacion: {
-      n: 81, tipo: 'suma', origen: 'mineralo', destino: 'potasio', signo: '-', intensidad: 0.6, umbral: -0.3,
-      tiempo: 'dias', fuente: 'PubMed', pmid: ['26121445', '29540487'],
-      explicacion: 'Con muy poca actividad mineralocorticoide el túbulo colector apenas secreta K: el potasio sube',
-    },
+    relacion: suma(81),
     motivo:
       'Sin ella la espironolactona y los IECA no subían el potasio: la 37 solo actúa por encima de 0,2. Solo actúa por ' +
       'debajo de −0,3, así que no cambia ningún caso básico (con la dieta alta en sal la aldosterona baja menos). ' +

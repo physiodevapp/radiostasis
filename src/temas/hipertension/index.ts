@@ -1,6 +1,8 @@
+import { filtrarReferencias } from '../../fisiologia/importar';
+import { aplicarAjustes } from '../../motor/ajustes';
 import type { Modelo, Relacion } from '../../motor/tipos';
 import { avisos } from './avisos';
-import { ajustes, type Ajuste } from './calibracion';
+import { ajustes } from './calibracion';
 import { casos } from './casos';
 import { nodosEjercicio, relacionesEjercicio } from './ejercicio';
 import { nodosFarmacos, relacionesFarmacos } from './farmacos';
@@ -10,16 +12,14 @@ import { relacionesEdad } from './edad';
 import { cambiosTiempo, cambiosUmbral, relacionesNuevas } from './propuestas';
 import { relaciones } from './relaciones';
 
-export function aplicarAjustes(base: Relacion[], lista: Ajuste[]): Relacion[] {
-  return base.map((r) => {
-    const propios = lista.filter((a) => a.n === r.n);
-    if (propios.length === 0) return r;
-    if (r.tipo !== 'suma') throw new Error(`La relación ${r.n} no tiene intensidad`);
-    const copia = { ...r };
-    for (const a of propios) copia[a.campo] = a.despues;
-    return copia;
-  });
-}
+/**
+ * Tema de hipertensión. Fase N2: los nodos y las relaciones están en la
+ * biblioteca común (src/fisiologia/) y este tema los importa. Lo propio del tema
+ * se aplica encima: los cambios de estructura (`propuestas.ts`: escalas y
+ * umbrales), la calibración (`calibracion.ts`, con `aplicarAjustes`), la
+ * variante de la 38 (`lateralidad.ts`), los parámetros del motor y los casos.
+ */
+export { aplicarAjustes };
 
 /** Relaciones del documento con los cambios de estructura propuestos (sin calibrar). */
 export const relacionesPropuestas: Relacion[] = [
@@ -42,9 +42,12 @@ export const relacionesPropuestas: Relacion[] = [
   ...relacionesNuevas.map((p) => p.relacion),
 ];
 
-/** Fase 7: la 38 cambia de peso en la estenosis unilateral y se añaden la 119 y la 120. Revisión del nodo edad: la 121. */
+/**
+ * Fase 7: la 38 cambia de peso en la estenosis unilateral y se añaden la 119 y la 120. Revisión del nodo edad: la 121.
+ * Fase N2 (M2): las listas de `modula` y `bloquea` se quedan con las relaciones del tema (aquí están todas).
+ */
 function conLateralidad(lista: Relacion[]): Relacion[] {
-  return [...lista.map((r) => (r.n === 38 ? { ...r, variante: intensidad38 } : r)), ...relacionesLateralidad, ...relacionesEdad];
+  return filtrarReferencias([...lista.map((r) => (r.n === 38 ? { ...r, variante: intensidad38 } : r)), ...relacionesLateralidad, ...relacionesEdad]);
 }
 
 export const parametros = {
