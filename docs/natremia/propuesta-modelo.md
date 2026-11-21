@@ -434,7 +434,7 @@ El motor ya es genérico: `simular` no conoce ningún id y admite varios acumula
 | Fase | Contenido | Modelo recomendado |
 | --- | --- | --- |
 | N1 · Modelo (este documento) | Hecho: propuesta, revisión de Fable 5.2 y decisiones de Edu | — |
-| N2 · Motor compartido | Biblioteca común, registro de temas, scripts por tema; la hipertensión idéntica en valores numéricos | Opus 5.5, en una sesión nueva |
+| N2 · Motor compartido | Hecho (21 nov 2026, ver `docs/plan.md`): biblioteca común, registro de temas, scripts por tema; la hipertensión idéntica en valores numéricos | — |
 | N3 · Modelo como datos | Nodos, relaciones, 14 casos como tests, cotejo de frases con el script, calibración con tabla de ajustes (incluido el conflicto de la sed, ver «Límites») | Opus 5.5 |
 | N4 · Diseño de la vista | Compartimentos y célula del cerebro, en el modo diseño de claude.ai, como el prototipo de la fase 2 | claude.ai (modo diseño) |
 | N5 · Pantalla y fichas | Selector de tema, vista, fichas y avisos; textos revisados por Fable 5.2 | Opus 5.5; Fable 5.2 para los textos |
