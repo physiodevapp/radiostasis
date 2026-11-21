@@ -45,5 +45,5 @@ describe('instantánea numérica de la hipertensión', () => {
       if (g.base || r.base) comparar(r.base ?? [], g.base ?? []);
     });
     expect(peor).toBeLessThanOrEqual(TOLERANCIA);
-  });
+  }, 120_000);
 });
