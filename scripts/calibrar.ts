@@ -5,14 +5,18 @@
  *   Σ distancia de cada valor a su intervalo esperado (con margen)
  *   + λ · Σ |log(peso / peso del documento)|   (preferir pocos cambios)
  *
- * Uso: npm run calibrar -- [--negativas 13,14] [--lambda 0.02] [--pasadas 6]
- * Escribe la propuesta en la consola; los ajustes se copian a mano a
- * src/temas/hipertension/calibracion.ts con su motivo.
+ * Uso: npm run calibrar -- [tema] [--negativas 13,14] [--lambda 0.02] [--pasadas 6]
+ * Fase N2: el tema va primero (sin él, la hipertensión) y se parte de su modelo
+ * sin calibrar (scripts/temas.ts). Escribe la propuesta en la consola; los
+ * ajustes se copian a mano a la calibración del tema (en la hipertensión,
+ * src/temas/hipertension/calibracion.ts) con su motivo.
  */
 import { flecha, simular } from '../src/motor/motor';
 import type { Flecha, Modelo, Relacion, RelacionSuma } from '../src/motor/tipos';
 import { readFileSync, writeFileSync } from 'node:fs';
-import { hipertensionSinCalibrar, hipertension } from '../src/temas/hipertension';
+import { temaDelScript } from './temas';
+
+const { tema, sinCalibrar } = temaDelScript();
 
 const arg = (k: string, d: string) => {
   const i = process.argv.indexOf(k);
@@ -59,8 +63,8 @@ function distancia(v: number, permitidas: Flecha[]): number {
 }
 
 type Clave = `${number}:${'intensidad' | 'intensidadNegativa'}`;
-const base = hipertensionSinCalibrar;
-const inicial = DESDE_CALIBRADO ? hipertension : base;
+const base = sinCalibrar;
+const inicial = DESDE_CALIBRADO ? tema.modelo : base;
 
 const pesos = new Map<Clave, number>();
 const pesosDoc = new Map<Clave, number>();

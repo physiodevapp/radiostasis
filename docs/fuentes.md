@@ -1,6 +1,6 @@
 # Fuentes del modelo de hipertensión
 
-Documento generado con `npm run fuentes` a partir de `src/temas/hipertension/fuentes.ts` (bibliografía) y de las relaciones del tema. No lo edites a mano: corrige los datos y vuelve a generarlo.
+Documento generado con `npm run fuentes` a partir de `src/fisiologia/bibliografia.ts` (bibliografía) y de las relaciones del tema. No lo edites a mano: corrige los datos y vuelve a generarlo.
 
 Solo PubMed. Cada una de las 118 relaciones del tema (modelo v2.1, revisiones, fármacos y ejercicio) cita en `pmid` uno o varios artículos que la respaldan. Cada PMID se comprobó en PubMed (título, autores, revista y año) el 19 nov 2026. De 150 artículos, 14 se leyeron enteros en PubMed Central; de los demás se comprobó el resumen. En 118 relaciones se copia además la frase literal que las respalda, cotejada con el resumen o con el texto completo. Las fuentes no cambian el modelo: signos e intensidades son los de `docs/modelo-v2.1.md` y `docs/calibracion.md`.
 
