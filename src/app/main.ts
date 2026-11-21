@@ -2,35 +2,12 @@ import { combinacionHipotetica, frecuenciaDe, fueraDeRango, interaccionesActivas
 import { aplicarVariantes, flecha, simular, varianteDe, type Resultado } from '../motor/motor';
 import { causasDeReto, clavesAutomaticas, corregirReto, valoresPista } from '../motor/reto';
 import type { Caso, CorreccionReto, Escala, Interaccion, Momento, Reto } from '../motor/tipos';
-import { hipertension as modelo } from '../temas/hipertension';
-import { ordenEjercicio, ordenEntrenamiento, ordenSesion } from '../temas/hipertension/ejercicio';
-import { ordenFarmacos } from '../temas/hipertension/farmacos';
-import { fichas } from '../temas/hipertension/fichas';
-import { panelAnalitica } from '../temas/hipertension/nodos';
-import { notaValores, valoresOrientativos } from '../temas/hipertension/valores';
 import { traducir } from '../motor/valores';
-import { retos } from '../temas/hipertension/retos';
-import { terminos } from '../temas/hipertension/terminos';
-import {
-  capasVaso,
-  casosConRetencion,
-  determinantes,
-  farmacosVista,
-  fuentes as FUENTES,
-  evitaEnPista,
-  gruposClavesReto,
-  gruposMecanismos,
-  nombreAnalitica,
-  nombreCorto,
-  notaRetencion,
-  ordenCausas,
-  propiedadesVaso,
-  queMirar,
-} from '../temas/hipertension/vista';
+import { temaPorId, TEMA_POR_DEFECTO } from '../temas/registro';
 import { h, s } from './dom';
 import { iniciarAmpliarIA } from './ampliar-ia';
 import { crearCompartir, ICONO_ENLACE, type ChipEnlace } from './compartir';
-import { causasActivas, codificar, codificarReto, decodificar, decodificarReto, MAX_CAUSAS_RETO, type EstadoCompartido, type MandosEnlace } from './enlace-caso';
+import { causasActivas, codificar, codificarReto, conTema, decodificar, decodificarReto, leerTema, MAX_CAUSAS_RETO, type EstadoCompartido, type MandosEnlace } from './enlace-caso';
 import { imprimirFicha, type DatosFicha } from './exportar';
 import { crearEnlazador } from './enlaces';
 import { direccionEnlace, escucharHub, type AvisoHub } from './hub';
@@ -45,6 +22,42 @@ import { consulta, guardarSonido, guardarValores, ponerTamano, ponerTema, sonido
 import { crearSonido } from './sonido';
 import { crearVasos } from './vasos';
 import './estilos.css';
+
+// --- Tema del simulador (fase N2) ---
+// La dirección elige el tema (#t=…); sin él, o con uno que no existe, la hipertensión.
+// Todo lo del tema sale del registro: la interfaz no conoce ningún tema por su nombre.
+const tema = temaPorId(leerTema(location.hash).tema);
+const { modelo, fichas, retos, terminos, panelAnalitica } = tema;
+const { orientativos: valoresOrientativos, nota: notaValores } = tema.valores;
+const ordenCausas = tema.mandos.causas;
+const ordenFarmacos = tema.mandos.farmacos;
+const ordenSesion = tema.mandos.sesion;
+const ordenEntrenamiento = tema.mandos.entrenamiento;
+const ordenEjercicio = [...ordenSesion, ...ordenEntrenamiento];
+const {
+  capasVaso,
+  casosConRetencion,
+  determinantes,
+  farmacosVista,
+  fuentes: FUENTES,
+  evitaEnPista,
+  gruposClavesReto,
+  gruposMecanismos,
+  nombreAnalitica,
+  nombreCorto,
+  notaRetencion,
+  propiedadesVaso,
+  queMirar,
+} = tema.vista;
+/** Fragmento de la dirección sin el tema (sin «#»): el caso o el reto compartido. */
+const fragmento = () => leerTema(location.hash).resto;
+/** Quita el caso o el reto de la dirección; en un tema que no es el de por defecto, deja el tema. */
+const quitarFragmento = () => {
+  const base = location.href.split('#')[0];
+  history.replaceState(history.state, '', tema.id === TEMA_POR_DEFECTO.id ? base : `${base}#${conTema('', tema.id, TEMA_POR_DEFECTO.id)}`);
+};
+/** Fragmento de un enlace (sin «#») con el tema del simulador. */
+const enTema = (f: string) => conTema(f, tema.id, TEMA_POR_DEFECTO.id);
 
 const porId = new Map(modelo.nodos.map((n) => [n.id, n]));
 const nodo = (id: string) => {
@@ -255,7 +268,7 @@ chipEjercicio.addEventListener('click', () => ponerVistaPanel('ejercicio', true)
 
 // --- Ajustes: tema y tamaño (se recuerdan en este dispositivo) ---
 /** Fase 6, punto 5: mostrar cifras orientativas junto a las flechas. */
-let verValores = valoresGuardados();
+let verValores = valoresGuardados(tema.id);
 const ICONO_AJUSTES = () =>
   s('svg', { width: 18, height: 18, viewBox: '0 0 24 24', 'aria-hidden': 'true' },
     s('circle', { cx: 12, cy: 12, r: 3.2, class: 'icono-trazo', fill: 'none', 'stroke-width': 1.7 }),
@@ -296,7 +309,7 @@ const contenidoAjustes = [
   // Fase 6, punto 5: cifras orientativas, desactivadas por defecto.
   grupoAjuste<'no' | 'si'>('Valores orientativos', [['no', 'No'], ['si', 'Sí']], () => (verValores ? 'si' : 'no'), (x) => {
     verValores = x === 'si';
-    guardarValores(verValores);
+    guardarValores(tema.id, verValores);
     actualizar();
   }),
   h('p', { class: 'nota-ajustes nota-valores' }, notaValores),
@@ -414,14 +427,14 @@ escucharHub((aviso) => {
   compartir.refrescar();
 });
 const sinFragmento = () => location.href.split('#')[0];
-const enlaceCaso = (pregunta: string) => direccionEnlace(codificar(estadoActual(pregunta), mandosEnlace), avisoHub, sinFragmento());
+const enlaceCaso = (pregunta: string) => direccionEnlace(enTema(codificar(estadoActual(pregunta), mandosEnlace)), avisoHub, sinFragmento());
 // Retos por enlace: las claves salen del modelo (gruposClavesReto, en la vista del tema).
 const gruposClaves = gruposClavesReto;
 const nombreClave = (id: string) => nombreAnalitica[id] ?? cortoLimpio(id);
 const compartir = crearCompartir({
   enlace: enlaceCaso,
   // El reto también abre el hub si se ha anunciado.
-  enlaceReto: (enunciado, explicacion) => direccionEnlace(codificarReto(estadoActual(enunciado), explicacion, mandosEnlace), avisoHub, sinFragmento()),
+  enlaceReto: (enunciado, explicacion) => direccionEnlace(enTema(codificarReto(estadoActual(enunciado), explicacion, mandosEnlace)), avisoHub, sinFragmento()),
   clavesReto: () => Object.entries(clavesAutomaticas(resultado.valores, gruposClaves)).map(([id, f]) => `${nombreClave(id)} ${f}`),
   causasReto: () => causasActivas({ causas }).length,
   enHub: () => !!avisoHub,
@@ -1063,12 +1076,12 @@ botonRestablecer.addEventListener('click', () => {
   escala = 'estable';
   // Restablecer también quita el caso compartido y su enlace.
   compartido = null;
-  if (location.hash) history.replaceState(history.state, '', location.href.split('#')[0]);
+  if (fragmento()) quitarFragmento();
   actualizar();
 });
 /** Abre el estado de un enlace compartido (al cargar o al pegar otro enlace en la misma pestaña). */
 function leerEnlace(): boolean {
-  const e = decodificar(location.hash, mandosEnlace);
+  const e = decodificar(fragmento(), mandosEnlace);
   if (!e) return false;
   for (const id of ordenCausas) causas[id] = e.causas[id] ?? 0;
   for (const id of ordenFarmacos) farmacos[id] = e.farmacos[id] ?? 0;
@@ -1105,7 +1118,7 @@ function retoDelProfesor(e: EstadoCompartido, explicacion: string): Reto {
 }
 /** Abre el reto de un enlace (#reto=3 o el reto de un profesor), si lo es. */
 function leerEnlaceReto(): boolean {
-  const r = decodificarReto(location.hash, mandosEnlace, retos.length);
+  const r = decodificarReto(fragmento(), mandosEnlace, retos.length);
   if (!r) return false;
   if (reto) terminarReto();
   if (r.tipo === 'lista') entrarReto(r.numero - 1, undefined, true);
@@ -1113,8 +1126,13 @@ function leerEnlaceReto(): boolean {
   return true;
 }
 window.addEventListener('hashchange', () => {
+  // Un enlace de otro tema (pegado en la misma pestaña): se abre de nuevo con ese tema.
+  if (temaPorId(leerTema(location.hash).tema).id !== tema.id) {
+    location.reload();
+    return;
+  }
   if (leerEnlaceReto()) return;
-  if (!decodificar(location.hash, mandosEnlace)) return;
+  if (!decodificar(fragmento(), mandosEnlace)) return;
   if (reto) terminarReto();
   if (leerEnlace()) actualizar();
 });
@@ -1126,7 +1144,7 @@ window.addEventListener('hashchange', () => {
  */
 function entrarReto(indice = 0, profesor?: Reto, desdeEnlace = false) {
   compartido = null;
-  if (location.hash && !desdeEnlace) history.replaceState(history.state, '', location.href.split('#')[0]);
+  if (fragmento() && !desdeEnlace) quitarFragmento();
   reto = { indice, elegidas: [], pistas: 0, correccion: null, resultados: retos.map(() => null), fin: false, profesor };
   ponerVistaPanel('causas');
   cargarReto();
@@ -1165,7 +1183,7 @@ function terminarReto() {
 function salirReto() {
   terminarReto();
   // El enlace del reto deja de valer al salir: al recargar no vuelve a empezar.
-  if (location.hash) history.replaceState(history.state, '', location.href.split('#')[0]);
+  if (fragmento()) quitarFragmento();
   ponerVistaPanel(vistaPanel);
   actualizar();
   botonReto.focus();
@@ -1655,7 +1673,8 @@ function actualizar() {
   pintarReto();
   pintarHipotetica(hipotetica);
   pintarNota(caso, hipotetica, interacciones);
-  const fuera = new Set(fueraDeRango(v, reglasAvisos));
+  // Fase N2: con topes declarados por caso, el aviso depende del caso abierto (en la hipertensión, no).
+  const fuera = new Set(fueraDeRango(v, reglasAvisos, caso));
   for (const c of celdasAnalitica) marcarFuera(c.boton, fuera.has(c.id));
   for (const [id, ind] of ventanasSalida) marcarFuera(ind.raiz, fuera.has(id));
   dial.marcarFuera((id) => fuera.has(id), marcarFuera);

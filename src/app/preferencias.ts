@@ -1,10 +1,17 @@
 import { escalarConsulta, ZOOM_GRANDE } from '../compartido/tamano';
+import { claveDelTema } from '../temas/registro';
 
 /**
  * Ajustes que se recuerdan entre visitas (hito 3e): tema, tamaño y sonido.
  * Como en physiq-assessment, son preferencias de interfaz de este dispositivo
  * en localStorage, con prefijo propio. El script de <head> de index.html lee el
  * tema y el tamaño antes de pintar (sin parpadeo); aquí se guardan y aplican.
+ * Aquí «tema» es el aspecto (retro o clásico), no el tema del simulador.
+ *
+ * Fase N2 (M10): lo que depende del tema del simulador (hoy, ver los valores
+ * orientativos) se guarda aparte para cada tema, con `claveDelTema`. La
+ * hipertensión conserva la clave de siempre. El aspecto, el tamaño y el sonido
+ * son del dispositivo y valen para todos los temas.
  */
 export type Tema = 'retro' | 'clasico';
 export type Tamano = 'normal' | 'grande';
@@ -13,7 +20,6 @@ export const CLAVES = {
   tema: 'radiostasis-tema',
   tamano: 'radiostasis-tamano',
   sonido: 'radiostasis-sonido',
-  valores: 'radiostasis-valores',
 } as const;
 
 function leer(clave: string): string | null {
@@ -56,9 +62,9 @@ export function ponerTamano(t: Tamano) {
 
 export const sonidoGuardado = () => leer(CLAVES.sonido) === 'si';
 export const guardarSonido = (si: boolean) => guardar(CLAVES.sonido, si ? 'si' : 'no');
-/** Fase 6, punto 5: valores orientativos (desactivados por defecto). */
-export const valoresGuardados = () => leer(CLAVES.valores) === 'si';
-export const guardarValores = (si: boolean) => guardar(CLAVES.valores, si ? 'si' : 'no');
+/** Fase 6, punto 5: valores orientativos (desactivados por defecto). Fase N2: por tema del simulador. */
+export const valoresGuardados = (tema: string) => leer(claveDelTema(tema, 'valores')) === 'si';
+export const guardarValores = (tema: string, si: boolean) => guardar(claveDelTema(tema, 'valores'), si ? 'si' : 'no');
 
 /**
  * Como `matchMedia`, pero con «Grande» evalúa la consulta escalada (igual que

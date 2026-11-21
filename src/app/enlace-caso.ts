@@ -11,6 +11,12 @@ import type { Escala, Momento } from '../motor/tipos';
  * v = variantes de las causas (fase 7: v=estenosis:unilateral; la de siempre no se escribe).
  * Lo que vale lo de siempre (momento «antes», estado estable) no se escribe.
  *
+ * Fase N2: el tema también va en `t=` (`#t=natremia&c=…`, P8 aprobada por
+ * Edu). `t=` es además la escala desde la fase 6 (`t=dias`): los dos se
+ * distinguen por el valor, porque ningún tema se llama como una escala (un test
+ * lo vigila). El tema por defecto (la hipertensión) no se escribe, así que sus
+ * enlaces son los de siempre, y los antiguos, sin tema, la abren.
+ *
  * El fragmento no llega al servidor ni pasa por el service worker, y funciona
  * igual en la raíz, en un subdirectorio (base './') o dentro del hub PhysiQ.
  * Al leer, se ignora todo lo que no se reconoce (mandos que no existen, valores
@@ -45,7 +51,35 @@ export interface MandosEnlace {
 export const MAX_PREGUNTA = 200;
 
 const MOMENTOS: Momento[] = ['antes', 'durante', 'despues'];
-const ESCALAS: Escala[] = ['minutos', 'dias', 'estable'];
+export const ESCALAS: readonly Escala[] = ['minutos', 'dias', 'estable'];
+
+/** Un id de tema en la dirección: minúsculas, cifras y guiones. */
+const ID_TEMA = /^[a-z][a-z0-9-]{0,39}$/;
+
+/**
+ * Fase N2: separa el tema del resto del fragmento. Devuelve el id del tema que
+ * pide la dirección (null si no pide ninguno; puede no existir: lo decide el
+ * registro de temas) y el fragmento sin él, sin «#», para leer el caso o el reto.
+ * `t=dias` y `t=minutos` son la escala y se quedan en el resto.
+ */
+export function leerTema(fragmento: string): { tema: string | null; resto: string } {
+  const texto = fragmento.replace(/^#/, '');
+  let tema: string | null = null;
+  const resto = texto.split('&').filter((parte) => {
+    if (!parte.startsWith('t=')) return true;
+    const v = parte.slice(2);
+    if ((ESCALAS as readonly string[]).includes(v) || !ID_TEMA.test(v)) return true;
+    tema ??= v;
+    return false;
+  });
+  return { tema, resto: resto.join('&') };
+}
+
+/** Fragmento (sin «#») con el tema delante; el tema por defecto no se escribe. */
+export function conTema(fragmento: string, tema: string, porDefecto: string): string {
+  if (tema === porDefecto) return fragmento;
+  return fragmento ? `t=${tema}&${fragmento}` : `t=${tema}`;
+}
 
 /** Retos por enlace: largo máximo del enunciado y de la explicación del profesor. */
 export const MAX_ENUNCIADO = 300;
