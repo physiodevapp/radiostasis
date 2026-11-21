@@ -15,7 +15,8 @@
     "revision-fichas": "tsx scripts/revision-fichas.ts",
     "revision-retos": "tsx scripts/revision-retos.ts",
     "revision-fase-7": "tsx scripts/revision-fase-7.ts",
-    "fuentes": "tsx scripts/fuentes.ts"
+    "fuentes": "tsx scripts/fuentes.ts",
+    "instantanea": "tsx scripts/instantanea.ts"
   },
   "devDependencies": {
     "@types/node": "^22.20.5",
